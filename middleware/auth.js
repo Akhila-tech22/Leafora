@@ -29,13 +29,13 @@ const userAuth = async (req,res,next) => {
 const adminAuth = async (req,res,next) => {
     try {
         if (!req.session.admin) {
-            return res.redirect("/admin/login");   // ✅ correct path
+            return res.redirect("/admin/login");  
         }
 
         let admin = await User.findById(req.session.admin);
         if (!admin) {
             req.session.destroy(() => {});
-            return res.redirect("/admin/login");   // ✅ correct path
+            return res.redirect("/admin/login");  
         }
         next();
     } catch(error) {

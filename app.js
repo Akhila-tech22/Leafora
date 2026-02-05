@@ -8,23 +8,26 @@ const adminRoutes = require('./routes/adminRouter')
 const db = require('./config/db')
 const path = require('path');
 const passport = require('./config/passportConfig');
+const morgan = require('morgan');
+
 db();
+app.use(morgan('dev'));
 
 app.use(session({
-    secret: process.env.SESSION_SECRET, // from your .env
-    resave: false, // don’t save session if nothing changed
-    saveUninitialized: true, // save new sessions even if empty
+    secret: process.env.SESSION_SECRET, 
+    resave: false, 
+    saveUninitialized: true, 
     cookie: {
-        secure: false, // set true if using HTTPS
-        httpOnly: true, // can’t be accessed by client JS
-        maxAge: 72 * 60 * 60 * 1000 // 72 hours
+        secure: false, 
+        httpOnly: true, 
+        maxAge: 72 * 60 * 60 * 1000 
     }
 }));
 
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Caching disabled
+
 app.use((req, res, next) => {
     res.set('Cache-Control', 'no-store');
     next();

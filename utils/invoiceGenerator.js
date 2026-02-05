@@ -62,7 +62,7 @@ async function generateInvoice(order, user, outputPath) {
                .font('Helvetica-Bold')
                .text('Bill To:', 50, 150);
 
-            // 🔥 Handle address properly - it's stored as Mixed type
+            // Handle address properly - it's stored as Mixed type
             const address = order.address || {};
             
             doc.fontSize(10)
