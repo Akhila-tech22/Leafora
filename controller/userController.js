@@ -160,7 +160,7 @@ const postLogin = async (req,res) => {
 
         const user = await User.findOne({email});
         if(!user) return res.json({success:false, message:"Email does not exist"});
-        if(user.isBlocked) return res.json({success:false, message:"You are blocked"});
+        if(user.isBlocked) return res.json({success:false, message:"You are blocked from admin"});
 
         const match = await bcrypt.compare(password, user.password);
         if(!match) return res.json({success:false, message:"Invalid password"});

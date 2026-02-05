@@ -107,9 +107,10 @@ const getCheckout = async (req, res) => {
 
 const getAddressPage = async (req,res) => {
     try{
-        let user = req.session.userName;
+        let userId = req.session.user;
+        const user = await User.findById(userId)
         if(!user) {
-            return res.json({success : false, message : "Session"})
+            return res.json({success : false, message : "Session error"})
         }
         res.render("user/address",{
             user,

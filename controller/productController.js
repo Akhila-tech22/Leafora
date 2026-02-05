@@ -92,8 +92,8 @@ const postProduct = async (req, res) => {
         });
 
         newProduct.effectiveOffer = effectiveOffer;
-        newProduct.salePrice = salePrice;
-
+    
+        offer ? newProduct.salePrice = sellingPrice : newProduct.salePrice = salePrice;
         await newProduct.save();
 
         return res.json({ success: true, message: "Product added successfully" });

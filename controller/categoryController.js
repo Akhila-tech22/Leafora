@@ -136,8 +136,9 @@ const deleteCategories = async(req,res) => {
         if(!exisit) {
             return res.json({success : false, message : 'Category not exisit'})
         }
-        const {effectiveOffer,salePrice} = find
-            await Category.findByIdAndDelete(id)
+        
+             await Category.findByIdAndDelete(exisit);
+          
         return res.json({success : true, message : "Category deleted"})
     }catch(error) {
          console.error("Error deleting category:", error);
