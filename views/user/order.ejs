@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders - Leafora</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #F5F1EB;
+            color: #2E2E2E;
+            line-height: 1.6;
+        }
+
+        .order-content {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 40px;
+        }
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 28px;
+            color: #2E2E2E;
+            font-weight: 700;
+        }
+
+        .orders-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .order-card {
+            border: 1px solid #E8DFD5;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .order-card:hover {
+            box-shadow: 0 4px 12px rgba(139, 111, 71, 0.1);
+            border-color: #8B6F47;
+        }
+
+        .order-header {
+            background: #F5F1EB;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            border-bottom: 1px solid #E8DFD5;
+        }
+
+        .order-info-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .order-info-label {
+            font-size: 12px;
+            color: #6B6B6B;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .order-info-value {
+            font-size: 14px;
+            color: #2E2E2E;
+            font-weight: 600;
+        }
+
+        .order-id {
+            color: #8B6F47;
+            font-family: 'Courier New', monospace;
+        }
+
+        .order-body {
+            padding: 20px;
+        }
+
+        .product-item {
+            display: grid;
+            grid-template-columns: 100px 1fr auto;
+            gap: 20px;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .product-item:not(:last-child) {
+            border-bottom: 1px solid #F5F1EB;
+        }
+
+        .product-image {
+            width: 68px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #E8DFD5;
+        }
+
+        .product-details {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .product-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2E2E2E;
+        }
+
+        .product-meta {
+            display: flex;
+            gap: 20px;
+            font-size: 14px;
+            color: #6B6B6B;
+        }
+
+        .product-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .product-price {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2E2E2E;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-pending {
+            background: #FFF3CD;
+            color: #856404;
+        }
+
+        .status-ordered {
+            background: #E8DFD5;
+            color: #705836;
+        }
+
+        .status-confirmed {
+            background: #CFE2FF;
+            color: #084298;
+        }
+
+        .status-shipped {
+            background: #D1E7DD;
+            color: #0F5132;
+        }
+
+        .status-delivered {
+            background: #D4EDDA;
+            color: #155724;
+        }
+
+        .status-cancelled {
+            background: #F8D7DA;
+            color: #721C24;
+        }
+
+        .status-return_requested {
+            background: #FFF3CD;
+            color: #856404;
+        }
+
+        .status-approved {
+            background: #D4EDDA;
+            color: #155724;
+        }
+
+        .status-rejected {
+            background: #F8D7DA;
+            color: #721C24;
+        }
+
+        .status-payment_failed {
+            background: #F8D7DA;
+            color: #721C24;
+        }
+
+        .order-footer {
+            padding: 20px;
+            background: #F5F1EB;
+            border-top: 1px solid #E8DFD5;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .btn-view-details {
+            background: #8B6F47;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-view-details:hover {
+            background: #705836;
+            box-shadow: 0 4px 12px rgba(139, 111, 71, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-retry {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 93px;
+            text-decoration: none;
+        }
+
+        .btn-retry:hover {
+            background: #c0392b;
+            box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-state i {
+            font-size: 64px;
+            color: #E8DFD5;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h3 {
+            font-size: 20px;
+            color: #6B6B6B;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            color: #999;
+            font-size: 14px;
+        }
+
+        small {
+            color: green;
+            display: block;
+            margin-top: 4px;
+            white-space: nowrap;
+            font-size: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .order-content {
+                padding: 20px;
+            }
+
+            .order-header {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .product-item {
+                grid-template-columns: 80px 1fr;
+                gap: 15px;
+            }
+
+            .product-image {
+                width: 80px;
+                height: 80px;
+            }
+
+            .product-meta {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .product-price {
+                grid-column: 1 / -1;
+                text-align: right;
+                margin-top: 10px;
+            }
+
+            .order-footer {
+                flex-direction: column;
+            }
+
+            .btn-view-details,
+            .btn-retry {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <%- include('../admin/partials/user/header', {user : user.name}) %>
+
+    <div class="container">
+        <div class="account-container">
+            <%- include('../userProfile/sidebar', { currentPage: 'orders' }) %>
+
+            <div class="order-content">
+                <div class="page-header">
+                    <h1><i class="fas fa-shopping-bag" style="color: #8B6F47; margin-right: 10px;"></i>Your Orders</h1>
+                </div>
+
+                <div class="orders-container">
+                    <% if (orders && orders.length > 0) { %>
+                        <% orders.forEach(order => { %>
+                            <div class="order-card">
+                                <div class="order-header">
+                                    <div class="order-info-item">
+                                        <span class="order-info-label">Order Placed</span>
+                                        <span class="order-info-value"><%= new Date(order.createdOn).toLocaleDateString('en-GB') %></span>
+                                    </div>
+                                    <div class="order-info-item">
+                                        <span class="order-info-label">Total</span>
+                                        <span class="order-info-value">₹<%= order.finalAmount.toFixed(2) %></span>
+                                    </div>
+                                    <div class="order-info-item">
+                                        <span class="order-info-label">Order ID</span>
+                                        <span class="order-info-value order-id">#<%= order.orderId.substring(0, 18) %></span>
+                                    </div>
+                                    <div class="order-info-item">
+                                        <span class="order-info-label">Payment Method</span>
+                                        <span class="order-info-value"><%= order.paymentMethod.toUpperCase() %></span>
+                                    </div>
+                                </div>
+
+                                <div class="order-body">
+                                    <% order.orderedItems.forEach(item => { %>
+                                        <div class="product-item">
+                                            <img 
+                                                src="/images/<%= item.productImage %>"  
+                                                alt="<%= item.productName %>" 
+                                                class="product-image">
+                                            
+                                            <div class="product-details">
+                                                <div class="product-name"><%= item.productName %></div>
+                                                <div class="product-meta">
+                                                    <div class="product-meta-item">
+                                                        <i class="fas fa-box"></i>
+                                                        <span>Quantity: <%= item.quantity %></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <span class="status-badge status-<%= item.status %>">
+                                                    <% if (item.status === 'ordered') { %>
+                                                        <i class="fas fa-clock"></i>
+                                                    <% } else if (item.status === 'shipped') { %>
+                                                        <i class="fas fa fa-box"></i>
+                                                    <% } else if (item.status === 'out for delivery') { %>
+                                                        <i class="fas fa fa-truck"></i>
+                                                    <% } else if (item.status === 'delivered') { %>
+                                                        <i class="fas fa-check"></i>
+                                                    <% } else if (item.status === 'cancelled') { %>
+                                                        <i class="fas fa-times-circle"></i>
+                                                    <% } else if (item.status === 'return_requested') { %>
+                                                        <i class="fas fa-undo"></i>
+                                                    <% } else if (item.status === 'payment_failed') { %>
+                                                        <i class="fas fa-exclamation-triangle"></i>
+                                                    <% } %>
+                                                    <%= item.status.replace(/_/g, ' ') %>
+                                                </span>
+                                            </div>
+                                            
+                                            <% if (item.status === 'approved') { %>
+                                                <small style="
+                                                    color: green;
+                                                    display: block;
+                                                    margin-top: 4px;
+                                                    white-space: nowrap;
+                                                    font-size: 12px;
+                                                ">
+                                                    Return amount will be credited to your wallet
+                                                </small>
+                                            <% } else if (item.status === 'rejected') { %>
+                                                <small style="
+                                                    color: #dc2626;
+                                                    display: block;
+                                                    margin-top: 4px;
+                                                    white-space: nowrap;
+                                                    font-size: 12px;
+                                                ">
+                                                    Request return is rejected!
+                                                </small>
+                                            <% } else if(item.status === 'cancelled')  {%>
+                                                 <small style="
+                                                    color: green;
+                                                    display: block;
+                                                    margin-top: 4px;
+                                                    white-space: nowrap;
+                                                    font-size: 12px;
+                                                ">
+                                                    Item cancelled , Amount will be refunded to wallet
+                                                </small>
+                                                <% }%>
+                                        </div>
+                                    <% }) %>
+                                </div>
+
+                                <div class="order-footer">
+                                    <% 
+                                    const hasPaymentFailed = order.orderedItems.some(item => item.status === 'payment_failed');
+                                    %>
+                                    
+                                    <% if (hasPaymentFailed) { %>
+                                        <a href="/retry/<%= order._id %>" class="btn-retry">
+                                            <i class="fas fa-redo"></i>
+                                            Retry
+                                        </a>
+                                    <% } %>
+                                    
+                                    <a href="/order-details/<%= order._id %>" class="btn-view-details">
+                                        View Details
+                                        <i class="fas fa-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        <% }) %>
+                    <% } else { %>
+                        <div class="empty-state">
+                            <i class="fas fa-shopping-bag"></i>
+                            <h3>No Orders Yet</h3>
+                            <p>You haven't placed any orders. Start shopping now!</p>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

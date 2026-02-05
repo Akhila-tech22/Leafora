@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Management - BookStore Admin</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: #f5f6f8; 
+            color: #2c3e50; 
+            line-height: 1.6; 
+        }
+        .container { 
+            max-width: 1300px; 
+            margin: 0 auto; 
+            padding: 30px 20px; 
+        }
+        
+        /* Page Header */
+        .page-header { 
+            background: linear-gradient(135deg, #3d4c5c 0%, #2c3e50 100%);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            color: white;
+        }
+        .page-title { 
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+        }
+        .title-icon { 
+            margin-right: 12px;
+            font-size: 28px;
+        }
+        .page-subtitle { 
+            color: rgba(255,255,255,0.85);
+            font-size: 15px;
+            font-weight: 400;
+        }
+
+        /* Search Section */
+        .search-section { 
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+        .search-form { 
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .search-input { 
+            flex: 1;
+            min-width: 250px;
+            padding: 12px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            background: #f5f6f8;
+        }
+        .search-input:focus { 
+            outline: none;
+            border-color: #8b7dd8;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(139,125,216,0.1);
+        }
+        .filter-select {
+            padding: 12px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            min-width: 160px;
+            background: #f5f6f8;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+        .filter-select:focus {
+            outline: none;
+            border-color: #8b7dd8;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(139,125,216,0.1);
+        }
+        .search-btn { 
+            background: linear-gradient(135deg, #8b7dd8, #7c6fd6);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .search-btn:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(139,125,216,0.3);
+        }
+        .clear-btn { 
+            background: #e9ecef;
+            color: #3d4c5c;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .clear-btn:hover { 
+            background: #d1d5db;
+            transform: translateY(-2px);
+        }
+
+        /* Orders Container */
+        .orders-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Order Card */
+        .order-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            overflow: hidden;
+            border: 1px solid #f0f1f3;
+        }
+
+        /* Order Header */
+        .order-header {
+            background: #f8f9fb;
+            padding: 18px 24px;
+            border-bottom: 2px solid #f0f1f3;
+        }
+        .order-header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .user-avatar {
+            display: none;
+        }
+        .user-details h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: #2c3e50;
+        }
+        .user-meta {
+            font-size: 13px;
+            color: #6b7280;
+        }
+        .order-date {
+            font-size: 13px;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        /* Order Summary in Header */
+        .order-summary-inline {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+            font-size: 13px;
+            color: #6b7280;
+            flex-wrap: wrap;
+            background: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+        }
+        .summary-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .summary-item strong {
+            color: #2c3e50;
+            font-weight: 700;
+        }
+        .summary-item.coupon strong {
+            color: #4ade80;
+        }
+        .summary-item.final strong {
+            color: #8b7dd8;
+            font-size: 15px;
+        }
+
+        /* Products List */
+        .products-list {
+            padding: 0;
+        }
+        
+        /* Product Item */
+        .product-item {
+            display: flex;
+            gap: 20px;
+            padding: 20px 24px;
+            border-bottom: 1px solid #f0f1f3;
+            transition: all 0.2s ease;
+        }
+        .product-item:hover {
+            background: #fafbfc;
+        }
+        .product-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Left: Image */
+        .product-image-section {
+            flex-shrink: 0;
+        }
+        .product-image {
+            width: 70px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+        }
+
+        /* Center: Product Details */
+        .product-details {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .product-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        .product-meta {
+            display: flex;
+            gap: 16px;
+            font-size: 13px;
+            color: #6b7280;
+        }
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .price-info {
+            font-size: 15px;
+            font-weight: 700;
+            color: #8b7dd8;
+        }
+        .payment-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .payment-cod {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        .payment-online {
+            background: #b8f4d6;
+            color: #16a34a;
+        }
+        .payment-wallet {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        /* Right: Actions */
+        .product-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-end;
+            min-width: 180px;
+        }
+        .status-badge {
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-align: center;
+            width: 100%;
+        }
+        .status-ordered {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        .status-shipped {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        .status-out_for_delivery {
+            background: #bae6fd;
+            color: #0c4a6e;
+        }
+        .status-delivered {
+            background: #b8f4d6;
+            color: #16a34a;
+        }
+        .status-cancelled {
+            background: #ffb5c5;
+            color: #c0392b;
+        }
+        .status-return_requested {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        .status-approved {
+            background: #b8f4d6;
+            color: #16a34a;
+        }
+        .status-rejected {
+            background: #ffb5c5;
+            color: #c0392b;
+        }
+        .status-payment_failed {
+            background: #ffb5c5;
+            color: #c0392b;
+        }
+
+        /* Action Buttons */
+        .action-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .btn-update {
+            background: linear-gradient(135deg, #8b7dd8, #7c6fd6);
+            color: white;
+        }
+        .btn-update:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(139,125,216,0.4);
+        }
+        .btn-return {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: white;
+        }
+        .btn-return:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(251,191,36,0.4);
+        }
+
+        /* Cancel Reason */
+        .cancel-reason {
+            font-size: 12px;
+            color: #c0392b;
+            background: #ffb5c5;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-top: 6px;
+            font-weight: 500;
+        }
+
+        /* Return Reason */
+        .return-reason {
+            font-size: 12px;
+            color: #92400e;
+            background: #fef3c7;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-top: 6px;
+            font-weight: 500;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal.active {
+            display: flex;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .modal-header {
+            margin-bottom: 25px;
+            border-bottom: 2px solid #f0f1f3;
+            padding-bottom: 20px;
+        }
+        .modal-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #3d4c5c;
+            margin-bottom: 6px;
+        }
+        .modal-subtitle {
+            color: #6b7280;
+            font-size: 14px;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #3d4c5c;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .form-select, .form-textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            background: #f5f6f8;
+        }
+        .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #8b7dd8;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(139,125,216,0.1);
+        }
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 2px solid #f0f1f3;
+        }
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #8b7dd8, #7c6fd6);
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(139,125,216,0.3);
+        }
+        .btn-secondary {
+            background: #e9ecef;
+            color: #3d4c5c;
+        }
+        .btn-secondary:hover {
+            background: #d1d5db;
+            transform: translateY(-2px);
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #f472b6, #ec4899);
+            color: white;
+        }
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(244,114,182,0.3);
+        }
+        .btn-success {
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+            color: white;
+        }
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(74,222,128,0.3);
+        }
+
+        /* Empty State */
+        .no-orders {
+            text-align: center;
+            padding: 80px 20px;
+            color: #9ca3af;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .no-orders-icon {
+            font-size: 72px;
+            margin-bottom: 20px;
+            opacity: 0.6;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            list-style: none;
+            padding: 0;
+            margin-top: 30px;
+        }
+        .pagination a {
+            display: inline-block;
+            padding: 10px 16px;
+            background: white;
+            color: #3d4c5c;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            border: 2px solid #e9ecef;
+        }
+        .pagination a:hover {
+            background: #f5f6f8;
+            border-color: #8b7dd8;
+            color: #8b7dd8;
+            transform: translateY(-2px);
+        }
+        .pagination a.active {
+            background: linear-gradient(135deg, #8b7dd8 0%, #7c6fd6 100%);
+            color: white;
+            border-color: #8b7dd8;
+            box-shadow: 0 4px 12px rgba(139,125,216,0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { padding: 20px 15px; }
+            .page-header { padding: 25px 20px; }
+            .page-title { font-size: 24px; }
+            .product-item {
+                flex-direction: column;
+            }
+            .product-actions {
+                width: 100%;
+                align-items: stretch;
+            }
+            .order-header-top {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
+            .order-summary-inline {
+                gap: 16px;
+            }
+            .search-form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .search-input, .filter-select {
+                min-width: unset;
+            }
+        }
+    </style>
+</head>
+<body>
+    <%- include('partials/admin/header') %>
+    
+    <div class="container">
+        <div class="">
+            <h1 class="page-title">
+                <span class="title-icon">📦</span>
+                Order Management
+            </h1>
+            <p class="page-subtitle">Manage and track all customer orders</p>
+        </div>
+
+        <!-- Search & Filter Section -->
+        <div class="search-section">
+            <form method="GET" action="/admin/adminOrder" class="search-form">
+                <input type="text" name="search" class="search-input" 
+                       placeholder="Search by Order ID or User Name..." 
+                       value="<%= search || '' %>">
+                
+                <select name="status" class="filter-select">
+                    <option value="">All Status</option>
+                    <option value="ordered" <%= statusFilter === 'ordered' ? 'selected' : '' %>>Ordered</option>
+                    <option value="shipped" <%= statusFilter === 'shipped' ? 'selected' : '' %>>Shipped</option>
+                    <option value="out for delivery" <%= statusFilter === 'out for delivery' ? 'selected' : '' %>>Out for Delivery</option>
+                    <option value="delivered" <%= statusFilter === 'delivered' ? 'selected' : '' %>>Delivered</option>
+                    <option value="cancelled" <%= statusFilter === 'cancelled' ? 'selected' : '' %>>Cancelled</option>
+                    <option value="return_requested" <%= statusFilter === 'return_requested' ? 'selected' : '' %>>Return Requested</option>
+                </select>
+
+                <select name="payment" class="filter-select">
+                    <option value="">All Payments</option>
+                    <option value="cod" <%= paymentFilter === 'cod' ? 'selected' : '' %>>Cash on Delivery</option>
+                    <option value="online" <%= paymentFilter === 'online' ? 'selected' : '' %>>Online Payment</option>
+                    <option value="wallet" <%= paymentFilter === 'wallet' ? 'selected' : '' %>>Wallet</option>
+                </select>
+                
+                <button type="submit" class="search-btn">🔍 Search</button>
+                <% if (search || statusFilter || paymentFilter) { %>
+                    <a href="/admin/adminOrder" class="clear-btn">Clear</a>
+                <% } %>
+            </form>
+        </div>
+
+        <!-- Orders List -->
+        <div class="orders-container">
+            <% if (orders && orders.length > 0) { %>
+                <% orders.forEach(order => { 
+                    // Calculate active items (not cancelled/rejected/approved)
+                    const activeItems = order.orderedItems.filter(item => 
+                        item.status !== 'cancelled' && 
+                        item.status !== 'approved' && 
+                        item.status !== 'rejected'
+                    );
+                    
+                    // Calculate subtotal for active items
+                    const subtotal = activeItems.reduce((sum, item) => 
+                        sum + (item.price * item.quantity), 0
+                    );
+                    
+                    // Check if coupon should be shown (only if there are active items and coupon was applied)
+                    const showCoupon = order.couponApplied && activeItems.length > 0;
+                    const couponDiscount = showCoupon ? (order.couponDetails?.discountAmount || 0) : 0;
+                    
+                    // Calculate delivery charge (only if there are active items)
+                    const deliveryCharge = activeItems.length > 0 ? order.deliveryCharge : 0;
+                    
+                    // Calculate final amount
+                    const finalAmount = subtotal - couponDiscount + deliveryCharge;
+                %>
+                    <div class="order-card">
+                        <!-- Order Header with User Info -->
+                        <div class="order-header">
+                            <div class="order-header-top">
+                                <div class="user-info">
+                                    <div class="user-avatar">
+                                        <%= order.userId.name%>
+                                    </div>
+                                    <div class="user-details">
+                                        <h3><%= order.userId.name %></h3>
+                                        <div class="user-meta">
+                                            Order #<%= order.orderId %> | <%= order.userId.email %>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="order-date">
+                                    <%= new Date(order.createdOn).toLocaleDateString('en-US', { 
+                                        year: 'numeric', 
+                                        month: 'short', 
+                                        day: 'numeric' 
+                                    }) %>
+                                </div>
+                            </div>
+
+                            <!-- Order Summary Inline -->
+                            <% if (activeItems.length > 0) { %>
+                                <div class="order-summary-inline">
+                                    <div class="summary-item">
+                                        <span>Subtotal:</span>
+                                        <strong>₹<%= subtotal.toFixed(2) %></strong>
+                                    </div>
+                                    <% if (showCoupon && couponDiscount > 0) { %>
+                                        <div class="summary-item coupon">
+                                            <span>Coupon (<%= order.couponDetails.couponCode %>):</span>
+                                            <strong>-₹<%= couponDiscount.toFixed(2) %></strong>
+                                        </div>
+                                    <% } %>
+                                    <div class="summary-item">
+                                        <span>Delivery:</span>
+                                        <strong>₹<%= deliveryCharge.toFixed(2) %></strong>
+                                    </div>
+                                    <div class="summary-item final">
+                                        <span>Final Amount:</span>
+                                        <strong>₹<%= finalAmount.toFixed(2) %></strong>
+                                    </div>
+                                </div>
+                            <% } %>
+                        </div>
+
+                        <!-- Products List -->
+                        <div class="products-list">
+                            <% order.orderedItems.forEach(item => { %>
+                                <div class="product-item">
+                                    <!-- Left: Image -->
+                                    <div class="product-image-section">
+                                        <img src="/images/<%= item.productImage %>" 
+                                             alt="<%= item.productName %>" 
+                                             class="product-image">
+                                    </div>
+
+                                    <!-- Center: Details -->
+                                    <div class="product-details">
+                                        <div class="product-name"><%= item.productName %></div>
+                                        
+                                        <div class="product-meta">
+                                            <div class="meta-item">
+                                                <span>Qty:</span>
+                                                <strong><%= item.quantity %></strong>
+                                            </div>
+                                            <div class="meta-item">
+                                                <span class="payment-badge payment-<%= order.paymentMethod %>">
+                                                    <%= order.paymentMethod.toUpperCase() %>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="price-info">₹<%= item.price.toFixed(2) %> × <%= item.quantity %> = ₹<%= (item.price * item.quantity).toFixed(2) %></div>
+
+                                        <% if (item.cancelReason) { %>
+                                            <div class="cancel-reason">
+                                                <strong>Cancel Reason:</strong> <%= item.cancelReason %>
+                                            </div>
+                                        <% } %>
+
+                                        <% if (item.returnReason) { %>
+                                            <div class="return-reason">
+                                                <strong>Return Reason:</strong> <%= item.returnReason %>
+                                            </div>
+                                        <% } %>
+                                    </div>
+
+                                    <!-- Right: Actions -->
+                                    <div class="product-actions">
+                                        <span class="status-badge status-<%= item.status.replace(/ /g, '_') %>">
+                                            <%= item.status.toUpperCase().replace(/_/g, ' ') %>
+                                        </span>
+
+                                        <% if (item.status !== 'cancelled' && item.status !== 'payment_failed' && item.status !== 'delivered' && item.status !== 'return_requested' &&  item.status !== 'approved' &&  item.status !== 'rejected') { %>
+                                            <button class="action-btn btn-update" 
+                                                    onclick="openUpdateStatusModal('<%= order._id %>', '<%= item._id %>', '<%= item.status %>', '<%= item.productName %>')">
+                                                Update Status
+                                            </button>
+                                        <% } %>
+
+                                        <% if (item.status === 'return_requested') { %>
+                                            <button class="action-btn btn-return" 
+                                                    onclick="openReturnModal('<%= order._id %>', '<%= item._id %>', '<%= item.productName %>')">
+                                                Handle Return
+                                            </button>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            <% }); %>
+                        </div>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <div class="no-orders">
+                    <div class="no-orders-icon">📦</div>
+                    <div style="font-size: 20px; margin-bottom: 8px; font-weight: 600; color: #6b7280;">No orders found</div>
+                    <div style="font-size: 15px;">
+                        <% if (search || statusFilter || paymentFilter) { %>
+                            Try adjusting your filters
+                        <% } else { %>
+                            Orders will appear here once customers start placing orders
+                        <% } %>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+
+        <!-- Pagination -->
+        <% if (orders && orders.length > 0) { %>
+            <div class="pagination">
+                <% for(let i = 1; i <= totalPages; i++) { %>
+                    <a href="?page=<%= i %>&search=<%= search || '' %>&status=<%= statusFilter || '' %>&payment=<%= paymentFilter || '' %>"
+                       class="<%= page === i ? 'active' : '' %>">
+                        <%= i %>
+                    </a>
+                <% } %>
+            </div>
+        <% } %>
+    </div>
+
+    <!-- Update Status Modal -->
+    <div class="modal" id="updateStatusModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Update Order Status</h3>
+                <p class="modal-subtitle" id="updateProductName"></p>
+            </div>
+            <form id="updateStatusForm">
+                <input type="hidden" id="updateOrderId">
+                <input type="hidden" id="updateItemId">
+                
+                <div class="form-group">
+                    <label class="form-label">New Status</label>
+                    <select id="newStatus" class="form-select">
+                        <option value="">Select Status</option>
+                        <option value="shipped">Shipped</option>
+                        <option value="out for delivery">Out for Delivery</option>
+                        <option value="delivered">Delivered</option>
+                    </select>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('updateStatusModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Update Status</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Return Modal -->
+    <div class="modal" id="returnModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Handle Return Request</h3>
+                <p class="modal-subtitle" id="returnProductName"></p>
+            </div>
+            <form id="returnForm">
+                <input type="hidden" id="returnOrderId">
+                <input type="hidden" id="returnItemId">
+                
+                <div class="form-group">
+                    <label class="form-label">Decision</label>
+                    <select id="returnDecision" class="form-select" >
+                        <option value="">Select Decision</option>
+                        <option value="approved">Approve Return</option>
+                        <option value="rejected">Reject Return</option>
+                    </select>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('returnModal')">Cancel</button>
+                    <button type="submit" class="btn btn-success" id="returnSubmitBtn">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Open Update Status Modal
+        function openUpdateStatusModal(orderId, itemId, currentStatus, productName) {
+            document.getElementById('updateOrderId').value = orderId;
+            document.getElementById('updateItemId').value = itemId;
+            document.getElementById('updateProductName').textContent = productName;
+
+            const statusSelect = document.getElementById('newStatus');
+
+            const statuses = [
+                'ordered',
+                'shipped',
+                'out for delivery',
+                'delivered'
+            ];
+
+            statusSelect.innerHTML = '<option value="">Select Status</option>';
+
+            statuses.forEach(status => {
+                const selected = status === currentStatus ? 'selected' : '';
+                statusSelect.innerHTML += `
+                    <option value="${status}" ${selected}>
+                        ${status}
+                    </option>
+                `;
+            });
+
+            document.getElementById('updateStatusModal').classList.add('active');
+        }
+
+        // Update Status Form Submit
+        document.getElementById('updateStatusForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const orderId = document.getElementById('updateOrderId').value;
+            const itemId = document.getElementById('updateItemId').value;
+            const newStatus = document.getElementById('newStatus').value;
+            
+            if (!newStatus) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Please select a status',
+                    icon: 'error',
+                    confirmButtonColor: '#8b7dd8'
+                });
+                return;
+            }
+            
+            try {
+                const response = await fetch('/admin/update-order-status', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ orderId, itemId, status: newStatus })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    location.reload();
+                } else {
+                    Swal.fire({
+                        title: 'Error',
+                        text: data.message || 'Failed to update status',
+                        icon: 'error',
+                        confirmButtonColor: '#8b7dd8'
+                    });
+                }
+            } catch (error) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Network error occurred',
+                    icon: 'error',
+                    confirmButtonColor: '#8b7dd8'
+                });
+            }
+        });
+
+        // Open Return Modal
+        function openReturnModal(orderId, itemId, productName) {
+            document.getElementById('returnOrderId').value = orderId;
+            document.getElementById('returnItemId').value = itemId;
+            document.getElementById('returnProductName').textContent = productName;
+            document.getElementById('returnDecision').value = '';
+            document.getElementById('returnModal').classList.add('active');
+        }
+
+        // Return Form Submit
+        document.getElementById('returnForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const orderId = document.getElementById('returnOrderId').value;
+            const itemId = document.getElementById('returnItemId').value;
+            const decision = document.getElementById('returnDecision').value;
+            
+            if (!decision) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Please select a decision',
+                    icon: 'error',
+                    confirmButtonColor: '#8b7dd8'
+                });
+                return;
+            }
+            
+            try {
+                const response = await fetch('/admin/handle-return', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        orderId, 
+                        itemId, 
+                        decision
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    location.reload()
+                } else {
+                    Swal.fire({
+                        title: 'Error',
+                        text: data.message || 'Failed to process return',
+                        icon: 'error',
+                        confirmButtonColor: '#8b7dd8'
+                    });
+                }
+            } catch (error) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Network error occurred',
+                    icon: 'error',
+                    confirmButtonColor: '#8b7dd8'
+                });
+            }
+        });
+
+        // Close Modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Close modal on outside click
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

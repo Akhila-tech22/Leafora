@@ -1,0 +1,506 @@
+
+<style>
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f6f8;
+    color: #2c3e50;
+    line-height: 1.6;
+}
+
+/* ✅ Centered container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px;
+}
+
+/* Main Content */
+.main-content {
+    margin-left: 0;
+}
+
+/* Page Header */
+.page-header {
+    background: linear-gradient(135deg, #3d4c5c 0%, #2c3e50 100%);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+    color: white;
+}
+
+.page-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+}
+
+.page-subtitle {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 15px;
+    font-weight: 400;
+}
+
+/* Search Section */
+.search-section {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    margin-bottom: 25px;
+}
+
+.search-form {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+    flex: 1;
+    min-width: 300px;
+}
+
+.search-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.3s ease;
+    background: #f5f6f8;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #8b7dd8;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(139, 125, 216, 0.1);
+}
+
+.search-btn {
+    background: linear-gradient(135deg, #8b7dd8 0%, #7c6fd6 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.search-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(139, 125, 216, 0.3);
+}
+
+.btn-clear {
+    background: #e9ecef;
+    color: #3d4c5c;
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.btn-clear:hover {
+    background: #d1d5db;
+    transform: translateY(-2px);
+}
+
+/* Customers Table */
+.customers-table {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    overflow: hidden;
+}
+
+.table-header {
+    background: linear-gradient(135deg, #3d4c5c 0%, #2c3e50 100%);
+    color: white;
+    padding: 18px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    text-align: left;
+    padding: 16px 20px;
+    border-bottom: 1px solid #f0f1f3;
+}
+
+th {
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #3d4c5c;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+tbody tr {
+    transition: all 0.2s ease;
+}
+
+tbody tr:hover {
+    background: #f8f9fb;
+    transform: scale(1.002);
+}
+
+/* Status Badges */
+.status-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.btn-block {
+    background: #ffb5c5;
+    color: #c0392b;
+}
+
+.btn-block:hover {
+    background: #f472b6;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(244, 114, 182, 0.3);
+}
+
+.btn-unblock {
+    background: #b8f4d6;
+    color: #16a34a;
+}
+
+.btn-unblock:hover {
+    background: #4ade80;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(74, 222, 128, 0.3);
+}
+
+/* Action Button Styling */
+td .status-btn {
+    padding: 8px 18px;
+    font-weight: 600;
+}
+
+td .btn-block {
+    background: linear-gradient(135deg, #f472b6 0%, #ec4899 100%);
+    color: white;
+}
+
+td .btn-block:hover {
+    background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+}
+
+td .btn-unblock {
+    background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+    color: white;
+}
+
+td .btn-unblock:hover {
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+}
+
+/* No Customers */
+.no-customers {
+    text-align: center;
+    padding: 60px 20px;
+    color: #9ca3af;
+    font-size: 16px;
+}
+
+.no-customers p {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+/* Customer Info */
+.customer-email {
+    color: #9ca3af;
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+.customer-name {
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 15px;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    list-style: none;
+    padding: 0;
+    margin-top: 30px;
+}
+
+.page-item {
+    display: inline-block;
+}
+
+.page-link {
+    display: inline-block;
+    padding: 10px 16px;
+    background: white;
+    color: #3d4c5c;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    border: 2px solid #e9ecef;
+}
+
+.page-link:hover {
+    background: #f5f6f8;
+    border-color: #8b7dd8;
+    color: #8b7dd8;
+    transform: translateY(-2px);
+}
+
+.page-item.active .page-link {
+    background: linear-gradient(135deg, #8b7dd8 0%, #7c6fd6 100%);
+    color: white;
+    border-color: #8b7dd8;
+    box-shadow: 0 4px 12px rgba(139, 125, 216, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px 15px;
+    }
+
+    .page-header {
+        padding: 25px 20px;
+    }
+
+    .page-title {
+        font-size: 24px;
+    }
+
+    .search-section {
+        padding: 18px;
+    }
+
+    .input-group {
+        min-width: 100%;
+        flex-direction: column;
+    }
+
+    .search-btn, .btn-clear {
+        width: 100%;
+    }
+
+    table {
+        font-size: 13px;
+    }
+
+    th, td {
+        padding: 12px 14px;
+    }
+
+    .table-header {
+        padding: 16px 20px;
+        font-size: 15px;
+    }
+
+    .status-btn {
+        font-size: 11px;
+        padding: 6px 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .page-title {
+        font-size: 20px;
+    }
+
+    .page-subtitle {
+        font-size: 13px;
+    }
+
+    th, td {
+        padding: 10px;
+        font-size: 12px;
+    }
+}
+
+</style>
+
+<body>
+    <!-- Include Navigation -->
+    <%- include('partials/admin/header') %>
+
+    <div class="container">
+        <div class="main-content">
+            <!-- Page Header -->
+            <div class="">
+                <h1 class="page-title">Customer Management</h1>
+                <p class="page-subtitle">Manage and monitor your customers</p>
+            </div>
+
+            <!-- Search Section -->
+            <div class="search-section">
+                 <form action="/admin/customers/" method="get" class="search-form">
+        <div class="input-group">
+         <input type="text" class="search-input" placeholder="Search customers by name or email..." name="search">
+<button class="search-btn" type="submit">Search</button>
+
+        </div>
+        <% if (typeof search !== 'undefined' && search !== '') { %>
+          <a href="/admin/customers/" class="btn-clear">Clear</a>
+        <% } %>
+      </form>
+            </div>
+
+            <!-- Customers Table -->
+            <div class="customers-table">
+                <div class="table-header">
+                    Customer List (<%= customers.length %> customers)
+                </div>
+
+                <% if (customers && customers.length > 0) { %>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Customer Info</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% customers.forEach(customer => { %>
+                                <tr>
+                                    <td>
+                                        <div class="customer-name"><%= customer.name %></div>
+                                        <div class="customer-email">ID: #<%= customer._id.toString().slice(-6) %></div>
+                                    </td>
+                                    <td><%= customer.email %></td>
+                                    <td>
+                                        <span class="status-btn <%= customer.isBlocked ? 'btn-block' : 'btn-unblock' %>" >
+                                            <%= customer.isBlocked ? 'Blocked' : 'Active' %>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <button 
+                                        class="status-btn <%= customer.isBlocked ? 'btn-unblock' : 'btn-block' %>"
+                                        onclick="confirmBlock(event, '<%= customer._id %>', '<%= customer.isBlocked ? 'unblock' : 'block' %>')"
+                                    >
+                                        <%= customer.isBlocked ? 'Unblock' : 'Block' %>
+                                    </button>
+
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                <% } else { %>
+                    <div class="no-customers">
+                        <p>📭 No customers found</p>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+          <nav aria-label="Page navigation" class="mt-4">
+    <ul class="pagination justify-content-center">
+      <% for(let i=1; i <= totalPages; i++) { %>
+        <li class="page-item <%= (i === parseInt(currentPage)) ? 'active' : '' %>">
+          <a class="page-link" href="?page=<%= i %><% if (typeof search !== 'undefined' && search !== '') { %>&search=<%= search %><% } %>"><%= i %></a>
+        </li>
+      <% } %>
+    </ul>
+  </nav>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+async function confirmBlock(event, customerId, action) {
+    event.preventDefault();
+
+    const result = await Swal.fire({
+        title: 'Do you want to change this customer\'s status?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+        confirmButtonColor: '#8b7dd8',
+        cancelButtonColor: '#e9ecef'
+    });
+
+    if (result.isConfirmed) {
+        try {
+            const res = await fetch("/admin/confirmBlock", {  // ✅ Use correct path
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                body: JSON.stringify({ action: action, id: customerId })
+            });
+
+            const data = await res.json();
+            if (data.success) {
+                Swal.fire({
+                    title: "Updated",
+                    text: "Customer status changed",
+                    icon: "success",
+                    confirmButtonColor: '#8b7dd8'
+                }).then(() => window.location.reload());
+            } else {
+                Swal.fire({
+                    title: "Error",
+                    text: data.message || "Could not change status.",
+                    icon: "error",
+                    confirmButtonColor: '#8b7dd8'
+                });
+            }
+        } catch (error) {
+            console.error(error);
+            Swal.fire({
+                title: "Error",
+                text: "Something went wrong!",
+                icon: "error",
+                confirmButtonColor: '#8b7dd8'
+            });
+        }
+    }
+}
+</script>

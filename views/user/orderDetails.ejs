@@ -1,0 +1,990 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details - Leafora</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            border-bottom: 1px solid #e9ecef;
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo i {
+            color: #3498db;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #555;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-menu a:hover {
+            color: #3498db;
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .cart-icon {
+            position: relative;
+            color: #555;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #e74c3c;
+            color: white;
+            border-radius: 10px;
+            width: 18px;
+            height: 18px;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .login-btn {
+            background: #3498db;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .login-btn:hover {
+            background: #2980b9;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            padding: 20px 0;
+            font-size: 13px;
+            color: #6c757d;
+        }
+
+        .breadcrumb a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 30px 0;
+        }
+
+        /* Order Header */
+        .order-header {
+            background: white;
+            padding: 25px 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .order-header-left h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .order-date {
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .download-invoice-btn {
+            background: #3498db;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .download-invoice-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+        }
+
+        /* Progress Tracker */
+        .progress-section {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+        }
+
+        .progress-tracker {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            margin: 30px 0;
+        }
+
+        .progress-line {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #e9ecef;
+            z-index: 0;
+        }
+
+        .progress-line-active {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            height: 3px;
+            background: #27ae60;
+            z-index: 1;
+            transition: width 0.5s ease;
+        }
+
+        .progress-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .progress-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e9ecef;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 3px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .progress-step.active .progress-circle {
+            background: #27ae60;
+            color: white;
+        }
+
+        .progress-step.completed .progress-circle {
+            background: #27ae60;
+            color: white;
+        }
+
+        .progress-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .progress-step.active .progress-label {
+            color: #27ae60;
+            font-weight: 600;
+        }
+
+        .progress-step.completed .progress-label {
+            color: #27ae60;
+        }
+
+        /* Two Column Layout */
+        .order-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        /* Order Items */
+        .order-items-section {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f1f3f5;
+        }
+
+        .order-item {
+            display: flex;
+            gap: 20px;
+            padding: 20px 0;
+            border-bottom: 1px solid #f1f3f5;
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-image {
+            width: 100px;
+            height: 130px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid #e9ecef;
+            flex-shrink: 0;
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .item-meta {
+            color: #6c757d;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .item-price-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .item-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .item-regular-price {
+            font-size: 14px;
+            color: #adb5bd;
+            text-decoration: line-through;
+        }
+
+        .item-quantity {
+            font-size: 14px;
+            color: #6c757d;
+        }
+
+        .item-status {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-ordered {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-shipped {
+            background: #cfe2ff;
+            color: #084298;
+        }
+
+        .status-delivered {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .status-cancelled {
+            background: #f8d7da;
+            color: #842029;
+        }
+
+        .status-return_requested {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-approved {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .status-rejected {
+            background: #f8d7da;
+            color: #842029;
+        }
+
+        .status-payment_failed {
+            background: #f8d7da;
+            color: #842029;
+        }
+
+        .cancel-item-btn, .return-item-btn {
+            margin-top: 10px;
+            margin-right: 8px;
+            color: white;
+            padding: 6px 14px;
+            border: none;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .cancel-item-btn {
+            background: #dc3545;
+        }
+
+        .cancel-item-btn:hover {
+            background: #c82333;
+        }
+
+        .return-item-btn {
+            background: #f39c12;
+        }
+
+        .return-item-btn:hover {
+            background: #e67e22;
+        }
+
+        /* Sidebar Sections */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .sidebar-section {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* Order Summary */
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .summary-label {
+            color: #6c757d;
+        }
+
+        .summary-value {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .summary-divider {
+            height: 1px;
+            background: #e9ecef;
+            margin: 15px 0;
+        }
+
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 18px;
+            font-weight: 700;
+            color: #2c3e50;
+            padding-top: 10px;
+        }
+
+        .discount-value {
+            color: #27ae60;
+        }
+
+        /* Shipping Address */
+        .address-info {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        .address-name {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .address-phone {
+            color: #6c757d;
+            margin-top: 8px;
+        }
+
+        /* Payment Info */
+        .payment-method {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+
+        .payment-icon {
+            width: 36px;
+            height: 36px;
+            background: #3498db;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .payment-details {
+            flex: 1;
+        }
+
+        .payment-type {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 14px;
+        }
+
+        .payment-status {
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        .payment-status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-top: 8px;
+        }
+
+        .payment-completed {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .payment-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .payment-failed {
+            background: #f8d7da;
+            color: #842029;
+        }
+
+        /* Coupon Badge */
+        .coupon-badge {
+            background: #d1e7dd;
+            color: #0f5132;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .order-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .download-invoice-btn {
+                width: 100%;
+            }
+
+            .progress-tracker {
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .progress-line,
+            .progress-line-active {
+                display: none;
+            }
+
+            .order-content {
+                grid-template-columns: 1fr;
+            }
+
+            .order-item {
+                flex-direction: column;
+            }
+
+            .item-image {
+                width: 100%;
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <%- include('../admin/partials/user/header') %>
+
+    <div class="container">
+        <!-- Breadcrumb -->
+        <nav class="breadcrumb">
+            <a href="/">Home</a> / <a href="/profile/orders">My Orders</a> / <span>Order #<%= order.orderId %></span>
+        </nav>
+
+        <div class="main-content">
+            <!-- Order Header -->
+            <div class="order-header">
+                <div class="order-header-left">
+                    <h1>Order #<%= order.orderId %></h1>
+                    <p class="order-date">
+                        Placed on <%= new Date(order.createdOn).toLocaleDateString('en-US', { 
+                            year: 'numeric', 
+                            month: 'long', 
+                            day: 'numeric' 
+                        }) %>
+                    </p>
+                </div>
+                <a href="/download-invoice/<%= order._id %>" class="download-invoice-btn">
+                    <i class="fas fa-download"></i>
+                    Download Invoice
+                </a>
+            </div>
+
+            <!-- Progress Tracker -->
+            <div class="progress-section">
+                <%
+                // Determine the overall order status based on items
+                const allStatuses = order.orderedItems.map(item => item.status);
+                const hasDelivered = allStatuses.includes('delivered');
+                const hasShipped = allStatuses.includes('shipped') || allStatuses.includes('out for delivery');
+                const hasCancelled = allStatuses.every(s => s === 'cancelled');
+                const hasOrdered = allStatuses.includes('ordered');
+                
+                let progressWidth = 0;
+                if (hasCancelled) {
+                    progressWidth = 0;
+                } else if (hasDelivered) {
+                    progressWidth = 100;
+                } else if (hasShipped) {
+                    progressWidth = 66;
+                } else if (hasOrdered) {
+                    progressWidth = 33;
+                }
+                %>
+                
+                <div class="progress-tracker">
+                    <div class="progress-line"></div>
+                    <div class="progress-line-active" style="width: <%= progressWidth %>%"></div>
+                    
+                    <div class="progress-step <%= hasOrdered || hasShipped || hasDelivered ? 'completed' : '' %> <%= hasOrdered && !hasShipped && !hasDelivered ? 'active' : '' %>">
+                        <div class="progress-circle">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="progress-label">Ordered</div>
+                    </div>
+                    
+                    <div class="progress-step <%= hasShipped || hasDelivered ? 'completed' : '' %> <%= hasShipped && !hasDelivered ? 'active' : '' %>">
+                        <div class="progress-circle">
+                            <i class="fas fa-shipping-fast"></i>
+                        </div>
+                        <div class="progress-label">Shipped</div>
+                    </div>
+                    
+                    <div class="progress-step <%= hasDelivered ? 'completed active' : '' %>">
+                        <div class="progress-circle">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <div class="progress-label">Delivered</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Two Column Layout -->
+            <div class="order-content">
+                <!-- Order Items -->
+                <div class="order-items-section">
+                    <h2 class="section-title">Order Items</h2>
+                    
+                    <% order.orderedItems.forEach(function(item) { %>
+                        <div class="order-item">
+                            <img src="/images/<%= item.productImage %>" 
+                                 alt="<%= item.productName %>" 
+                                 class="item-image">
+                            
+                            <div class="item-details">
+                                <h3 class="item-name"><%= item.productName %></h3>
+                                
+                                <div class="item-price-section">
+                                    <span class="item-price">₹<%= item.price.toFixed(2) %></span>
+                                    <% if (item.regularPrice > item.price) { %>
+                                        <span class="item-regular-price">₹<%= item.regularPrice.toFixed(2) %></span>
+                                    <% } %>
+                                </div>
+                                
+                                <p class="item-quantity">Quantity: <%= item.quantity %></p>
+                                
+                                <div style="margin-top: 10px;">
+                                    <span class="item-status status-<%= item.status.replace(/ /g, '_') %>">
+                                        <%= item.status.toUpperCase().replace(/_/g, ' ') %>
+                                    </span>
+                                </div>
+                                
+                                <!-- Action Buttons -->
+                                <% if (item.status === 'ordered') { %>
+                                    <button class="cancel-item-btn" onclick="cancelItem('<%= order._id %>', '<%= item._id %>')">
+                                        <i class="fas fa-times"></i> Cancel Item
+                                    </button>
+                                <% } %>
+                                
+                                <% if (item.status === 'delivered' && item.status !== 'return_requested' && item.status !== 'approved' && item.status !== 'rejected') { %>
+                                    <button class="return-item-btn" onclick="requestReturn('<%= order._id %>', '<%= item._id %>')">
+                                        <i class="fas fa-undo"></i> Return Item
+                                    </button>
+                                <% } %>
+                                
+                                <!-- Reasons Display -->
+                                <% if (item.cancelReason) { %>
+                                    <p style="margin-top: 10px; font-size: 13px; color: #dc3545; background: #f8d7da; padding: 8px; border-radius: 4px;">
+                                        <strong>Cancel Reason:</strong> <%= item.cancelReason %>
+                                    </p>
+                                <% } %>
+                                
+                                <% if (item.returnReason) { %>
+                                    <p style="margin-top: 10px; font-size: 13px; color: #f39c12; background: #fff3cd; padding: 8px; border-radius: 4px;">
+                                        <strong>Return Reason:</strong> <%= item.returnReason %>
+                                    </p>
+                                <% } %>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="sidebar">
+                    <!-- Order Summary -->
+                    <div class="sidebar-section">
+                        <h2 class="section-title">Order Summary</h2>
+                        
+                        <div class="summary-row">
+                            <span class="summary-label">Subtotal:</span>
+                            <span class="summary-value">₹<%= order.totalPrice.toFixed(2) %></span>
+                        </div>
+                        
+                        <% if (order.discount > 0) { %>
+                            <div class="summary-row">
+                                <span class="summary-label">Discount:</span>
+                                <span class="summary-value discount-value">-₹<%= order.discount.toFixed(2) %></span>
+                            </div>
+                        <% } %>
+                        
+                        <div class="summary-row">
+                            <span class="summary-label">Delivery Charge:</span>
+                            <span class="summary-value">₹<%= order.deliveryCharge.toFixed(2) %></span>
+                        </div>
+                        
+                        <div class="summary-divider"></div>
+                        
+                        <div class="summary-total">
+                            <span>Final Amount:</span>
+                            <span>₹<%= order.finalAmount.toFixed(2) %></span>
+                        </div>
+                        
+                        <% if (order.couponApplied && order.couponDetails) { %>
+                            <div class="coupon-badge">
+                                <i class="fas fa-tag"></i>
+                                Coupon Applied: <%= order.couponDetails.couponCode %>
+                            </div>
+                        <% } %>
+                    </div>
+
+                    <!-- Shipping Address -->
+                    <div class="sidebar-section">
+                        <h2 class="section-title">Shipping Address</h2>
+                        
+                        <div class="address-info">
+                            <div class="address-name"><%= order.address.name || order.address.fullname %></div>
+                            <%= order.address.address || order.address.street %><br>
+                            <%= order.address.city %>, <%= order.address.state %> <%= order.address.pincode || order.address.zip %><br>
+                            <div class="address-phone">
+                                <i class="fas fa-phone"></i> <%= order.address.phone || order.address.mobile %>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Information -->
+                    <div class="sidebar-section">
+                        <h2 class="section-title">Payment Information</h2>
+                        
+                        <div class="payment-method">
+                            <div class="payment-icon">
+                                <% if (order.paymentMethod === 'cod') { %>
+                                    <i class="fas fa-money-bill-wave"></i>
+                                <% } else if (order.paymentMethod === 'online') { %>
+                                    <i class="fas fa-credit-card"></i>
+                                <% } else if (order.paymentMethod === 'wallet') { %>
+                                    <i class="fas fa-wallet"></i>
+                                <% } %>
+                            </div>
+                            <div class="payment-details">
+                                <div class="payment-type">
+                                    <% if (order.paymentMethod === 'cod') { %>
+                                        Cash on Delivery
+                                    <% } else if (order.paymentMethod === 'online') { %>
+                                        Online Payment
+                                    <% } else if (order.paymentMethod === 'wallet') { %>
+                                        Wallet
+                                    <% } %>
+                                </div>
+                                <div class="payment-status">
+                                    <span class="payment-status-badge payment-<%= order.paymentStatus %>">
+                                        <%= order.paymentStatus.toUpperCase() %>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <% if (order.razorpayPaymentId) { %>
+                            <p style="font-size: 12px; color: #6c757d; margin-top: 10px;">
+                                Payment ID: <%= order.razorpayPaymentId %>
+                            </p>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include('../admin/partials/user/footer') %>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.all.min.js"></script>
+    <script>
+        // Cancel Item Function
+        async function cancelItem(orderId, itemId) {
+            const result = await Swal.fire({
+                title: 'Cancel Item?',
+                text: 'Please provide a reason for cancellation',
+                input: 'select',
+                inputOptions: {
+                    'changed_mind': 'Changed my mind',
+                    'found_better_price': 'Found a better price',
+                    'ordered_by_mistake': 'Ordered by mistake',
+                    'delivery_time_too_long': 'Delivery time too long',
+                    'other': 'Other reason'
+                },
+                inputPlaceholder: 'Select a reason',
+                showCancelButton: true,
+                confirmButtonText: 'Cancel Item',
+                confirmButtonColor: '#dc3545',
+                cancelButtonText: 'Keep Item',
+                inputValidator: (value) => {
+                    if (!value) {
+                        return 'Please select a reason';
+                    }
+                }
+            });
+
+            if (result.isConfirmed) {
+                try {
+                    const response = await fetch(`/cancel-order-item/${orderId}/${itemId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            cancelReason: result.value
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Item Cancelled',
+                            text: 'The item has been cancelled successfully',
+                            confirmButtonColor: '#3498db'
+                        }).then(() => {
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: data.message || 'Failed to cancel item',
+                            confirmButtonColor: '#3498db'
+                        });
+                    }
+                } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Network Error',
+                        text: 'Please check your connection and try again',
+                        confirmButtonColor: '#3498db'
+                    });
+                }
+            }
+        }
+
+        // Request Return Function
+        async function requestReturn(orderId, itemId) {
+            const result = await Swal.fire({
+                title: 'Request Return?',
+                text: 'Please provide a reason for return',
+                input: 'textarea',
+                inputPlaceholder: 'Enter return reason...',
+                showCancelButton: true,
+                confirmButtonText: 'Request Return',
+                confirmButtonColor: '#f39c12',
+                inputValidator: (value) => {
+                    if (!value || !value.trim()) {
+                        return 'Please provide a reason for return';
+                    }
+                }
+            });
+
+            if (result.isConfirmed) {
+                try {
+                    const response = await fetch(`/request-return/${orderId}/${itemId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            returnReason: result.value
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Return Requested',
+                            text: 'Your return request has been submitted successfully',
+                            confirmButtonColor: '#3498db'
+                        }).then(() => {
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: data.message || 'Failed to request return',
+                            confirmButtonColor: '#3498db'
+                        });
+                    }
+                } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Network Error',
+                        text: 'Please check your connection and try again',
+                        confirmButtonColor: '#3498db'
+                    });
+                }
+            }
+        }
+    </script>
+</body>
+</html>

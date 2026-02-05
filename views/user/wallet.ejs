@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Wallet - Leafora</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #F5F1EB;
+            color: #2E2E2E;
+            line-height: 1.6;
+        }
+
+        .wallet-content {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 40px;
+        }
+
+        /* Balance Card - Brown Gradient */
+        .balance-section {
+            background: linear-gradient(135deg, #8B6F47 0%, #705836 100%);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 24px rgba(139, 111, 71, 0.2);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .balance-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .balance-section::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -5%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+        }
+
+        .balance-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            position: relative;
+            z-index: 1;
+        }
+
+        .balance-info h3 {
+            font-size: 16px;
+            font-weight: 500;
+            opacity: 0.9;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .balance-amount {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -1px;
+        }
+
+        .balance-subtitle {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .wallet-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            backdrop-filter: blur(10px);
+        }
+
+        .add-money-btn {
+            background: white;
+            color: #8B6F47;
+            padding: 14px 32px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .add-money-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2E2E2E;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title i {
+            color: #8B6F47;
+            font-size: 22px;
+        }
+
+        .filter-section {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            border: 2px solid #E8DFD5;
+            background: white;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #6B6B6B;
+        }
+
+        .filter-btn:hover {
+            border-color: #8B6F47;
+            color: #8B6F47;
+        }
+
+        .filter-btn.active {
+            background: #8B6F47;
+            color: white;
+            border-color: #8B6F47;
+        }
+
+        .transaction-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 20px;
+        }
+
+        .transaction-table thead {
+            background: #F5F1EB;
+        }
+
+        .transaction-table th {
+            padding: 16px 20px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 700;
+            color: #6B6B6B;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #E8DFD5;
+        }
+
+        .transaction-table tbody tr {
+            border-bottom: 1px solid #F5F1EB;
+            transition: all 0.2s ease;
+        }
+
+        .transaction-table tbody tr:hover {
+            background: #FAFAF8;
+        }
+
+        .transaction-table td {
+            padding: 20px;
+            font-size: 14px;
+            color: #495057;
+        }
+
+        .transaction-date {
+            color: #6B6B6B;
+            font-size: 13px;
+        }
+
+        .transaction-purpose {
+            font-weight: 500;
+            color: #2E2E2E;
+            margin-bottom: 4px;
+        }
+
+        .transaction-description {
+            color: #6B6B6B;
+            font-size: 13px;
+        }
+
+        .transaction-amount {
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .transaction-amount.credit {
+            color: #27ae60;
+        }
+
+        .transaction-amount.debit {
+            color: #e74c3c;
+        }
+
+        .transaction-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+
+        .badge-credit {
+            background: #F5F1EB;
+            color: #8B6F47;
+            border: 1px solid #E8DFD5;
+        }
+
+        .badge-debit {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: #6B6B6B;
+        }
+
+        .empty-state i {
+            font-size: 64px;
+            color: #E8DFD5;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h3 {
+            font-size: 20px;
+            color: #6B6B6B;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            font-size: 15px;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #E8DFD5;
+        }
+
+        .pagination button {
+            padding: 10px 16px;
+            border: 1px solid #E8DFD5;
+            background: white;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #6B6B6B;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            background: #8B6F47;
+            color: white;
+            border-color: #8B6F47;
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination button.active {
+            background: #8B6F47;
+            color: white;
+            border-color: #8B6F47;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .modal-header h2 {
+            font-size: 24px;
+            color: #2E2E2E;
+            font-weight: 700;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: #6B6B6B;
+            cursor: pointer;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+
+        .close-modal:hover {
+            background: #F5F1EB;
+            color: #2E2E2E;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #2E2E2E;
+            margin-bottom: 10px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #E8DFD5;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #8B6F47;
+            box-shadow: 0 0 0 3px rgba(139, 111, 71, 0.1);
+        }
+
+        .amount-suggestions {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .amount-btn {
+            padding: 12px;
+            border: 2px solid #E8DFD5;
+            background: white;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #6B6B6B;
+        }
+
+        .amount-btn:hover {
+            border-color: #8B6F47;
+            color: #8B6F47;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #8B6F47 0%, #705836 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(139, 111, 71, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .wallet-content {
+                padding: 25px;
+            }
+
+            .balance-section {
+                padding: 30px 25px;
+            }
+
+            .balance-amount {
+                font-size: 36px;
+            }
+
+            .transaction-table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            .filter-section {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <%- include('../admin/partials/user/header', {user : user.name}) %>
+
+    <div class="container">
+        <div class="account-container">
+            <%- include('../userProfile/sidebar', { currentPage: 'wallet' }) %>
+
+            <div class="wallet-content">
+                <!-- Balance Card -->
+                <div class="balance-section">
+                    <div class="balance-header">
+                        <div class="balance-info">
+                            <h3>Available Balance</h3>
+                            <div class="balance-amount">₹<%= user.wallet ? user.wallet.toFixed(2) : '0.00' %></div>
+                            <div class="balance-subtitle">Your wallet balance</div>
+                        </div>
+                        <div class="wallet-icon">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                    </div>
+                    <!-- <button class="add-money-btn" onclick="openAddMoneyModal()">
+                        <i class="fas fa-plus-circle"></i>
+                        Add Money
+                    </button> -->
+                </div>
+
+                <!-- Transaction History -->
+                <h2 class="section-title">
+                    <i class="fas fa-history"></i>
+                    Transaction History
+                </h2>
+
+                <!-- Filter Buttons -->
+                <div class="filter-section">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="credit">Credits</button>
+                    <button class="filter-btn" data-filter="debit">Debits</button>
+                    <button class="filter-btn" data-filter="refund">Refunds</button>
+                    <button class="filter-btn" data-filter="purchase">Purchases</button>
+                </div>
+
+                <!-- Transaction Table -->
+                <% if (transactions && transactions.length > 0) { %>
+                    <table class="transaction-table">
+                        <thead>
+                            <tr>
+                                <th>Date & Time</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% transactions.forEach(transaction => { %>
+                                <tr data-type="<%= transaction.transactionType %>" data-purpose="<%= transaction.purpose %>">
+                                    <td>
+                                        <div class="transaction-date">
+                                            <%= new Date(transaction.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) %>
+                                        </div>
+                                        <div class="transaction-date">
+                                            <%= new Date(transaction.createdAt).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }) %>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="transaction-purpose">
+                                            <%= transaction.purpose === 'purchase' ? 'Order Payment' : 
+                                                transaction.purpose === 'refund' ? 'Order Refund' : 
+                                                transaction.purpose === 'wallet_add' ? 'Wallet Recharge' : 
+                                                transaction.purpose === 'cancellation' ? 'Order Cancellation' : 
+                                                transaction.purpose === 'return' ? 'Return Approved' : 
+                                                transaction.purpose.charAt(0).toUpperCase() + transaction.purpose.slice(1) %>
+                                        </div>
+                                        <% if (transaction.description) { %>
+                                            <div class="transaction-description"><%= transaction.description %></div>
+                                        <% } %>
+                                        <% if (transaction.orders && transaction.orders.length > 0) { %>
+                                            <div class="transaction-description">Order #<%= transaction.orders[0].orderId.substring(0, 8) %></div>
+                                        <% } %>
+                                    </td>
+                                    <td>
+                                        <div class="transaction-amount <%= transaction.transactionType %>">
+                                            <%= transaction.transactionType === 'credit' ? '+' : '-' %>₹<%= transaction.amount.toFixed(2) %>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="transaction-badge badge-<%= transaction.transactionType %>">
+                                            <%= transaction.transactionType %>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span style="text-transform: capitalize; font-size: 13px; color: <%= transaction.status === 'completed' ? '#27ae60' : transaction.status === 'failed' ? '#e74c3c' : '#f39c12' %>">
+                                            <%= transaction.status %>
+                                        </span>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+
+                    <!-- Pagination -->
+                    <% if (totalPages && totalPages > 1) { %>
+                        <div class="pagination">
+                            <button onclick="changePage(<%= currentPage - 1 %>)" <%= currentPage === 1 ? 'disabled' : '' %>>
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            
+                            <% for(let i = 1; i <= totalPages; i++) { %>
+                                <button class="<%= i === currentPage ? 'active' : '' %>" onclick="changePage(<%= i %>)">
+                                    <%= i %>
+                                </button>
+                            <% } %>
+                            
+                            <button onclick="changePage(<%= currentPage + 1 %>)" <%= currentPage === totalPages ? 'disabled' : '' %>>
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    <% } %>
+                <% } else { %>
+                    <!-- Empty State -->
+                    <div class="empty-state">
+                        <i class="fas fa-receipt"></i>
+                        <h3>No Transactions Yet</h3>
+                        <p>Your transaction history will appear here</p>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Money Modal -->
+    <div id="addMoneyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Money to Wallet</h2>
+                <button class="close-modal" onclick="closeAddMoneyModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="addMoneyForm" action="/wallet/add-money" method="POST">
+                <div class="form-group">
+                    <label>Enter Amount</label>
+                    <input type="number" 
+                           name="amount" 
+                           id="amountInput" 
+                           placeholder="₹ 0.00" 
+                           min="1" 
+                           step="0.01" 
+                           required>
+                </div>
+                <div class="amount-suggestions">
+                    <button type="button" class="amount-btn" onclick="setAmount(500)">₹500</button>
+                    <button type="button" class="amount-btn" onclick="setAmount(1000)">₹1000</button>
+                    <button type="button" class="amount-btn" onclick="setAmount(2000)">₹2000</button>
+                    <button type="button" class="amount-btn" onclick="setAmount(5000)">₹5000</button>
+                    <button type="button" class="amount-btn" onclick="setAmount(10000)">₹10000</button>
+                    <button type="button" class="amount-btn" onclick="setAmount(20000)">₹20000</button>
+                </div>
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-credit-card"></i>
+                    Proceed to Payment
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.all.min.js"></script>
+    <script>
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const filter = this.dataset.filter;
+                const rows = document.querySelectorAll('.transaction-table tbody tr');
+                
+                rows.forEach(row => {
+                    if (filter === 'all') {
+                        row.style.display = '';
+                    } else if (filter === 'credit' || filter === 'debit') {
+                        if (row.dataset.type === filter) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    } else {
+                        if (row.dataset.purpose === filter) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    }
+                });
+            });
+        });
+
+        function openAddMoneyModal() {
+            document.getElementById('addMoneyModal').classList.add('show');
+            document.getElementById('amountInput').focus();
+        }
+
+        function closeAddMoneyModal() {
+            document.getElementById('addMoneyModal').classList.remove('show');
+            document.getElementById('addMoneyForm').reset();
+        }
+
+        function setAmount(amount) {
+            document.getElementById('amountInput').value = amount;
+        }
+
+        document.getElementById('addMoneyModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeAddMoneyModal();
+            }
+        });
+
+        function changePage(page) {
+            window.location.href = `/wallet?page=${page}`;
+        }
+
+        document.getElementById('addMoneyForm').addEventListener('submit', function(e) {
+            const amount = parseFloat(document.getElementById('amountInput').value);
+            
+            if (isNaN(amount) || amount < 1) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid Amount',
+                    text: 'Please enter a valid amount (minimum ₹1)',
+                    confirmButtonColor: '#8B6F47'
+                });
+                return false;
+            }
+            
+            if (amount > 100000) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Amount Too High',
+                    text: 'Maximum amount per transaction is ₹100,000',
+                    confirmButtonColor: '#8B6F47'
+                });
+                return false;
+            }
+        });
+    </script>
+</body>
+</html>

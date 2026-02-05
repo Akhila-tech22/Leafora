@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Password - BookStore</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            font-size: 28px;
+            font-weight: 700;
+            color: #2E2E2E;
+        }
+
+        .logo i {
+            color: lightslategray;
+            font-size: 32px;
+        }
+
+        .icon-circle {
+            width: 80px;
+            height: 80px;
+            background: lightslategray;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+        }
+
+        .icon-circle i {
+            color: white;
+            font-size: 36px;
+        }
+        
+        h2 {
+            font-size: 26px;
+            margin-bottom: 12px;
+            color: #2E2E2E;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #6B6B6B;
+            font-size: 15px;
+            margin-bottom: 30px;
+        }
+        
+        input[type="password"] {
+            width: 100%;
+            padding: 14px 16px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border: 2px solid #E8DFD5;
+            background: #F5F1EB;
+            color: #2E2E2E;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        
+        input[type="password"]:focus {
+            border-color: #8B6F47;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(139, 111, 71, 0.1);
+        }
+        
+        button {
+            width: 100%;
+            padding: 14px;
+            background: lightslategray;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(139, 111, 71, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .error {
+            color: #721c24;
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            display: none;
+            font-size: 14px;
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 15px;
+            color: #6B6B6B;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+        
+        .back-link:hover {
+            color: #8B6F47;
+        }
+
+        /* Mobile */
+        @media (max-width: 480px) {
+            .card {
+                padding: 30px 20px;
+            }
+
+            h2 {
+                font-size: 22px;
+            }
+
+            .logo {
+                font-size: 24px;
+            }
+
+            .logo i {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <!-- Logo -->
+        <div class="logo">
+            <i class="fas fa-book-open"></i>
+Leafora        </div>
+
+        <!-- Icon -->
+        <div class="icon-circle">
+            <i class="fas fa-lock"></i>
+        </div>
+
+        <h2>Reset Your Password</h2>
+        <p class="subtitle">Enter your new password below</p>
+        
+        <small class="error" id='errorMsg'></small>
+        
+        <form id="resetForm" method="POST" action="/verifyPass">
+            <input type="password" id="newPassword" name="newPassword" placeholder="New Password">
+            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password">
+            <button type="submit">Reset Password</button>
+        </form>
+        
+       
+    </div>
+
+   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    const form = document.getElementById('resetForm');
+    const errorMsg = document.getElementById('errorMsg');
+
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const newPass = document.getElementById('newPassword').value;
+        const confirmPass = document.getElementById('confirmPassword').value;
+
+        // Reset error
+        errorMsg.style.display = 'none';
+        errorMsg.textContent = '';
+
+        // Validation
+        if (!newPass || !confirmPass) {
+            errorMsg.style.display = 'block';
+            errorMsg.textContent = "Please fill all fields";
+            return;
+        }
+
+        if (newPass !== confirmPass) {
+            errorMsg.style.display = 'block';
+            errorMsg.textContent = "Passwords do not match";
+            return;
+        }
+
+        // Send request
+        try {
+            const res = await fetch('/verifyPass', {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ newPass, confirmPass })
+            });
+
+            const result = await res.json();
+
+            if (result.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Password changed successfully',
+                    confirmButtonText: 'Login',
+                    confirmButtonColor: '#8B6F47'
+                }).then(() => {
+                    window.location.href = result.redirectUrl;
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: result.message || 'Something went wrong',
+                    confirmButtonColor: '#8B6F47'
+                });
+            }
+
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Server error. Try again later.',
+                confirmButtonColor: '#8B6F47'
+            });
+            console.error(error);
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1048 @@
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f5f6f8;
+        color: #2c3e50;
+        line-height: 1.6;
+    }
+
+    /* ✅ Centered container */
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 30px 20px;
+    }
+
+    /* Main Content */
+    .main-content {
+        margin-left: 0;
+    }
+
+    /* Page Header */
+    .page-header {
+        background: linear-gradient(135deg, #3d4c5c 0%, #2c3e50 100%);
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        margin-bottom: 30px;
+        color: white;
+    }
+
+    .page-title {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        letter-spacing: 0.5px;
+    }
+
+    .page-subtitle {
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 15px;
+        font-weight: 400;
+    }
+
+    /* Action Section */
+    .action-section {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        margin-bottom: 25px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .search-form {
+        display: flex;
+        gap: 10px;
+        flex: 1;
+        max-width: 450px;
+    }
+
+    .search-input {
+        flex: 1;
+        padding: 12px 16px;
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        font-size: 14px;
+        font-family: 'Inter', sans-serif;
+        transition: all 0.3s ease;
+        background: #f5f6f8;
+    }
+
+    .search-input:focus {
+        outline: none;
+        border-color: #8b7dd8;
+        background: white;
+        box-shadow: 0 0 0 3px rgba(139, 125, 216, 0.1);
+    }
+
+    .search-btn, .btn-add {
+        background: linear-gradient(135deg, #8b7dd8 0%, #7c6fd6 100%);
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .search-btn:hover, .btn-add:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(139, 125, 216, 0.3);
+    }
+
+    .btn-add {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn-clear {
+        background: #e9ecef;
+        color: #3d4c5c;
+        padding: 12px 18px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        display: inline-block;
+    }
+
+    .btn-clear:hover {
+        background: #d1d5db;
+        transform: translateY(-2px);
+    }
+
+    /* Categories Table */
+    .categories-table {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        overflow: hidden;
+    }
+
+    .table-header {
+        background: linear-gradient(135deg, #3d4c5c 0%, #2c3e50 100%);
+        color: white;
+        padding: 18px 24px;
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        text-align: left;
+        padding: 16px 20px;
+        border-bottom: 1px solid #f0f1f3;
+    }
+
+    th {
+        background: #f8f9fa;
+        font-weight: 600;
+        color: #3d4c5c;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+    }
+
+    tbody tr {
+        transition: all 0.2s ease;
+    }
+
+    tbody tr:hover {
+        background: #f8f9fb;
+    }
+
+    /* Action Buttons - Icon Based */
+    .action-buttons {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .icon-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .icon-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    /* Edit Button */
+    .btn-edit {
+        background: #fef3c7;
+        color: #f59e0b;
+    }
+
+    .btn-edit:hover {
+        background: #fbbf24;
+        color: white;
+    }
+
+    /* Delete Button */
+    .btn-delete {
+        background: #fee;
+        color: #ef4444;
+    }
+
+    .btn-delete:hover {
+        background: #f472b6;
+        color: white;
+    }
+
+    /* Offer Button */
+    .btn-offer {
+        background: #e0d4f7;
+        color: #8b7dd8;
+    }
+
+    .btn-offer:hover {
+        background: #8b7dd8;
+        color: white;
+    }
+
+    /* Remove Offer Button */
+    .btn-remove-offer {
+        background: #fed7aa;
+        color: #ea580c;
+    }
+
+    .btn-remove-offer:hover {
+        background: #fb923c;
+        color: white;
+    }
+
+    /* Tooltip */
+    .icon-btn::before {
+        content: attr(data-tooltip);
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #2c3e50;
+        color: white;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 12px;
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+        margin-bottom: 5px;
+        font-weight: 500;
+    }
+
+    .icon-btn:hover::before {
+        opacity: 1;
+    }
+
+    /* Category Info */
+    .category-name {
+        font-weight: 600;
+        margin-bottom: 4px;
+        color: #2c3e50;
+        font-size: 15px;
+    }
+
+    .category-id {
+        color: #9ca3af;
+        font-size: 13px;
+    }
+
+    .category-description {
+        color: #6b7280;
+        font-size: 14px;
+        max-width: 300px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .offer-badge {
+        background: linear-gradient(135deg, #f472b6 0%, #ec4899 100%);
+        color: white;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        display: inline-block;
+        letter-spacing: 0.5px;
+    }
+
+    .no-offer {
+        color: #9ca3af;
+        font-style: italic;
+        font-size: 13px;
+    }
+
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.6);
+        backdrop-filter: blur(4px);
+    }
+
+    .modal-content {
+        background-color: white;
+        margin: 5% auto;
+        padding: 30px;
+        border-radius: 12px;
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #f0f1f3;
+    }
+
+    .modal-title {
+        font-size: 22px;
+        font-weight: 700;
+        color: #2c3e50;
+    }
+
+    .close {
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+        color: #9ca3af;
+        transition: color 0.3s ease;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+    }
+
+    .close:hover {
+        color: #2c3e50;
+        background: #f5f6f8;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #2c3e50;
+        font-size: 14px;
+    }
+
+    .form-input, .form-select, .form-textarea {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        font-size: 14px;
+        font-family: 'Inter', sans-serif;
+        transition: all 0.3s ease;
+        background: #f5f6f8;
+    }
+
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+        outline: none;
+        border-color: #8b7dd8;
+        background: white;
+        box-shadow: 0 0 0 3px rgba(139, 125, 216, 0.1);
+    }
+
+    .form-textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 25px;
+    }
+
+    .btn-cancel {
+        background: #e9ecef;
+        color: #3d4c5c;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-cancel:hover {
+        background: #d1d5db;
+        transform: translateY(-2px);
+    }
+
+    .btn-save {
+        background: linear-gradient(135deg, #8b7dd8 0%, #7c6fd6 100%);
+        color: white;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-save:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(139, 125, 216, 0.3);
+    }
+
+    /* No Categories */
+    .no-categories {
+        text-align: center;
+        padding: 60px 20px;
+        color: #9ca3af;
+    }
+
+    .no-categories p:first-child {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    .no-categories p:last-child {
+        font-size: 14px;
+    }
+
+    /* Pagination */
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        list-style: none;
+        padding: 0;
+        margin-top: 30px;
+    }
+
+    .page-item {
+        display: inline-block;
+    }
+
+    .page-link {
+        display: inline-block;
+        padding: 10px 16px;
+        background: white;
+        color: #3d4c5c;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        border: 2px solid #e9ecef;
+    }
+
+    .page-link:hover {
+        background: #f5f6f8;
+        border-color: #8b7dd8;
+        color: #8b7dd8;
+        transform: translateY(-2px);
+    }
+
+    .page-item.active .page-link {
+        background: linear-gradient(135deg, #8b7dd8 0%, #7c6fd6 100%);
+        color: white;
+        border-color: #8b7dd8;
+        box-shadow: 0 4px 12px rgba(139, 125, 216, 0.3);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .container {
+            padding: 20px 15px;
+        }
+
+        .page-header {
+            padding: 25px 20px;
+        }
+
+        .page-title {
+            font-size: 24px;
+        }
+
+        .action-section {
+            flex-direction: column;
+            align-items: stretch;
+            padding: 18px;
+        }
+
+        .search-form {
+            max-width: none;
+        }
+
+        table {
+            font-size: 13px;
+        }
+
+        th, td {
+            padding: 12px 14px;
+        }
+
+        .category-description {
+            max-width: 150px;
+        }
+
+        .icon-btn {
+            width: 32px;
+            height: 32px;
+            font-size: 14px;
+        }
+
+        .modal-content {
+            margin: 10% auto;
+            padding: 25px;
+        }
+
+        .modal-title {
+            font-size: 18px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .page-title {
+            font-size: 20px;
+        }
+
+        .action-buttons {
+            gap: 6px;
+        }
+
+        .icon-btn {
+            width: 30px;
+            height: 30px;
+            font-size: 13px;
+        }
+    }
+</style>
+
+<body>
+    <!-- Include Navigation -->
+    <%- include('partials/admin/header') %>
+
+    <div class="container">
+        <div class="main-content">
+            <!-- Page Header -->
+            <div class="">
+                <h1 class="page-title">Category Management</h1>
+                <p class="page-subtitle">Manage book categories and offers</p>
+            </div>
+
+            <!-- Action Section -->
+            <div class="action-section">
+                <form action="/admin/categories" method="get" class="search-form">
+                    <input type="text" class="search-input" placeholder="Search categories..." 
+                           name="search" value="<%= typeof search !== 'undefined' ? search : '' %>">
+                    <button class="search-btn" type="submit">Search</button>
+                    <% if (typeof search !== 'undefined' && search !== '') { %>
+                        <a href="/admin/categories" class="btn-clear">Clear</a>
+                    <% } %>
+                </form>
+                <button class="btn-add" onclick="openAddModal()">
+                    <span>+</span> Add Category
+                </button>
+            </div>
+
+            <!-- Categories Table -->
+            <div class="categories-table">
+                <div class="table-header">
+                    Category List (<%= categories.length %> categories)
+                </div>
+
+                <% if (categories && categories.length > 0) { %>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Category Info</th>
+                                <th>Description</th>
+                                <th>Offer</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% categories.forEach(category => { %>
+                                <tr>
+                                    <td>
+                                        <div class="category-name"><%= category.name %></div>
+                                        <div class="category-id">ID: #<%= category._id.toString().slice(-6) %></div>
+                                    </td>
+                                    <td>
+                                        <div class="category-description" title="<%= category.description || 'No description' %>">
+                                            <%= category.description || 'No description' %>
+                                        </div>
+                                    </td>
+                                   
+                                    <td>
+                                        <% if (category.offer && category.offer > 0) { %>
+                                            <div class="offer-badge">
+                                                <%= category.offer %>% OFF
+                                            </div>
+                                        <% } else { %>
+                                            <span class="no-offer">No offer</span>
+                                        <% } %>
+                                    </td>
+
+                                    <td>
+                                        <div class="action-buttons">
+                                            <!-- Edit Button -->
+                                            <button class="icon-btn btn-edit" 
+                                                    data-tooltip="Edit"
+                                                    onclick="openEditModal('<%= category._id %>', '<%= category.name %>', '<%= category.description || '' %>')">
+                                                ✏️
+                                            </button>
+
+                                            <!-- Offer Button -->
+                                            <% if (category.offer && category.offer > 0) { %>
+                                                <button class="icon-btn btn-offer" 
+                                                        data-tooltip="Edit Offer"
+                                                        onclick="openOfferModal('<%= category._id %>', '<%= category.name %>', <%= category.offer %>)">
+                                                    🏷️
+                                                </button>
+                                                <button class="icon-btn btn-remove-offer" 
+                                                        data-tooltip="Remove Offer"
+                                                        onclick="confirmRemoveOffer('<%= category._id %>')">
+                                                    ❌
+                                                </button>
+                                            <% } else { %>
+                                                <button class="icon-btn btn-offer" 
+                                                        data-tooltip="Add Offer"
+                                                        onclick="openOfferModal('<%= category._id %>', '<%= category.name %>')">
+                                                    🏷️
+                                                </button>
+                                            <% } %>
+
+                                            <!-- Delete Button -->
+                                            <button class="icon-btn btn-delete" 
+                                                    data-tooltip="Delete"
+                                                    onclick="confirmDelete('<%= category._id %>', '<%= category.name %>')">
+                                                🗑️
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                <% } else { %>
+                    <div class="no-categories">
+                        <p>📭 No categories found</p>
+                        <p>Click "Add Category" to create your first category</p>
+                    </div>
+                <% } %>
+            </div>
+
+            <!-- Pagination -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <% for(let i=1; i <= totalPages; i++) { %>
+                        <li class="page-item <%= (i === parseInt(currentPage)) ? 'active' : '' %>">
+                            <a class="page-link" href="?page=<%= i %><% if (typeof search !== 'undefined' && search !== '') { %>&search=<%= search %><% } %>"><%= i %></a>
+                        </li>
+                    <% } %>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Add Category Modal -->
+    <div id="addModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Add New Category</h2>
+                <span class="close" onclick="closeAddModal()">&times;</span>
+            </div>
+            <form id="addCategoryForm">
+                <div class="form-group">
+                    <label class="form-label">Category Name *</label>
+                    <input type="text" class="form-input" name="name" placeholder="Enter category name" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-textarea" name="description" placeholder="Enter category description..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" onclick="closeAddModal()">Cancel</button>
+                    <button type="submit" class="btn-save">Add Category</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Category Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Edit Category</h2>
+                <span class="close" onclick="closeEditModal()">&times;</span>
+            </div>
+            <form id="editCategoryForm">
+                <input type="hidden" name="categoryId" id="editCategoryId">
+                <div class="form-group">
+                    <label class="form-label">Category Name *</label>
+                    <input type="text" class="form-input" name="name" id="editCategoryName" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-textarea" name="description" id="editCategoryDescription" placeholder="Enter category description..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" onclick="closeEditModal()">Cancel</button>
+                    <button type="submit" class="btn-save">Update Category</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add/Edit Offer Modal -->
+    <div id="offerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Manage Offer</h2>
+                <span class="close" onclick="closeOfferModal()">&times;</span>
+            </div>
+            <form id="addOfferForm">
+                <input type="hidden" name="categoryId" id="offerCategoryId">
+                <div class="form-group">
+                    <label class="form-label">Category</label>
+                    <input type="text" class="form-input" id="offerCategoryName" readonly>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Offer Percentage *</label>
+                    <input type="number" class="form-input" name="percentage" min="1" max="80" placeholder="Enter offer percentage" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" onclick="closeOfferModal()">Cancel</button>
+                    <button type="submit" class="btn-save">Save Offer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Modal Functions
+        function openAddModal() {
+            document.getElementById('addModal').style.display = "block"
+        }
+        function closeAddModal() {
+            document.getElementById('addModal').style.display = "none"
+            document.getElementById('addCategoryForm').reset();
+        }
+
+        function openEditModal(id, name, description) {
+            document.getElementById('editCategoryId').value = id;
+            document.getElementById('editCategoryName').value = name;
+            document.getElementById('editCategoryDescription').value = description;
+            document.getElementById('editModal').style.display = 'block';
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+            document.getElementById('editCategoryForm').reset();
+        }
+
+        function openOfferModal(id, name, offer = '') {
+            document.getElementById('offerCategoryId').value = id;
+            document.getElementById('offerCategoryName').value = name;
+            document.querySelector('#addOfferForm input[name="percentage"]').value = offer;
+            document.getElementById('offerModal').style.display = 'block';
+        }
+
+        function closeOfferModal() {
+            document.getElementById('offerModal').style.display = 'none';
+            document.getElementById('addOfferForm').reset();
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+
+        document.getElementById('addCategoryForm').addEventListener('submit',async function(e) {
+            e.preventDefault();
+
+            let form = new FormData(this);
+            let data = Object.fromEntries(form.entries())
+            
+            try{
+                const res = await fetch("/admin/addCategories", {
+                    method : "POST",
+                    headers : {'content-type' : 'application/json'},
+                    body : JSON.stringify(data)
+                })
+                let re = await res.json();
+                if(re.success) {
+                    Swal.fire({
+                        title: 'Success',
+                        text: re.message,
+                        icon: 'success',
+                        confirmButtonColor: '#8b7dd8'
+                    }).then(() => {
+                        closeAddModal();
+                        window.location.reload();
+                    })
+                } else {
+                    Swal.fire({
+                        title: 'Error',
+                        text: re.message,
+                        icon: 'error',
+                        confirmButtonColor: '#8b7dd8'
+                    })
+                }
+
+            }catch(error) {
+                console.error('Error:', error);
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Something went wrong',
+                    icon: 'error',
+                    confirmButtonColor: '#8b7dd8'
+                });
+            }
+        })
+
+        document.getElementById('editCategoryForm').addEventListener('submit',async function (e) {
+            e.preventDefault();
+
+            let form = new FormData(this);
+            let data = Object.fromEntries(form.entries())
+
+            try{
+                let res = await fetch(`/admin/editCategories/${data.categoryId}`, { 
+                    method: "PUT",
+                    headers: { 'content-type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                let ans = await res.json();
+                if(ans.success) {
+                    Swal.fire({
+                        title: 'Success',
+                        text: ans.message,
+                        icon: 'success',
+                        confirmButtonColor: '#8b7dd8'
+                    }).then(() => {
+                        closeEditModal();
+                        window.location.reload();
+                    })
+                } else {
+                    Swal.fire({
+                        title: 'Error',
+                        text: ans.message,
+                        icon: 'error',
+                        confirmButtonColor: '#8b7dd8'
+                    })
+                }
+
+            }catch(error) {
+                console.error('Error:', error);
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Something went wrong',
+                    icon: 'error',
+                    confirmButtonColor: '#8b7dd8'
+                });
+            }
+        })
+       
+        document.getElementById('addOfferForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            
+            try {
+                const response = await fetch('/admin/offerCategories', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        categoryId: formData.get('categoryId'),
+                        percentage: formData.get('percentage'),
+                    })
+                });
+                
+                const data = await response.json();
+                if (data.success) {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Offer added successfully',
+                        icon: 'success',
+                        confirmButtonColor: '#8b7dd8'
+                    }).then(() => {
+                        closeOfferModal();
+                        window.location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: data.message || 'Failed to add offer',
+                        icon: 'error',
+                        confirmButtonColor: '#8b7dd8'
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Something went wrong',
+                    icon: 'error',
+                    confirmButtonColor: '#8b7dd8'
+                });
+            }
+        });
+
+        // Confirmation Functions
+        async function confirmDelete(categoryId, categoryName) {
+            const result = await Swal.fire({
+                title: `Delete "${categoryName}"?`,
+                text: "This action cannot be undone!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#f472b6',
+                cancelButtonColor: '#e9ecef',
+                confirmButtonText: 'Yes, delete it!'
+            });
+
+            if (result.isConfirmed) {
+                try {
+                    const response = await fetch('/admin/deleteCategories', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ id: categoryId })
+                    });
+                    
+                    const data = await response.json();
+                    if (data.success) {
+                        Swal.fire({
+                            title: 'Deleted!',
+                            text: 'Category has been deleted.',
+                            icon: 'success',
+                            confirmButtonColor: '#8b7dd8'
+                        }).then(() => window.location.reload());
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: data.message || 'Failed to delete category',
+                            icon: 'error',
+                            confirmButtonColor: '#8b7dd8'
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Something went wrong',
+                        icon: 'error',
+                        confirmButtonColor: '#8b7dd8'
+                    });
+                }
+            }
+        }
+
+        async function confirmRemoveOffer(categoryId) {
+            const result = await Swal.fire({
+                title: 'Remove Offer?',
+                text: "This will remove the current offer from this category.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#fb923c',
+                cancelButtonColor: '#e9ecef',
+                confirmButtonText: 'Yes, remove it!'
+            });
+
+            if (result.isConfirmed) {
+                try {
+                    const response = await fetch('/admin/removeOffer', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ categoryId: categoryId })
+                    });
+                    
+                    const data = await response.json();
+                    if (data.success) {
+                        Swal.fire({
+                            title: 'Removed!',
+                            text: 'Offer has been removed.',
+                            icon: 'success',
+                            confirmButtonColor: '#8b7dd8'
+                        }).then(() => window.location.reload());
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: data.message || 'Failed to remove offer',
+                            icon: 'error',
+                            confirmButtonColor: '#8b7dd8'
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Something went wrong',
+                        icon: 'error',
+                        confirmButtonColor: '#8b7dd8'
+                    });
+                }
+            }
+        }
+    </script>
+</body>

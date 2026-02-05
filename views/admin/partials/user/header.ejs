@@ -1,0 +1,192 @@
+<style>
+/* Header & Navigation */
+.navbar {
+    background: #FFFFFF;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    padding: 1rem 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.navbar.scrolled {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: #2E2E2E;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.logo i {
+    color: #8B6F47;
+    font-size: 1.8rem;
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: #2E2E2E;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.nav-menu a:hover {
+    color: #8B6F47;
+    background: #F5F1EB;
+}
+
+/* Login Button */
+.login-btn {
+    background: #8B6F47 !important;
+    color: white !important;
+    padding: 0.6rem 1.3rem;
+    border-radius: 8px;
+}
+
+.login-btn:hover {
+    background: #705836 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(139, 111, 71, 0.2);
+}
+
+/* Mobile */
+.mobile-menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #2E2E2E;
+}
+
+@media (max-width: 768px) {
+    .mobile-menu-toggle {
+        display: block;
+    }
+
+    .nav-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: white;
+        flex-direction: column;
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .nav-menu.active {
+        display: flex;
+    }
+}
+</style>
+
+<nav class="navbar" id="navbar">
+    <div class="nav-container">
+
+        <!-- Logo -->
+        <a href="/" class="logo">
+            <i class="fas fa-book-open"></i>
+            <span>Leafora</span>
+        </a>
+
+        <!-- Menu -->
+        <ul class="nav-menu" id="navMenu">
+            <li><a href="/">Home</a></li>
+            <li><a href="/shop">Shop</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/contact">Contact</a></li> 
+
+            <li>
+                <a href="/cart">
+                    <i class="fas fa-shopping-cart"></i> Cart
+                </a>
+            </li>
+
+            <li>
+                <a href="/wishlist">
+                    <i class="fa-solid fa-heart"></i> Wishlist
+                </a>
+            </li>
+
+            <% if (!user) { %>
+                <!-- LOGIN LAST -->
+                <li>
+                    <a href="/login" class="login-btn">
+                        <i class="fas fa-user"></i> Login
+                    </a>
+                </li>
+            <% } else { %>
+                <li>
+                    <a href="/profile">
+                        <i class="fas fa-user-circle"></i> <%= user %>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" onclick="confirmLogout()" style="color:#e74c3c">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </li>
+            <% } %>
+        </ul>
+
+        <!-- Mobile Button -->
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+            <i class="fas fa-bars"></i>
+        </button>
+
+    </div>
+</nav>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+function toggleMobileMenu() {
+    document.getElementById('navMenu').classList.toggle('active');
+}
+
+function confirmLogout() {
+    Swal.fire({
+        title: 'Do you want to logout?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, Logout'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = "/logout";
+        }
+    });
+}
+
+window.addEventListener('scroll', () => {
+    const navbar = document.getElementById('navbar');
+    navbar.classList.toggle('scrolled', window.scrollY > 50);
+});
+</script>

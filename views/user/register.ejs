@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leafora - Create Account</title>
+    <link rel="icon" type="image/png" href="/images/logo3.png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #FFFFFF;
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Left Welcome Section */
+        .welcome-section {
+            flex: 1;
+            background: linear-gradient(135deg, #8B6F47 0%, #705836 100%);
+            padding: 60px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .welcome-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 500px;
+        }
+
+        .back-home {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            color: white;
+            font-size: 1.2rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            z-index: 2;
+        }
+
+        .back-home:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .welcome-logo {
+            font-size: 5rem;
+            color: white;
+            margin-bottom: 30px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .welcome-content h1 {
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .welcome-content p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .welcome-image {
+            width: 100%;
+            max-width: 400px;
+            margin-top: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .features {
+            display: flex;
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .feature {
+            text-align: center;
+        }
+
+        .feature i {
+            font-size: 2rem;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .feature p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+        }
+
+        /* Right Form Section */
+        .form-section {
+            flex: 1;
+            background: #F5F1EB;
+            padding: 60px 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto;
+        }
+
+        .register-container {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .register-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .register-header h2 {
+            color: #2E2E2E;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .register-header p {
+            color: #6B6B6B;
+            font-size: 1rem;
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert-error {
+            background: #fee;
+            color: #c53030;
+            border: 1px solid #feb2b2;
+        }
+
+        .alert-success {
+            background: #f0fff4;
+            color: #2f855a;
+            border: 1px solid #9ae6b4;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #2E2E2E;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .optional {
+            color: #6B6B6B;
+            font-weight: 400;
+            font-size: 0.85rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #E8DFD5;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #FFFFFF;
+            color: #2E2E2E;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #8B6F47;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(139, 111, 71, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #9B9B9B;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .form-row .form-group {
+            margin-bottom: 0;
+        }
+
+        .btn-primary {
+            width: 100%;
+            background: #8B6F47;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-primary:hover {
+            background: #705836;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(139, 111, 71, 0.25);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .divider {
+            text-align: center;
+            position: relative;
+            margin: 25px 0;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #E8DFD5;
+        }
+
+        .divider span {
+            background: #F5F1EB;
+            padding: 0 20px;
+            color: #6B6B6B;
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .social-login {
+            margin-bottom: 25px;
+        }
+
+        .social-btn {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #E8DFD5;
+            border-radius: 10px;
+            background: #FFFFFF;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #2E2E2E;
+        }
+
+        .social-btn:hover {
+            background: #F5F1EB;
+            border-color: #8B6F47;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+        }
+
+        .social-btn i {
+            font-size: 1.3rem;
+            color: #db4437;
+        }
+
+        .login-link {
+            text-align: center;
+            color: #6B6B6B;
+            font-size: 1rem;
+            background: #FFFFFF;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #E8DFD5;
+        }
+
+        .login-link a {
+            color: #8B6F47;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .login-link a:hover {
+            color: #705836;
+            text-decoration: underline;
+        }
+
+        /* Tablet styles (iPad) */
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .welcome-section {
+                min-height: 400px;
+                padding: 50px 40px;
+            }
+
+            .welcome-content h1 {
+                font-size: 2rem;
+            }
+
+            .welcome-logo {
+                font-size: 4rem;
+            }
+
+            .features {
+                gap: 20px;
+            }
+
+            .form-section {
+                padding: 50px 40px;
+            }
+
+            .back-home {
+                top: 20px;
+                left: 20px;
+            }
+        }
+
+        /* Mobile styles (Phone) */
+        @media (max-width: 768px) {
+            .welcome-section {
+                min-height: 350px;
+                padding: 40px 30px;
+            }
+
+            .welcome-content h1 {
+                font-size: 1.75rem;
+            }
+
+            .welcome-content p {
+                font-size: 1rem;
+            }
+
+            .welcome-logo {
+                font-size: 3.5rem;
+            }
+
+            .features {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .welcome-image {
+                max-width: 300px;
+                margin-top: 30px;
+            }
+
+            .form-section {
+                padding: 40px 25px;
+            }
+
+            .register-header h2 {
+                font-size: 1.75rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .form-row .form-group {
+                margin-bottom: 20px;
+            }
+
+            .back-home {
+                width: 40px;
+                height: 40px;
+                top: 15px;
+                left: 15px;
+            }
+        }
+
+        /* Small mobile */
+        @media (max-width: 480px) {
+            .welcome-section {
+                padding: 30px 20px;
+                min-height: 300px;
+            }
+
+            .welcome-content h1 {
+                font-size: 1.5rem;
+            }
+
+            .welcome-logo {
+                font-size: 3rem;
+            }
+
+            .form-section {
+                padding: 30px 20px;
+            }
+
+            .register-container {
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Left Welcome Section -->
+        <div class="welcome-section">
+            <a href="/" class="back-home" title="Back to Home">
+                <i class="fas fa-home"></i>
+            </a>
+
+            <div class="welcome-content">
+                <div class="welcome-logo">
+                    <i class="fas fa-book-reader"></i>
+                </div>
+                <h1>Welcome to Leafora</h1>
+                <p>Join thousands of readers and discover your next favorite book. Start your reading journey today!</p>
+
+                <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800&h=600&fit=crop" 
+                     alt="Reading Books" 
+                     class="welcome-image">
+
+                <!-- <div class="features">
+                    <div class="feature">
+                        <i class="fas fa-book"></i>
+                        <p>10,000+ Books</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-users"></i>
+                        <p>Active Community</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-award"></i>
+                        <p>Expert Reviews</p>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+
+        <!-- Right Form Section -->
+        <div class="form-section">
+            <div class="register-container">
+                <div class="register-header">
+                    <h2>Create Account</h2>
+                    <p>Fill in your details to get started</p>
+                </div>
+
+                <!-- Display error message if exists -->
+                <% if (typeof error !== 'undefined' && error) { %>
+                    <div class="alert alert-error">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span><%= error %></span>
+                    </div>
+                <% } %>
+
+                <!-- Display success message if exists -->
+                <% if (typeof message !== 'undefined' && message) { %>
+                    <div class="alert alert-success">
+                        <i class="fas fa-check-circle"></i>
+                        <span><%= message %></span>
+                    </div>
+                <% } %>
+
+                <form id="signupForm" action="/register" method="POST">
+                    <!-- Username -->
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" 
+                               id="username" 
+                               name="username" 
+                               placeholder="Enter a username" 
+                               autocomplete="username">
+                        <span class="error-message" id="user-error"></span>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" 
+                               id="email" 
+                               name="email" 
+                               placeholder="Enter your email" 
+                               autocomplete="email">
+                        <span class="error-message" id="email-error"></span>
+                    </div>
+
+                    <!-- Phone Number -->
+                    <div class="form-group">
+                        <label for="number">Phone Number</label>
+                        <input type="tel" 
+                               id="number" 
+                               name="number" 
+                               placeholder="Enter 10-digit phone number" 
+                               autocomplete="tel">
+                        <span class="error-message" id="phone-error"></span>
+                    </div>
+
+                    <!-- Referral Code (Optional) -->
+                    <div class="form-group">
+                        <label for="referralCode">
+                            Referral Code 
+                            <span class="optional">(Optional)</span>
+                        </label>
+                        <input type="text" 
+                               id="referralCode" 
+                               name="referralCode" 
+                               placeholder="Enter referral code if you have one">
+                    </div>
+
+                    <!-- Password fields in a row -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" 
+                                   id="password" 
+                                   name="password" 
+                                   placeholder="Create password" 
+                                   autocomplete="new-password">
+                            <span class="error-message" id="pass-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <input type="password" 
+                                   id="confirmPassword" 
+                                   name="confirmPassword" 
+                                   placeholder="Confirm password" 
+                                   autocomplete="new-password">
+                            <span class="error-message" id="cPass-error"></span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-user-plus"></i>
+                        Create My Account
+                    </button>
+                </form>
+
+                <div class="divider">
+                    <span>Or continue with</span>
+                </div>
+
+                <div class="social-login">
+                    <button class="social-btn" onclick="socialSignup('google')">
+                        <i class="fab fa-google"></i>
+                        Continue with Google
+                    </button>
+                </div>
+
+                <div class="login-link">
+                    Already have an account? 
+                    <a href="/login">Sign In Here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            validateForm();
+        });
+
+        async function validateForm() {
+            const name = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('number').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const confirmPassword = document.getElementById('confirmPassword').value.trim();
+            const referralCode = document.getElementById('referralCode').value.trim();
+
+            let isValid = true;
+
+            // Clear old errors
+            document.getElementById("user-error").textContent = "";
+            document.getElementById("email-error").textContent = "";
+            document.getElementById("phone-error").textContent = "";
+            document.getElementById("pass-error").textContent = "";
+            document.getElementById("cPass-error").textContent = "";
+
+            // Username validation
+            if (name === "") {
+                document.getElementById("user-error").textContent = "Please enter a username";
+                isValid = false;
+            }
+
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (email === "") {
+                document.getElementById("email-error").textContent = "Please enter email";
+                isValid = false;
+            } else if (!emailRegex.test(email)) {
+                document.getElementById("email-error").textContent = "Invalid email format";
+                isValid = false;
+            }
+
+            // Phone validation
+            const phoneRegex = /^[0-9]{10}$/;
+            if (phone === "") {
+                document.getElementById("phone-error").textContent = "Please enter phone number";
+                isValid = false;
+            } else if (!phoneRegex.test(phone)) {
+                document.getElementById("phone-error").textContent = "Phone must be 10 digits";
+                isValid = false;
+            }
+
+            // Password validation
+            if (password === "") {
+                document.getElementById("pass-error").textContent = "Password is required";
+                isValid = false;
+            } else if (password.length < 6) {
+                document.getElementById("pass-error").textContent = "Password must be at least 6 characters";
+                isValid = false;
+            }
+
+            // Confirm password validation
+            if (confirmPassword === "") {
+                document.getElementById("cPass-error").textContent = "Confirm password is required";
+                isValid = false;
+            } else if (confirmPassword !== password) {
+                document.getElementById("cPass-error").textContent = "Passwords do not match";
+                isValid = false;
+            }
+
+            // If valid, send data to backend
+            if (isValid) {
+                try {
+                    const res = await fetch("/register", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            name: name,
+                            email: email,
+                            phone: phone,
+                            password: password,
+                            code: referralCode || null
+                        })
+                    });
+
+                    const data = await res.json();
+
+                    if (data.success) {
+                        window.location.href = "/";
+                    } else if (data.errors) {
+                        if (data.errors.email) {
+                            document.getElementById("email-error").textContent = data.errors.email;
+                        }
+                        if (data.errors.password) {
+                            document.getElementById("pass-error").textContent = data.errors.password;
+                        }
+                        if (data.errors.username) {
+                            document.getElementById("user-error").textContent = data.errors.username;
+                        }
+                        if (data.errors.number) {
+                            document.getElementById("phone-error").textContent = data.errors.number;
+                        }
+                    }
+                } catch (error) {
+                    console.error("Error submitting form:", error);
+                    alert("Server error. Please try again later.");
+                }
+            }
+        }
+
+        function socialSignup(provider) {
+            if(provider === 'google') {
+                window.location.href = '/auth/google';
+            }
+        }
+    </script>
+</body>
+</html>

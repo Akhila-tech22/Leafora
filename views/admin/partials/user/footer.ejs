@@ -1,0 +1,109 @@
+<style>
+    /* Footer Styles */
+.footer {
+    background: #2E2E2E;
+    color: white;
+    padding: 60px 0 20px;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.footer-section h3 {
+    margin-bottom: 1rem;
+    color: #8B6F47;
+    font-weight: 600;
+}
+
+.footer-section p, 
+.footer-section a {
+    color: #E8DFD5;
+    text-decoration: none;
+    margin-bottom: 0.5rem;
+    display: block;
+    transition: color 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.footer-section a:hover {
+    color: #8B6F47;
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.social-links a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: #3E3E3E;
+    border-radius: 50%;
+    color: white;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+    background: #8B6F47;
+    transform: translateY(-2px);
+}
+
+.footer-bottom {
+    border-top: 1px solid #3E3E3E;
+    padding-top: 20px;
+    text-align: center;
+    color: #9B9B9B;
+    font-size: 0.9rem;
+}
+
+</style>
+
+<!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Leafora</h3>
+                    <p>Your gateway to endless literary adventures. Discover, read, and grow with us.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <a href="/shop">Shop</a>
+                    <a href="/categories">Categories</a>
+                    <a href="/bestsellers">Bestsellers</a>
+                    <a href="/new-arrivals">New Arrivals</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Customer Care</h3>
+                    <a href="/contact">Contact Us</a>
+                    <a href="/shipping">Shipping Info</a>
+                    <a href="/returns">Returns</a>
+                    <a href="/faq">FAQ</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <p><i class="fas fa-envelope"></i> info@Leafora.com</p>
+                    <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 Book Street, Reading City</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Leafora. All rights reserved. | Privacy Policy | Terms of Service</p>
+            </div>
+        </div>
+    </footer>

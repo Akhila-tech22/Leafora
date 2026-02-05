@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product - Leafora Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#f5f6f8; color:#2c3e50; line-height:1.6; }
+        .container { max-width:1200px; margin:0 auto; padding:30px 20px; }
+        .main-content { margin-left:0; }
+        
+        /* Page Header */
+        .page-header { 
+            background:linear-gradient(135deg, #3d4c5c 0%, #2c3e50 100%); 
+            padding:30px; 
+            border-radius:12px; 
+            box-shadow:0 4px 12px rgba(0,0,0,0.1); 
+            margin-bottom:30px; 
+            color:white; 
+        }
+        .page-title { font-size:28px; font-weight:700; margin-bottom:8px; letter-spacing:0.5px; }
+        .page-subtitle { color:rgba(255,255,255,0.85); font-size:15px; font-weight:400; }
+        
+        /* Form Container */
+        .form-container { background:white; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.08); overflow:hidden; }
+        .form-header { 
+            background:linear-gradient(135deg, #3d4c5c 0%, #2c3e50 100%); 
+            color:white; 
+            padding:18px 24px; 
+            font-size:16px; 
+            font-weight:600; 
+            letter-spacing:0.5px; 
+        }
+        .form-content { padding:30px; }
+        
+        /* Form Layout */
+        .form-row { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px; }
+        .form-row.full-width { grid-template-columns:1fr; }
+        .form-group { display:flex; flex-direction:column; }
+        
+        /* Form Labels & Inputs */
+        .form-label { 
+            font-weight:600; 
+            margin-bottom:8px; 
+            color:#3d4c5c; 
+            font-size:13px; 
+            text-transform:uppercase; 
+            letter-spacing:0.5px; 
+        }
+        .form-label.required::after { content:" *"; color:#f472b6; }
+        
+        .form-input, .form-select, .form-textarea { 
+            padding:12px 14px; 
+            border:2px solid #e9ecef; 
+            border-radius:8px; 
+            font-size:14px; 
+            font-family:'Inter', sans-serif;
+            transition:all 0.3s ease; 
+            background:#f5f6f8;
+            color:#2c3e50;
+        }
+        .form-input:focus, .form-select:focus, .form-textarea:focus { 
+            outline:none; 
+            border-color:#8b7dd8; 
+            background:white;
+            box-shadow:0 0 0 3px rgba(139,125,216,0.1); 
+        }
+        .form-textarea { resize:vertical; min-height:120px; }
+        
+        /* Image Upload Section */
+        .image-upload-section { margin-bottom:25px; }
+        .image-upload-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:20px; margin-top:12px; }
+        
+        .image-upload-item { 
+            border:2px dashed #e9ecef; 
+            border-radius:12px; 
+            padding:30px 20px; 
+            text-align:center; 
+            cursor:pointer; 
+            transition:all 0.3s ease; 
+            position:relative; 
+            min-height:220px; 
+            display:flex; 
+            flex-direction:column; 
+            justify-content:center; 
+            align-items:center; 
+            background:#fafbfc;
+        }
+        .image-upload-item:hover { 
+            border-color:#8b7dd8; 
+            background:#f5f6f8; 
+            transform:translateY(-2px);
+            box-shadow:0 4px 12px rgba(139,125,216,0.15);
+        }
+        .image-upload-item.has-image { 
+            border-color:#4ade80; 
+            border-style:solid; 
+            padding:0; 
+            background:white;
+        }
+        
+        /* Upload Placeholder */
+        .upload-placeholder { display:flex; flex-direction:column; align-items:center; gap:10px; color:#9ca3af; }
+        .upload-icon { font-size:40px; opacity:0.6; }
+        .upload-text { font-size:15px; font-weight:600; color:#3d4c5c; }
+        .upload-subtext { font-size:13px; color:#9ca3af; }
+        
+        /* Image Preview */
+        .image-preview { width:100%; height:220px; object-fit:cover; border-radius:10px; }
+        
+        /* Image Actions */
+        .image-actions { 
+            position:absolute; 
+            top:10px; 
+            right:10px; 
+            display:flex; 
+            gap:8px; 
+        }
+        .action-btn { 
+            width:36px; 
+            height:36px; 
+            border:none; 
+            border-radius:8px; 
+            cursor:pointer; 
+            font-size:16px; 
+            display:flex; 
+            align-items:center; 
+            justify-content:center; 
+            transition:all 0.3s ease; 
+            box-shadow:0 2px 8px rgba(0,0,0,0.15);
+        }
+        .crop-btn { background:#8b7dd8; color:white; }
+        .crop-btn:hover { background:#7c6fd6; transform:translateY(-2px); box-shadow:0 4px 12px rgba(139,125,216,0.4); }
+        .remove-btn { background:#f472b6; color:white; }
+        .remove-btn:hover { background:#ec4899; transform:translateY(-2px); box-shadow:0 4px 12px rgba(244,114,182,0.4); }
+        
+        .hidden-input { display:none; }
+        
+        /* Save Section */
+        .save-section { 
+            margin-top:30px; 
+            padding-top:25px; 
+            border-top:2px solid #f0f1f3; 
+            display:flex;
+            justify-content:flex-end;
+            gap:12px;
+        }
+        
+        /* Buttons */
+        .btn { 
+            padding:13px 28px; 
+            border:none; 
+            border-radius:8px; 
+            cursor:pointer; 
+            font-size:14px; 
+            font-weight:600; 
+            text-transform:uppercase; 
+            letter-spacing:0.5px; 
+            transition:all 0.3s ease; 
+        }
+        .btn-primary { 
+            background:linear-gradient(135deg, #8b7dd8 0%, #7c6fd6 100%); 
+            color:white; 
+        }
+        .btn-primary:hover { 
+            transform:translateY(-2px); 
+            box-shadow:0 6px 16px rgba(139,125,216,0.3); 
+        }
+        .btn-secondary { 
+            background:#e9ecef; 
+            color:#3d4c5c; 
+        }
+        .btn-secondary:hover { 
+            background:#d1d5db; 
+            transform:translateY(-2px); 
+        }
+        
+        /* Crop Modal */
+        .crop-modal { 
+            display:none; 
+            position:fixed; 
+            top:0; 
+            left:0; 
+            width:100%; 
+            height:100%; 
+            background:rgba(0,0,0,0.85); 
+            z-index:10000; 
+            align-items:center; 
+            justify-content:center; 
+        }
+        .crop-modal.active { display:flex; }
+        .crop-container { 
+            background:white; 
+            border-radius:12px; 
+            padding:25px; 
+            max-width:90vw; 
+            max-height:90vh; 
+            display:flex; 
+            flex-direction:column; 
+            box-shadow:0 20px 60px rgba(0,0,0,0.3);
+        }
+        .crop-header { 
+            margin-bottom:20px; 
+            text-align:center; 
+        }
+        .crop-header h3 {
+            color:#3d4c5c;
+            font-size:22px;
+            font-weight:700;
+            margin-bottom:8px;
+        }
+        .crop-header p {
+            color:#6b7280;
+            font-size:14px;
+        }
+        .crop-image-container { 
+            max-width:700px; 
+            max-height:450px; 
+            margin-bottom:20px; 
+        }
+        .crop-actions { 
+            display:flex; 
+            justify-content:center; 
+            gap:12px; 
+        }
+        
+        /* Form Error */
+        .form-error { 
+            color:#f472b6; 
+            font-size:12px; 
+            margin-top:6px; 
+            font-weight:500;
+        }
+        
+        /* Responsive */
+        @media(max-width:768px) { 
+            .container { padding:20px 15px; }
+            .page-header { padding:25px 20px; }
+            .page-title { font-size:24px; }
+            .form-content { padding:25px 20px; }
+            .form-row { grid-template-columns:1fr; gap:15px; } 
+            .image-upload-grid { grid-template-columns:1fr; } 
+            .save-section { flex-direction:column; }
+            .btn { width:100%; }
+        }
+    </style>
+</head>
+<body>
+<%- include('partials/admin/header') %>
+<div class="container">
+    <div class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">Add New Product</h1>
+            <p class="page-subtitle">Create a new book listing for your store</p>
+        </div>
+        <div class="form-container">
+            <div class="form-header">📚 Product Information</div>
+            <form class="form-content" action="/admin/addProduct" method="POST" enctype="multipart/form-data" id="addProductForm">
+                <!-- Three Image Uploads -->
+                <div class="image-upload-section">
+                    <label class="form-label required">Product Images (Upload 1-3 images)</label>
+                    <div class="image-upload-grid">
+                        <!-- Image 1 -->
+                        <div class="image-upload-item" data-index="0">
+                            <div class="upload-placeholder">
+                                <div class="upload-icon">📷</div>
+                                <div class="upload-text">Image 1</div>
+                                <div class="upload-subtext">Click to browse</div>
+                            </div>
+                            <input type="file" class="hidden-input" accept="image/*" name="productImages" data-index="0">
+                        </div>
+                        <!-- Image 2 -->
+                        <div class="image-upload-item" data-index="1">
+                            <div class="upload-placeholder">
+                                <div class="upload-icon">📷</div>
+                                <div class="upload-text">Image 2</div>
+                                <div class="upload-subtext">Click to browse</div>
+                            </div>
+                            <input type="file" class="hidden-input" accept="image/*" name="productImages" data-index="1">
+                        </div>
+                        <!-- Image 3 -->
+                        <div class="image-upload-item" data-index="2">
+                            <div class="upload-placeholder">
+                                <div class="upload-icon">📷</div>
+                                <div class="upload-text">Image 3</div>
+                                <div class="upload-subtext">Click to browse</div>
+                            </div>
+                            <input type="file" class="hidden-input" accept="image/*" name="productImages" data-index="2">
+                        </div>
+                    </div>
+                    <div class="form-error" id="imagesError"></div>
+                </div>
+
+                <!-- Product Info -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label required">Product Name</label>
+                        <input type="text" class="form-input" name="name" placeholder="Enter product name">
+                        <div class="form-error" id="nameError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required">Author</label>
+                        <input type="text" class="form-input" name="author" placeholder="Enter author name">
+                        <div class="form-error" id="authorError"></div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label required">Category</label>
+                        <select class="form-select" name="category">
+                            <option value="">Select Category</option>
+                            <% if (locals.categories && categories.length > 0) { %>
+                                <% categories.forEach(category => { %>
+                                    <% if (category.isListed) { %>
+                                        <option value="<%= category._id %>"><%= category.name %></option>
+                                    <% } %>
+                                <% }) %>
+                            <% } %>
+                        </select>
+                        <div class="form-error" id="categoryError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Stock Quantity</label>
+                        <input type="number" class="form-input" name="stock" placeholder="0" min="0" value="0">
+                        <div class="form-error" id="stockError"></div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label required">Regular Price (₹)</label>
+                        <input type="number" class="form-input" name="purchasePrice" placeholder="0.00" min="0" step="0.01">
+                        <div class="form-error" id="purchasePriceError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required">Selling Price (₹)</label>
+                        <input type="number" class="form-input" name="sellingPrice" placeholder="0.00" min="0" step="0.01">
+                        <div class="form-error" id="sellingPriceError"></div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Product Offer (%)</label>
+                        <input type="number" class="form-input" name="offer" placeholder="0" min="0" max="100" value="0">
+                        <div class="form-error" id="offerError"></div>
+                    </div>
+                </div>
+
+                <div class="form-row full-width">
+                    <div class="form-group">
+                        <label class="form-label required">Product Description</label>
+                        <textarea class="form-textarea" name="description" placeholder="Enter detailed product description..."></textarea>
+                        <div class="form-error" id="descriptionError"></div>
+                    </div>
+                </div>
+
+                <div class="save-section">
+                    <button type="button" class="btn btn-secondary" onclick="history.back()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Crop Modal -->
+<div class="crop-modal" id="cropModal">
+    <div class="crop-container">
+        <div class="crop-header">
+            <h3>Crop Image</h3>
+            <p>Adjust the image as needed, then click 'Crop & Save'</p>
+        </div>
+        <div class="crop-image-container">
+            <img id="cropImage" style="max-width:100%;">
+        </div>
+        <div class="crop-actions">
+            <button type="button" class="btn btn-secondary" onclick="closeCropModal()">Cancel</button>
+            <button type="button" class="btn btn-primary" onclick="applyCrop()">Crop & Save</button>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+let cropper = null;
+let currentIndex = null;
+
+document.addEventListener('DOMContentLoaded', function() {
+    const uploadItems = document.querySelectorAll('.image-upload-item');
+    const fileInputs = document.querySelectorAll('.hidden-input[name="productImages"]');
+
+    uploadItems.forEach((item, index) => {
+        item.addEventListener('click', function(e) {
+            if(e.target.closest('.action-btn')) return;
+            fileInputs[index].click();
+        });
+    });
+
+    fileInputs.forEach((input, index) => {
+        input.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if(file) {
+                currentIndex = index;
+                handleImageUpload(file, index);
+            }
+        });
+    });
+
+    const form = document.getElementById('addProductForm');
+    form.addEventListener('submit', async function(e){
+        e.preventDefault();
+        if(validateForm()) {
+            const formData = new FormData(form);
+            try{
+                const res = await fetch('/admin/addProduct', { method:"POST", body:formData });
+                const data = await res.json();
+                if(data.success){
+                    Swal.fire({
+                        title: 'Success',
+                        text: 'Product added successfully',
+                        icon: 'success',
+                        confirmButtonColor: '#8b7dd8'
+                    }).then(()=>{window.location.reload();});
+                } else {
+                    Swal.fire({
+                        title: 'Error',
+                        text: data.message || 'Something went wrong',
+                        icon: 'error',
+                        confirmButtonColor: '#8b7dd8'
+                    });
+                }
+            } catch(err){
+                console.error(err);
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Failed to add product. Please try again.',
+                    icon: 'error',
+                    confirmButtonColor: '#8b7dd8'
+                });
+            }
+        }
+    });
+});
+
+function handleImageUpload(file, index){
+    if(!file.type.startsWith('image/')) { 
+        Swal.fire({
+            title: 'Invalid File',
+            text: 'Please select a valid image',
+            icon: 'error',
+            confirmButtonColor: '#8b7dd8'
+        });
+        return; 
+    }
+    if(file.size > 5*1024*1024) { 
+        Swal.fire({
+            title: 'File Too Large',
+            text: 'Image must be less than 5MB',
+            icon: 'error',
+            confirmButtonColor: '#8b7dd8'
+        });
+        return; 
+    }
+    const reader = new FileReader();
+    reader.onload = function(e){ showCropModal(e.target.result, index); };
+    reader.readAsDataURL(file);
+}
+
+function showCropModal(src, index){
+    currentIndex = index;
+    const modal = document.getElementById('cropModal');
+    modal.classList.add('active');
+    const img = document.getElementById('cropImage');
+    img.src = src;
+    setTimeout(()=>{ 
+        cropper = new Cropper(img, { aspectRatio: NaN, viewMode:1, autoCropArea:0.9, responsive:true, background:false, dragMode:'move' }); 
+    }, 100);
+}
+
+function closeCropModal(){
+    const modal = document.getElementById('cropModal');
+    modal.classList.remove('active');
+    if(cropper){ cropper.destroy(); cropper=null; }
+    currentIndex = null;
+}
+
+function applyCrop(){
+    if(!cropper || currentIndex === null) return;
+    const canvas = cropper.getCroppedCanvas({ maxWidth:800, maxHeight:800, imageSmoothingEnabled:true, imageSmoothingQuality:'high' });
+    canvas.toBlob(blob=>{
+        const fileInput = document.querySelectorAll('.hidden-input[name="productImages"]')[currentIndex];
+        const file = new File([blob], `productImage${currentIndex}.jpg`, {type:'image/jpeg'});
+        const dt = new DataTransfer();
+        dt.items.add(file);
+        fileInput.files = dt.files;
+
+        const container = document.querySelectorAll('.image-upload-item')[currentIndex];
+        container.classList.add('has-image');
+        if(!container.querySelector('.image-preview')) {
+            const preview = document.createElement('img');
+            preview.src = URL.createObjectURL(blob);
+            preview.className = 'image-preview';
+            container.appendChild(preview);
+        } else {
+            container.querySelector('.image-preview').src = URL.createObjectURL(blob);
+        }
+
+        if(!container.querySelector('.image-actions')) {
+            const actions = document.createElement('div');
+            actions.className = 'image-actions';
+            actions.innerHTML = `
+                <button type="button" class="action-btn crop-btn" onclick="recropImage(${currentIndex})">✂️</button>
+                <button type="button" class="action-btn remove-btn" onclick="removeImage(${currentIndex})">🗑️</button>
+            `;
+            container.appendChild(actions);
+        }
+
+        closeCropModal();
+    }, 'image/jpeg', 0.8);
+}
+
+function recropImage(index){ 
+    const fileInput = document.querySelectorAll('.hidden-input[name="productImages"]')[index];
+    fileInput.click(); 
+}
+
+function removeImage(index){
+    const container = document.querySelectorAll('.image-upload-item')[index];
+    container.classList.remove('has-image');
+    const preview = container.querySelector('.image-preview');
+    const actions = container.querySelector('.image-actions');
+    if(preview) container.removeChild(preview);
+    if(actions) container.removeChild(actions);
+    const fileInput = container.querySelector('.hidden-input[name="productImages"]');
+    fileInput.value = '';
+}
+
+function validateForm(){
+    clearErrors();
+    let valid = true;
+    
+   const imgInputs = document.querySelectorAll('.hidden-input[name="productImages"]');
+const uploadedCount = Array.from(imgInputs)
+    .filter(input => input.files.length > 0)
+    .length;
+
+if (uploadedCount < 1) {
+    document.getElementById('imagesError').textContent = 'Please upload atleast 1 image';
+    valid = false;
+}
+
+    const author = document.querySelector('input[name="author"]').value.trim();
+    if(!author){ 
+        document.getElementById('authorError').textContent='Author name is required'; 
+        valid=false; 
+    }
+
+    const name = document.querySelector('input[name="name"]').value.trim();
+    const category = document.querySelector('select[name="category"]').value;
+    const purchasePrice = parseFloat(document.querySelector('input[name="purchasePrice"]').value);
+    const sellingPrice = parseFloat(document.querySelector('input[name="sellingPrice"]').value);
+    const description = document.querySelector('textarea[name="description"]').value.trim();
+    const stock = document.querySelector('input[name="stock"]').value.trim();
+    const offer = parseInt(document.querySelector('input[name="offer"]').value);
+
+    if(!name){ document.getElementById('nameError').textContent='Product name is required'; valid=false; }
+    if(!category){ document.getElementById('categoryError').textContent='Category is required'; valid=false; }
+    if(!purchasePrice || purchasePrice <= 0){ document.getElementById('purchasePriceError').textContent='Valid purchase price is required'; valid=false; }
+    if(!sellingPrice || sellingPrice <= 0){ document.getElementById('sellingPriceError').textContent='Valid selling price is required'; valid=false; }
+    if(purchasePrice && sellingPrice && sellingPrice > purchasePrice){ document.getElementById('sellingPriceError').textContent="Selling price cannot be greater than regular price"; valid=false; }
+    if(!description){ document.getElementById('descriptionError').textContent='Product description is required'; valid=false; }
+    if(!stock || parseInt(stock) < 1){ document.getElementById('stockError').textContent='Stock is required'; valid=false; }
+    if(offer < 0 || offer > 100){ document.getElementById('offerError').textContent='Offer should be between 0 and 100'; valid=false; }
+
+    return valid;
+}
+
+function clearErrors(){
+    document.querySelectorAll('.form-error').forEach(el=>el.textContent='');
+}
+
+document.getElementById('cropModal').addEventListener('click', e=>{ if(e.target===e.currentTarget) closeCropModal(); });
+</script>
+
+</body>
+</html>

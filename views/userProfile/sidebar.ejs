@@ -1,0 +1,303 @@
+<!-- Sidebar Navigation -->
+ 
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+    }
+    
+    body {
+        background: #F5F1EB;
+        min-height: 100vh;
+    }
+
+    .account-container {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        gap: 30px;
+        max-width: 1200px;
+        margin: 40px auto;
+        padding-top: 110px;
+    }
+
+    .sidebar {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        padding: 30px 0;
+        height: fit-content;
+        position: sticky;
+        top: 100px;
+    }
+
+    .sidebar-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: #2E2E2E;
+        padding: 0 25px;
+        margin-bottom: 25px;
+    }
+
+    .sidebar-menu {
+        list-style: none;
+    }
+
+    .sidebar-menu li {
+        margin-bottom: 5px;
+    }
+
+    .sidebar-menu a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 25px;
+        color: #6B6B6B;
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        border-left: 3px solid transparent;
+    }
+
+    .sidebar-menu a:hover {
+        background: #F5F1EB;
+        color: #8B6F47;
+        border-left-color: #8B6F47;
+    }
+
+    .sidebar-menu a.active {
+        background: rgba(139, 111, 71, 0.1);
+        color: #8B6F47;
+        border-left-color: #8B6F47;
+    }
+
+    .sidebar-menu i {
+        font-size: 18px;
+        width: 20px;
+        text-align: center;
+        color: #8B6F47;
+    }
+
+    .logout-link {
+        margin-top: 20px;
+        border-top: 1px solid #E8DFD5;
+        padding-top: 20px;
+    }
+
+    .logout-link a {
+        color: #e74c3c;
+    }
+
+    .logout-link a:hover {
+        background: #fee;
+        border-left-color: #e74c3c;
+    }
+
+    .logout-link i {
+        color: #e74c3c;
+    }
+
+    /* Mobile Menu Toggle Button */
+    .mobile-sidebar-toggle {
+        display: none;
+        background: white;
+        border: 2px solid #E8DFD5;
+        color: #8B6F47;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-bottom: 20px;
+        width: 100%;
+        align-items: center;
+        justify-content: space-between;
+        transition: all 0.3s ease;
+    }
+
+    .mobile-sidebar-toggle:hover {
+        background: #F5F1EB;
+        border-color: #8B6F47;
+    }
+
+    .mobile-sidebar-toggle i {
+        transition: transform 0.3s ease;
+    }
+
+    .mobile-sidebar-toggle.active i {
+        transform: rotate(180deg);
+    }
+
+    /* Tablet Responsive */
+    @media (max-width: 968px) {
+        .account-container {
+            grid-template-columns: 1fr;
+            padding-top: 90px;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+        .sidebar {
+            position: relative;
+            top: 0;
+        }
+
+        .mobile-sidebar-toggle {
+            display: flex;
+        }
+
+        .sidebar-menu {
+            display: none;
+        }
+
+        .sidebar-menu.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .sidebar-title {
+            display: none;
+        }
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+        .account-container {
+            margin: 20px auto;
+            padding-top: 80px;
+        }
+
+        .sidebar {
+            padding: 20px 0;
+        }
+
+        .sidebar-menu a {
+            padding: 12px 20px;
+            font-size: 14px;
+        }
+
+        .sidebar-menu i {
+            font-size: 16px;
+        }
+    }
+
+    /* Small Mobile */
+    @media (max-width: 480px) {
+        .account-container {
+            gap: 20px;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .mobile-sidebar-toggle {
+            padding: 10px 15px;
+            font-size: 14px;
+        }
+
+        .sidebar-menu a {
+            padding: 10px 15px;
+        }
+    }
+</style>
+
+<aside class="sidebar">
+    <!-- Mobile Toggle Button -->
+    <button class="mobile-sidebar-toggle" onclick="toggleSidebar()">
+        <span>
+            <i class="fas fa-user-circle"></i> My Account
+        </span>
+        <i class="fas fa-chevron-down"></i>
+    </button>
+
+    <h2 class="sidebar-title">My Account</h2>
+    <ul class="sidebar-menu" id="sidebarMenu">
+        <li>
+            <a href="/profile" class="<%= currentPage === 'profile' ? 'active' : '' %>">
+                <i class="fas fa-user"></i>
+                <span>Account Details</span>
+            </a>
+        </li>
+        <li>
+            <a href="/address" class="<%= currentPage === 'address' ? 'active' : '' %>">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>Addresses</span>
+            </a>
+        </li>
+        <li>
+            <a href="/order" class="<%= currentPage === 'orders' ? 'active' : '' %>">
+                <i class="fas fa-shopping-bag"></i>
+                <span>Orders</span>
+            </a>
+        </li>
+        <li>
+            <a href="/wishlist" class="<%= currentPage === 'wishlist' ? 'active' : '' %>">
+                <i class="far fa-heart"></i>
+                <span>Wishlist</span>
+            </a>
+        </li>
+        <li>
+            <a href="/wallet" class="<%= currentPage === 'wallet' ? 'active' : '' %>">
+                <i class="fas fa-wallet"></i>
+                <span>Wallet</span>
+            </a>
+        </li>
+        <li>
+            <a href="/userCoupons" class="<%= currentPage === 'coupons' ? 'active' : '' %>">
+                <i class="fa fa-tag fa-lg"></i>
+                <span>My Coupon</span>
+            </a>
+        </li>
+        <li class="logout-link">
+            <a href="/logout">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </li>
+    </ul>
+</aside>
+
+<script>
+    function toggleSidebar() {
+        const menu = document.getElementById('sidebarMenu');
+        const toggle = document.querySelector('.mobile-sidebar-toggle');
+        
+        menu.classList.toggle('active');
+        toggle.classList.toggle('active');
+    }
+
+    // Close sidebar when clicking outside on mobile
+    document.addEventListener('click', function(event) {
+        const sidebar = document.querySelector('.sidebar');
+        const toggle = document.querySelector('.mobile-sidebar-toggle');
+        const menu = document.getElementById('sidebarMenu');
+        
+        if (window.innerWidth <= 968) {
+            if (!sidebar.contains(event.target) && menu.classList.contains('active')) {
+                menu.classList.remove('active');
+                toggle.classList.remove('active');
+            }
+        }
+    });
+
+    // Handle window resize
+    window.addEventListener('resize', function() {
+        const menu = document.getElementById('sidebarMenu');
+        const toggle = document.querySelector('.mobile-sidebar-toggle');
+        
+        if (window.innerWidth > 968) {
+            menu.classList.remove('active');
+            toggle.classList.remove('active');
+        }
+    });
+</script>

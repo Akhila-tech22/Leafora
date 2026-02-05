@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management - Leafora Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
+ <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#f5f6f8; color:#2c3e50; line-height:1.6; }
+        .container { max-width:1300px; margin:0 auto; padding:30px 20px; }
+        .main-content { margin-left:0; }
+        
+        /* Page Header */
+        .page-header { 
+            background:linear-gradient(135deg, #3d4c5c 0%, #2c3e50 100%); 
+            padding:30px; 
+            border-radius:12px; 
+            box-shadow:0 4px 12px rgba(0,0,0,0.1); 
+            margin-bottom:30px; 
+            color:white; 
+        }
+        .page-title { font-size:28px; font-weight:700; margin-bottom:8px; letter-spacing:0.5px; display:flex; align-items:center; }
+        .title-icon { margin-right:12px; font-size:28px; }
+        .page-subtitle { color:rgba(255,255,255,0.85); font-size:15px; font-weight:400; }
+        
+        /* Search Section */
+        .search-section { background:white; padding:20px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.08); margin-bottom:25px; }
+        .search-form { display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+        .search-input { flex:1; min-width:280px; padding:12px 16px; border:2px solid #e9ecef; border-radius:8px; font-size:14px; transition:all 0.3s ease; background:#f5f6f8; font-family:'Inter', sans-serif; }
+        .search-input:focus { outline:none; border-color:#8b7dd8; background:white; box-shadow:0 0 0 3px rgba(139,125,216,0.1); }
+        .search-btn { background:linear-gradient(135deg, #8b7dd8, #7c6fd6); color:white; border:none; padding:12px 24px; border-radius:8px; cursor:pointer; font-weight:600; transition:all 0.3s ease; text-transform:uppercase; letter-spacing:0.5px; font-size:13px; }
+        .search-btn:hover { transform:translateY(-2px); box-shadow:0 6px 16px rgba(139,125,216,0.3); }
+        .clear-btn { background:#e9ecef; color:#3d4c5c; border:none; padding:12px 20px; border-radius:8px; cursor:pointer; text-decoration:none; font-weight:600; display:inline-block; font-size:13px; }
+        .clear-btn:hover { background:#d1d5db; transform:translateY(-2px); }
+        
+        /* Products Table */
+        .products-table { background:white; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.08); overflow:hidden; margin-bottom:20px; }
+        .table-header { background:linear-gradient(135deg, #3d4c5c, #2c3e50); color:white; padding:18px 24px; font-size:16px; font-weight:600; display:flex; justify-content:space-between; align-items:center; letter-spacing:0.5px; }
+        .products-count { font-size:14px; opacity:0.9; }
+        
+        table { width:100%; border-collapse:collapse; }
+        th, td { text-align:left; padding:16px 20px; border-bottom:1px solid #f0f1f3; }
+        th { background:#f8f9fa; font-weight:600; color:#3d4c5c; font-size:13px; text-transform:uppercase; letter-spacing:0.8px; }
+        tbody tr { transition:all 0.2s ease; }
+        tbody tr:hover { background:#f8f9fb; transform:scale(1.002); }
+        
+        /* Product Images Gallery */
+        .product-images-gallery { display:flex; gap:6px; flex-wrap:wrap; max-width:200px; }
+        .product-image { width:60px; height:60px; border-radius:8px; object-fit:cover; border:2px solid #e9ecef; cursor:pointer; transition:all 0.3s ease; }
+        .product-image:hover { transform:scale(1.08); border-color:#8b7dd8; box-shadow:0 4px 12px rgba(139,125,216,0.3); }
+        .no-image { width:60px; height:60px; background:#f5f6f8; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:28px; color:#9ca3af; border:2px solid #e9ecef; }
+
+        .product-name { font-weight:600; color:#2c3e50; margin-bottom:4px; max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:15px; }
+        .category-name { color:#7c6fd6; font-size:12px; background:rgba(139,125,216,0.1); padding:4px 10px; border-radius:12px; display:inline-block; font-weight:600; }
+        .price-container { text-align:right; }
+        .selling-price { font-weight:700; color:#8b7dd8; font-size:15px; }
+        .offer-text { color:#f472b6; font-size:11px; font-weight:600; background:rgba(244,114,182,0.1); padding:3px 8px; border-radius:10px; display:inline-block; }
+        .quantity-cell { text-align:center; font-weight:600; font-size:15px; }
+        .qty-low { color:#f472b6; }
+        .qty-medium { color:#fbbf24; }
+        .qty-good { color:#4ade80; }
+        
+        /* Status Badge */
+        .status-badge { padding:6px 14px; border-radius:16px; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; display:inline-block; }
+        .status-active { background:#b8f4d6; color:#16a34a; }
+        .status-blocked { background:#ffb5c5; color:#c0392b; }
+        
+        /* Actions */
+        .actions-cell { text-align:center; }
+        .action-buttons { display:flex; gap:6px; justify-content:center; align-items:center; flex-wrap:wrap; }
+        .action-btn { width:36px; height:36px; border:none; border-radius:8px; cursor:pointer; font-size:16px; display:flex; align-items:center; justify-content:center; transition:all 0.3s ease; text-decoration:none; }
+        .btn-edit { background:linear-gradient(135deg, #8b7dd8, #7c6fd6); color:white; }
+        .btn-edit:hover { background:linear-gradient(135deg, #7c6fd6, #6b5dc6); transform:translateY(-2px); box-shadow:0 4px 12px rgba(139,125,216,0.4); }
+        .btn-block { background:linear-gradient(135deg, #f472b6, #ec4899); color:white; }
+        .btn-block:hover { background:linear-gradient(135deg, #ec4899, #db2777); transform:translateY(-2px); box-shadow:0 4px 12px rgba(244,114,182,0.4); }
+        .btn-unblock { background:linear-gradient(135deg, #4ade80, #22c55e); color:white; }
+        .btn-unblock:hover { background:linear-gradient(135deg, #22c55e, #16a34a); transform:translateY(-2px); box-shadow:0 4px 12px rgba(74,222,128,0.4); }
+        .btn-offer { background:linear-gradient(135deg, #fbbf24, #f59e0b); color:white; }
+        .btn-offer:hover { background:linear-gradient(135deg, #f59e0b, #d97706); transform:translateY(-2px); box-shadow:0 4px 12px rgba(251,191,36,0.4); }
+        .btn-remove-offer { background:#e9ecef; color:#6b7280; }
+        .btn-remove-offer:hover { background:#d1d5db; transform:translateY(-2px); }
+        .btn-delete { background:linear-gradient(135deg, #f472b6, #ec4899); color:white; }
+        .btn-delete:hover { background:linear-gradient(135deg, #ec4899, #db2777); transform:translateY(-2px); box-shadow:0 4px 12px rgba(244,114,182,0.4); }
+        
+        /* Modal */
+        .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:10000; }
+        .modal.active { display:flex; align-items:center; justify-content:center; }
+        .modal-content { background:white; border-radius:12px; padding:30px; max-width:700px; width:90vw; max-height:90vh; overflow-y:auto; box-shadow:0 20px 60px rgba(0,0,0,0.3); }
+        .modal-header { margin-bottom:25px; text-align:center; border-bottom:2px solid #f0f1f3; padding-bottom:20px; }
+        .modal-title { font-size:24px; font-weight:700; color:#3d4c5c; margin-bottom:8px; }
+        .modal-subtitle { color:#6b7280; font-size:14px; }
+        
+        /* Form Elements */
+        .form-group { margin-bottom:18px; }
+        .form-label { display:block; font-weight:600; margin-bottom:8px; color:#3d4c5c; font-size:13px; text-transform:uppercase; letter-spacing:0.5px; }
+        .form-input, .form-textarea, .form-select { width:100%; padding:12px 14px; border:2px solid #e9ecef; border-radius:8px; font-size:14px; transition:all 0.3s ease; background:#f5f6f8; font-family:'Inter', sans-serif; color:#2c3e50; }
+        .form-input:focus, .form-textarea:focus, .form-select:focus { outline:none; border-color:#8b7dd8; background:white; box-shadow:0 0 0 3px rgba(139,125,216,0.1); }
+        .form-textarea { resize:vertical; min-height:100px; }
+        .modal-actions { display:flex; justify-content:flex-end; gap:12px; margin-top:25px; border-top:2px solid #f0f1f3; padding-top:25px; }
+        
+        /* Buttons */
+        .btn { padding:12px 24px; border:none; border-radius:8px; cursor:pointer; font-size:14px; font-weight:600; transition:all 0.3s ease; text-transform:uppercase; letter-spacing:0.5px; }
+        .btn-primary { background:linear-gradient(135deg, #8b7dd8, #7c6fd6); color:white; }
+        .btn-primary:hover { transform:translateY(-2px); box-shadow:0 6px 16px rgba(139,125,216,0.3); }
+        .btn-secondary { background:#e9ecef; color:#3d4c5c; }
+        .btn-secondary:hover { background:#d1d5db; transform:translateY(-2px); }
+
+        /* ✨ NEW: Improved Edit Images Section */
+        .edit-images-section { margin-bottom:25px; }
+        .images-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:15px; margin-top:12px; }
+        
+        /* Image Card with Hover Actions */
+        .image-card { position:relative; border:2px solid #e9ecef; border-radius:12px; overflow:hidden; aspect-ratio:1; background:#f5f6f8; transition:all 0.3s ease; }
+        .image-card:hover { border-color:#8b7dd8; box-shadow:0 4px 12px rgba(139,125,216,0.2); }
+        
+        /* Existing Image */
+        .image-card.has-image .card-image { width:100%; height:100%; object-fit:cover; display:block; }
+        
+        /* Empty Upload Card */
+        .image-card.empty { cursor:pointer; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:160px; }
+        .image-card.empty:hover { background:#f8f9fb; }
+        .empty-placeholder { text-align:center; color:#9ca3af; }
+        .empty-icon { font-size:36px; margin-bottom:8px; opacity:0.6; }
+        .empty-text { font-size:13px; font-weight:600; color:#6b7280; }
+        
+        /* Hover Overlay with Actions */
+        .image-overlay { position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); display:flex; align-items:center; justify-content:center; gap:10px; opacity:0; transition:opacity 0.3s ease; }
+        .image-card:hover .image-overlay { opacity:1; }
+        
+        .overlay-btn { width:42px; height:42px; border:none; border-radius:50%; cursor:pointer; font-size:18px; display:flex; align-items:center; justify-content:center; transition:all 0.3s ease; }
+        .overlay-btn-edit { background:#8b7dd8; color:white; }
+        .overlay-btn-edit:hover { background:#7c6fd6; transform:scale(1.1); box-shadow:0 4px 12px rgba(139,125,216,0.5); }
+        .overlay-btn-delete { background:#f472b6; color:white; }
+        .overlay-btn-delete:hover { background:#ec4899; transform:scale(1.1); box-shadow:0 4px 12px rgba(244,114,182,0.5); }
+        
+        .hidden-file-input { display:none; }
+
+        /* Crop Modal */
+        .crop-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.92); z-index:10001; align-items:center; justify-content:center; }
+        .crop-modal.active { display:flex; }
+        .crop-container { background:white; border-radius:12px; padding:30px; max-width:80vw; max-height:80vh; display:flex; flex-direction:column; box-shadow:0 20px 60px rgba(0,0,0,0.4); }
+        .crop-header { margin-bottom:20px; text-align:center; }
+        .crop-header h3 { color:#3d4c5c; font-size:22px; font-weight:700; margin-bottom:8px; }
+        .crop-header p { color:#6b7280; font-size:14px; }
+        .crop-image-container { max-width:600px; max-height:450px; margin-bottom:20px; }
+        .crop-actions { display:flex; justify-content:center; gap:12px; }
+        
+        .form-error { color:#f472b6; font-size:12px; margin-top:6px; font-weight:500; }
+        
+        /* No Products */
+        .no-products { text-align:center; padding:80px 20px; color:#9ca3af; }
+        .no-products-icon { font-size:72px; margin-bottom:20px; opacity:0.6; }
+        .no-products-text { font-size:20px; margin-bottom:8px; font-weight:600; color:#6b7280; }
+        .no-products-subtext { font-size:15px; }
+        
+        @media (max-width: 768px) {
+            .container { padding:20px 15px; }
+            .page-header { padding:25px 20px; }
+            .page-title { font-size:24px; }
+            .search-form { flex-direction:column; align-items:stretch; }
+            .search-input { min-width:unset; }
+            .hide-mobile { display:none; }
+            table { font-size:13px; }
+            th, td { padding:12px 14px; }
+            .action-btn { width:34px; height:34px; font-size:15px; }
+            .modal-content { width:95vw; padding:25px 20px; }
+            .product-images-gallery { max-width:140px; }
+            .product-image { width:48px; height:48px; }
+            .images-grid { grid-template-columns:1fr; }
+        }
+    </style>
+</head>
+<body>
+    <%- include('partials/admin/header') %>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="">
+                <h1 class="page-title">
+                    <span class="title-icon">📚</span>
+                    Product Management
+                </h1>
+                <p class="page-subtitle">Manage your book inventory and product details</p>
+            </div>
+
+            <div class="search-section">
+                <form method="GET" action="/admin/product" class="search-form">
+                    <input type="text" name="search" class="search-input" placeholder="Search products by name..." value="<%= search %>">
+                    <button type="submit" class="search-btn">🔍 Search</button>
+                    <% if (search) { %>
+                        <a href="/admin/product" class="clear-btn">Clear</a>
+                    <% } %>
+                </form>
+            </div>
+
+            <div class="products-table">
+                <div class="table-header">
+                    <span>📖 Products</span>
+                    <span class="products-count"><%= products.length %> product<%= products.length !== 1 ? 's' : '' %> found</span>
+                </div>
+
+                <% if (products && products.length > 0) { %>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Images</th>
+                                <th>Product Details</th>
+                                <th>Category</th>
+                                <th>Regular Price</th>
+                                <th>Selling Price</th>
+                                <th>Offer</th>
+                                <th class="hide-mobile">Quantity</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% products.forEach(product => { %>
+                                <tr>
+                                    <td>
+                                        <div class="product-images-gallery">
+                                            <% if (product.productImage && product.productImage.length > 0) { %>
+                                                <% product.productImage.forEach((img, index) => { %>
+                                                    <img src="/images/<%= img %>" alt="<%= product.productName %>" class="product-image" onclick="viewImage('/images/<%= img %>')">
+                                                <% }) %>
+                                            <% } else { %>
+                                                <div class="no-image">📖</div>
+                                            <% } %>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="product-name" title="<%= product.productName %>"><%= product.productName %></div>
+                                    </td>
+                                    <td><span class="category-name"><%= product.category.name %></span></td>
+                                    <td class="price-container">₹<%= product.regularPrice %></td>
+                                    <td class="price-container"><span class="selling-price">₹<%= product.salePrice %></span></td>
+                                    <td class="price-container">
+                                        <% if (product.productOffer > 0) { %>
+                                            <span class="offer-text"><%= product.productOffer %>% OFF</span>
+                                        <% } else { %>
+                                            <span style="color: #9ca3af; font-size:12px;">No Offer</span>
+                                        <% } %>
+                                    </td>
+                                    <td class="quantity-cell hide-mobile">
+                                        <span class="<%= product.quantity <= 5 ? 'qty-low' : product.quantity <= 20 ? 'qty-medium' : 'qty-good' %>"><%= product.quantity %></span>
+                                    </td>
+                                    <td>
+                                        <span class="status-badge <%= product.isBlocked ? 'status-blocked' : 'status-active' %>">
+                                            <%= product.isBlocked ? 'Blocked' : 'Active' %>
+                                        </span>
+                                    </td>
+                                    <td class="actions-cell">
+                                        <div class="action-buttons">
+                                            <button class="action-btn btn-edit"
+                                                onclick='openEditModal(<%= JSON.stringify({
+                                                    id: product._id,
+                                                    name: product.productName,
+                                                    description: product.description,
+                                                    regularPrice: product.regularPrice,
+                                                    salePrice: product.salePrice,
+                                                    quantity: product.quantity,
+                                                    categoryId: product.category._id,
+                                                    author: product.author,
+                                                    images: product.productImage || []
+                                                }) %>)'
+                                                title="Edit Product">✏️</button>
+                                            <button class="action-btn <%= product.isBlocked ? 'btn-unblock' : 'btn-block' %>"
+                                                onclick="confirmBlock(event,'<%= product._id %>', '<%= product.isBlocked ? 'unblock' : 'block' %>')"
+                                                title="<%= product.isBlocked ? 'Unblock' : 'Block' %> Product">
+                                                <%= product.isBlocked ? '🔓' : '🔒' %>
+                                            </button>
+                                            <% if (product.productOffer > 0) { %>
+                                                <button class="action-btn btn-offer"
+                                                    onclick="openOfferModal('<%= product._id %>', '<%= product.productName %>', <%= product.productOffer %>)"
+                                                    title="Edit Offer">🏷️</button>
+                                                <button class="action-btn btn-remove-offer"
+                                                    onclick="removeOffer('<%= product._id %>')"
+                                                    title="Remove Offer">🚫</button>
+                                            <% } else { %>
+                                                <button class="action-btn btn-offer"
+                                                    onclick="openOfferModal('<%= product._id %>', '<%= product.productName %>')"
+                                                    title="Add Offer">🏷️</button>
+                                            <% } %>
+                                            <button class="action-btn btn-delete"
+                                                onclick="confirmDelete('<%= product._id %>')"
+                                                title="Delete Product">🗑️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                <% } else { %>
+                    <div class="no-products">
+                        <div class="no-products-icon">📚</div>
+                        <div class="no-products-text">
+                            <% if (search) { %>
+                                No products found for "<%= search %>"
+                            <% } else { %>
+                                No products available
+                            <% } %>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <!-- Offer Modal -->
+    <div class="modal" id="offerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Add Product Offer</h3>
+                <p class="modal-subtitle">Set discount percentage for this product</p>
+            </div>
+            <form id="offerForm">
+                <input type="hidden" id="offerProductId">
+                <div class="form-group">
+                    <label class="form-label">Product Name</label>
+                    <input type="text" id="offerProductName" class="form-input" readonly>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Offer Percentage (%)</label>
+                    <input type="number" id="offerPercentage" class="form-input" min="1" max="90" placeholder="Enter offer percentage">
+                    <div class="form-error" id="offerError"></div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('offerModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Offer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Product Modal -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Product</h3>
+                <p class="modal-subtitle">Update product information and images</p>
+            </div>
+            <form id="editForm">
+                <input type="hidden" id="editProductId">
+                
+                <!-- ✨ NEW: Improved Images Section -->
+                <div class="edit-images-section">
+                    <label class="form-label">Product Images (Max 3)</label>
+                    <div class="images-grid" id="imagesGrid">
+                        <!-- Will be populated dynamically -->
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Product Name</label>
+                    <input type="text" id="editProductName" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Author</label>
+                    <input type="text" id="editAuthor" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea id="editProductDescription" class="form-textarea"></textarea>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label class="form-label">Regular Price (₹)</label>
+                        <input type="number" id="editRegularPrice" class="form-input" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Selling Price (₹)</label>
+                        <input type="number" id="editSellingPrice" class="form-input">
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label class="form-label">Quantity</label>
+                        <input type="number" id="editQuantity" class="form-input" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Category</label>
+                        <select id="editCategory" class="form-select">
+                            <% if (locals.categories && categories.length > 0) { %>
+                                <% categories.forEach(category => { %>
+                                    <% if (category.isListed) { %>
+                                        <option value="<%= category._id %>"><%= category.name %></option>
+                                    <% } %>
+                                <% }) %>
+                            <% } %>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('editModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Update Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Crop Modal -->
+    <div class="crop-modal" id="cropModal">
+        <div class="crop-container">
+            <div class="crop-header">
+                <h3>Crop Image</h3>
+                <p>Adjust the image as needed, then click 'Crop & Save'</p>
+            </div>
+            <div class="crop-image-container">
+                <img id="cropImage" style="max-width:100%;">
+            </div>
+            <div class="crop-actions">
+                <button type="button" class="btn btn-secondary" onclick="closeCropModal()">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="applyCrop()">Crop & Save</button>
+            </div>
+        </div>
+    </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+/* ================= GLOBAL STATE ================= */
+let cropper = null;
+let currentEditImages = [];     // existing DB images
+let newUploadedImages = [];     // cropped blobs
+let currentCropIndex = null;
+
+/* ================= VIEW IMAGE ================= */
+function viewImage(src) {
+  Swal.fire({
+    imageUrl: src,
+    showConfirmButton: false,
+    background: '#000',
+    padding: 0,
+    backdrop: 'rgba(0,0,0,0.9)'
+  });
+}
+
+/* ================= OPEN EDIT MODAL ================= */
+function openEditModal(product) {
+  editProductId.value = product.id;
+  editProductName.value = product.name;
+  editProductDescription.value = product.description;
+  editRegularPrice.value = product.regularPrice;
+  editSellingPrice.value = product.salePrice;
+  editQuantity.value = product.quantity;
+  editCategory.value = product.categoryId;
+  editAuthor.value = product.author;
+
+  currentEditImages = Array.isArray(product.images) ? [...product.images] : [];
+  newUploadedImages = [];
+
+  renderImagesGrid();
+  editModal.classList.add('active');
+}
+
+/* ================= RENDER IMAGES GRID ================= */
+function renderImagesGrid() {
+  const grid = document.getElementById('imagesGrid');
+  grid.innerHTML = '';
+  
+  const totalSlots = 3;
+  const existingCount = currentEditImages.length;
+  const newCount = newUploadedImages.filter(Boolean).length;
+  
+  // Render existing images
+  currentEditImages.forEach((img, index) => {
+    const card = document.createElement('div');
+    card.className = 'image-card has-image';
+    card.innerHTML = `
+      <img src="/images/${img}" class="card-image" alt="Product image">
+      <div class="image-overlay">
+        <button type="button" class="overlay-btn overlay-btn-edit" onclick="editExistingImage(${index})" title="Replace image">
+          ✏️
+        </button>
+        <button type="button" class="overlay-btn overlay-btn-delete" onclick="removeExistingImage(${index})" title="Delete image">
+          🗑️
+        </button>
+      </div>
+      <input type="file" accept="image/*" class="hidden-file-input" data-type="existing" data-index="${index}">
+    `;
+    
+    // Setup file input handler
+    const fileInput = card.querySelector('input[type="file"]');
+    fileInput.onchange = (e) => openCropper(e, index, 'replace');
+    
+    grid.appendChild(card);
+  });
+  
+  // Render new uploaded images
+  newUploadedImages.forEach((blob, index) => {
+    if (blob) {
+      const card = document.createElement('div');
+      card.className = 'image-card has-image';
+      card.innerHTML = `
+        <img src="${URL.createObjectURL(blob)}" class="card-image" alt="New image">
+        <div class="image-overlay">
+          <button type="button" class="overlay-btn overlay-btn-edit" onclick="editNewImage(${index})" title="Replace image">
+            ✏️
+          </button>
+          <button type="button" class="overlay-btn overlay-btn-delete" onclick="removeNewImage(${index})" title="Delete image">
+            🗑️
+          </button>
+        </div>
+        <input type="file" accept="image/*" class="hidden-file-input" data-type="new" data-index="${index}">
+      `;
+      
+      const fileInput = card.querySelector('input[type="file"]');
+      fileInput.onchange = (e) => openCropper(e, index, 'new');
+      
+      grid.appendChild(card);
+    }
+  });
+  
+  // Render empty slots
+  const usedSlots = existingCount + newCount;
+  const emptySlots = totalSlots - usedSlots;
+  
+  for (let i = 0; i < emptySlots; i++) {
+    const card = document.createElement('div');
+    card.className = 'image-card empty';
+    const newIndex = newUploadedImages.length;
+    card.innerHTML = `
+      <div class="empty-placeholder">
+        <div class="empty-icon">📷</div>
+        <div class="empty-text">Add Image ${existingCount + newCount + i + 1}</div>
+      </div>
+      <input type="file" accept="image/*" class="hidden-file-input" data-type="new" data-index="${newIndex}">
+    `;
+    
+    const fileInput = card.querySelector('input[type="file"]');
+    card.onclick = () => fileInput.click();
+    fileInput.onchange = (e) => openCropper(e, newIndex, 'new');
+    
+    grid.appendChild(card);
+  }
+}
+
+/* ================= IMAGE ACTIONS ================= */
+function editExistingImage(index) {
+  const card = document.querySelectorAll('.image-card.has-image')[index];
+  const fileInput = card.querySelector('input[type="file"]');
+  fileInput.click();
+}
+function removeExistingImage(index) {
+  currentEditImages.splice(index, 1);
+  renderImagesGrid();
+}
+
+
+function editNewImage(index) {
+  const cards = document.querySelectorAll('.image-card.has-image');
+  const newImageCards = Array.from(cards).filter(card => {
+    const img = card.querySelector('.card-image');
+    return img && img.src.startsWith('blob:');
+  });
+  const fileInput = newImageCards[index]?.querySelector('input[type="file"]');
+  if (fileInput) fileInput.click();
+}
+
+function removeNewImage(index) {
+  newUploadedImages[index] = null;
+  renderImagesGrid();
+}
+
+/* ================= CROPPER ================= */
+function openCropper(e, index, type) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  if (!file.type.startsWith('image/')) {
+    Swal.fire({
+      title: 'Invalid File',
+      text: 'Please select a valid image',
+      icon: 'error',
+      confirmButtonColor: '#8b7dd8'
+    });
+    return;
+  }
+
+  currentCropIndex = index;
+  currentCropType = type;
+
+  const reader = new FileReader();
+  reader.onload = ev => {
+    cropImage.src = ev.target.result;
+    cropModal.classList.add('active');
+
+    if (cropper) cropper.destroy();
+    cropper = new Cropper(cropImage, {
+      aspectRatio: NaN,
+      viewMode: 1,
+      autoCropArea: 0.9,
+      responsive: true,
+      background: false
+    });
+  };
+  reader.readAsDataURL(file);
+}
+
+function closeCropModal() {
+  cropModal.classList.remove('active');
+  if (cropper) {
+    cropper.destroy();
+    cropper = null;
+  }
+}
+
+/* ================= APPLY CROP ================= */
+function applyCrop() {
+  if (!cropper) return;
+
+  const totalImages = currentEditImages.length + newUploadedImages.filter(Boolean).length;
+  
+  if (currentCropType === 'new' && totalImages >= 3) {
+    Swal.fire({
+      title: 'Limit Reached',
+      text: 'Maximum 3 images allowed',
+      icon: 'warning',
+      confirmButtonColor: '#8b7dd8'
+    });
+    closeCropModal();
+    return;
+  }
+
+  cropper.getCroppedCanvas({ width: 800, height: 800 })
+    .toBlob(blob => {
+      if (currentCropType === 'replace') {
+        // Replace existing image - remove old, add new
+        currentEditImages.splice(currentCropIndex, 1);
+        newUploadedImages.push(blob);
+      } else {
+        // Add new image
+        if (!newUploadedImages[currentCropIndex]) {
+          newUploadedImages[currentCropIndex] = blob;
+        } else {
+          newUploadedImages.push(blob);
+        }
+      }
+      
+      renderImagesGrid();
+      closeCropModal();
+    }, 'image/jpeg', 0.85);
+}
+
+/* ================= SUBMIT EDIT ================= */
+editForm.addEventListener('submit', async e => {
+  e.preventDefault();
+
+  const formData = new FormData();
+
+  formData.append('productId', editProductId.value);
+  formData.append('productName', editProductName.value);
+  formData.append('description', editProductDescription.value);
+  formData.append('regularPrice', editRegularPrice.value);
+  formData.append('sellingPrice', editSellingPrice.value);
+  formData.append('quantity', editQuantity.value);
+  formData.append('category', editCategory.value);
+  formData.append('author', editAuthor.value);
+
+  // remaining existing images
+  currentEditImages.forEach(img => {
+    formData.append('existingImages', img);
+  });
+
+  // new cropped images
+  newUploadedImages.forEach((blob, index) => {
+    if (blob) formData.append('productImage', blob, `image${index}.jpg`);
+  });
+
+  const res = await fetch('/admin/editProduct', {
+    method: 'POST',
+    body: formData
+  });
+
+  const data = await res.json();
+  if (data.success) {
+     closeModal('editModal');
+    Swal.fire({
+      title: 'Success',
+      text: 'Product updated successfully',
+      icon: 'success',
+      confirmButtonColor: '#8b7dd8'
+    }).then(() => location.reload());
+  } else {
+    Swal.fire({
+      title: 'Error',
+      text: data.message || 'Update failed',
+      icon: 'error',
+      confirmButtonColor: '#8b7dd8'
+    });
+  }
+});
+
+/* ================= OFFER MODAL ================= */
+function openOfferModal(productId, productName, offer = '') {
+  document.getElementById('offerProductId').value = productId;
+  document.getElementById('offerProductName').value = productName;
+  document.getElementById('offerPercentage').value = offer;
+  document.getElementById('offerError').textContent = '';
+  document.getElementById('offerModal').classList.add('active');
+}
+
+document.getElementById('offerForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const productId = document.getElementById('offerProductId').value;
+    const percentage = parseInt(document.getElementById('offerPercentage').value);
+
+    if (!percentage || percentage < 1 || percentage > 90) {
+        document.getElementById('offerError').textContent = 'Please enter a valid percentage (1-90)';
+        return;
+    }
+
+    try {
+        const res = await fetch('/admin/addOffer', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ percentage, productId })
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+            closeModal('offerModal');
+            Swal.fire({
+                title: 'Success',
+                text: 'Offer added successfully',
+                icon: 'success',
+                confirmButtonColor: '#8b7dd8'
+            }).then(() => location.reload());
+        } else {
+            document.getElementById('offerError').textContent = data.message || 'Failed to add offer';
+        }
+    } catch (err) {
+        document.getElementById('offerError').textContent = err.message;
+    }
+});
+
+/* ================= BLOCK / UNBLOCK ================= */
+async function confirmBlock(event, productId, action) {
+    event.preventDefault();
+    const result = await Swal.fire({
+        title: `${action.charAt(0).toUpperCase() + action.slice(1)} Product?`,
+        text: `Are you sure you want to ${action} this product?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: `Yes, ${action}`,
+        cancelButtonText: 'Cancel',
+        confirmButtonColor: '#8b7dd8',
+        cancelButtonColor: '#e9ecef'
+    });
+
+    if (result.isConfirmed) {
+        try {
+            const res = await fetch('/admin/productBlock', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ productId, action })
+            });
+            const data = await res.json();
+            if (data.success) {
+                Swal.fire({
+                    title: 'Success',
+                    text: `Product ${action}ed successfully`,
+                    icon: 'success',
+                    confirmButtonColor: '#8b7dd8'
+                }).then(() => location.reload());
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: data.message || 'Operation failed',
+                    icon: 'error',
+                    confirmButtonColor: '#8b7dd8'
+                });
+            }
+        } catch (err) {
+            Swal.fire({
+                title: 'Error',
+                text: 'Network error occurred',
+                icon: 'error',
+                confirmButtonColor: '#8b7dd8'
+            });
+        }
+    }
+}
+
+/* ================= REMOVE OFFER ================= */
+async function removeOffer(productId) {
+    const result = await Swal.fire({
+        title: 'Remove Offer?',
+        text: 'Are you sure you want to remove this offer?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, remove',
+        cancelButtonText: 'Cancel',
+        confirmButtonColor: '#8b7dd8',
+        cancelButtonColor: '#e9ecef'
+    });
+
+    if (result.isConfirmed) {
+        try {
+            const res = await fetch('/admin/removeProductOffer', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ productId })
+            });
+            const data = await res.json();
+            if (data.success) {
+                Swal.fire({
+                    title: 'Success',
+                    text: data.message,
+                    icon: 'success',
+                    confirmButtonColor: '#8b7dd8'
+                }).then(() => location.reload());
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: data.message || 'Failed to remove offer',
+                    icon: 'error',
+                    confirmButtonColor: '#8b7dd8'
+                });
+            }
+        } catch (err) {
+            Swal.fire({
+                title: 'Error',
+                text: err.message,
+                icon: 'error',
+                confirmButtonColor: '#8b7dd8'
+            });
+        }
+    }
+}
+
+/* ================= DELETE PRODUCT ================= */
+async function confirmDelete(productId) {
+    const result = await Swal.fire({
+        title: 'Delete Product?',
+        text: 'This action cannot be undone!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete',
+        cancelButtonText: 'Cancel',
+        confirmButtonColor: '#8b7dd8',
+        cancelButtonColor: '#e9ecef'
+    });
+
+    if (result.isConfirmed) {
+        try {
+            const res = await fetch('/admin/deleteProduct', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ productId })
+            });
+            const data = await res.json();
+             closeModal('editModal');
+            if (data.success) {
+                Swal.fire({
+                    title: 'Deleted!',
+                    text: 'Product has been deleted.',
+                    icon: 'success',
+                    confirmButtonColor: '#8b7dd8'
+                }).then(() => location.reload());
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: data.message || 'Failed to delete product',
+                    icon: 'error',
+                    confirmButtonColor: '#8b7dd8'
+                });
+            }
+        } catch (err) {
+            Swal.fire({
+                title: 'Error',
+                text: 'Network error occurred',
+                icon: 'error',
+                confirmButtonColor: '#8b7dd8'
+            });
+        }
+    }
+}
+
+/* ================= CLOSE MODAL ================= */
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.classList.remove('active');
+    }
+}
+
+// Close modal on outside click
+document.querySelectorAll('.modal').forEach(modal => {
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.classList.remove('active');
+        }
+    });
+});
+</script>
+
+</body>
+</html>

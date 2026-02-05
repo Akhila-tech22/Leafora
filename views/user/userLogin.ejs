@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Leafora</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #FFFFFF;
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Left Welcome Section */
+        .welcome-section {
+            flex: 1;
+            background: linear-gradient(135deg, #8B6F47 0%, #705836 100%);
+            padding: 60px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .welcome-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 500px;
+        }
+
+        .back-home {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            color: white;
+            font-size: 1.2rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            z-index: 2;
+        }
+
+        .back-home:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .welcome-logo {
+            font-size: 5rem;
+            color: white;
+            margin-bottom: 30px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .welcome-content h1 {
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .welcome-content p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .welcome-image {
+            width: 100%;
+            max-width: 400px;
+            margin-top: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .features {
+            display: flex;
+            gap: 30px;
+            margin-top: 40px;
+            justify-content: center;
+        }
+
+        .feature {
+            text-align: center;
+        }
+
+        .feature i {
+            font-size: 2rem;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .feature p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+        }
+
+        /* Right Form Section */
+        .form-section {
+            flex: 1;
+            background: #F5F1EB;
+            padding: 60px 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .login-header h2 {
+            color: #2E2E2E;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .login-header p {
+            color: #6B6B6B;
+            font-size: 1rem;
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert-error {
+            background: #fee;
+            color: #c53030;
+            border: 1px solid #feb2b2;
+        }
+
+        .alert-success {
+            background: #f0fff4;
+            color: #2f855a;
+            border: 1px solid #9ae6b4;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #2E2E2E;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #E8DFD5;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #FFFFFF;
+            color: #2E2E2E;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #8B6F47;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(139, 111, 71, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #9B9B9B;
+        }
+
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .remember-me input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #8B6F47;
+            cursor: pointer;
+        }
+
+        .remember-me label {
+            margin: 0;
+            color: #2E2E2E;
+            font-size: 0.95rem;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .forgot-password {
+            color: #8B6F47;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .forgot-password:hover {
+            color: #705836;
+            text-decoration: underline;
+        }
+
+        .btn-primary {
+            width: 100%;
+            background: #8B6F47;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-primary:hover {
+            background: #705836;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(139, 111, 71, 0.25);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .divider {
+            text-align: center;
+            position: relative;
+            margin: 25px 0;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #E8DFD5;
+        }
+
+        .divider span {
+            background: #F5F1EB;
+            padding: 0 20px;
+            color: #6B6B6B;
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .social-login {
+            margin-bottom: 25px;
+        }
+
+        .social-btn {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #E8DFD5;
+            border-radius: 10px;
+            background: #FFFFFF;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #2E2E2E;
+        }
+
+        .social-btn:hover {
+            background: #F5F1EB;
+            border-color: #8B6F47;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+        }
+
+        .social-btn i {
+            font-size: 1.3rem;
+            color: #db4437;
+        }
+
+        .signup-link {
+            text-align: center;
+            color: #6B6B6B;
+            font-size: 1rem;
+            background: #FFFFFF;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #E8DFD5;
+        }
+
+        .signup-link a {
+            color: #8B6F47;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .signup-link a:hover {
+            color: #705836;
+            text-decoration: underline;
+        }
+
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .loading .btn-primary {
+            background: #9B9B9B;
+        }
+
+        /* Tablet styles (iPad) */
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .welcome-section {
+                min-height: 400px;
+                padding: 50px 40px;
+            }
+
+            .welcome-content h1 {
+                font-size: 2rem;
+            }
+
+            .welcome-logo {
+                font-size: 4rem;
+            }
+
+            .features {
+                gap: 20px;
+            }
+
+            .form-section {
+                padding: 50px 40px;
+            }
+
+            .back-home {
+                top: 20px;
+                left: 20px;
+            }
+        }
+
+        /* Mobile styles (Phone) */
+        @media (max-width: 768px) {
+            .welcome-section {
+                min-height: 350px;
+                padding: 40px 30px;
+            }
+
+            .welcome-content h1 {
+                font-size: 1.75rem;
+            }
+
+            .welcome-content p {
+                font-size: 1rem;
+            }
+
+            .welcome-logo {
+                font-size: 3.5rem;
+            }
+
+            .features {
+                flex-direction: column;
+                gap: 15px;
+                    justify-content: center;
+            }
+
+            .welcome-image {
+                max-width: 300px;
+                margin-top: 30px;
+            }
+
+            .form-section {
+                padding: 40px 25px;
+            }
+
+            .login-header h2 {
+                font-size: 1.75rem;
+            }
+
+            .remember-forgot {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .back-home {
+                width: 40px;
+                height: 40px;
+                top: 15px;
+                left: 15px;
+            }
+        }
+
+        /* Small mobile */
+        @media (max-width: 480px) {
+            .welcome-section {
+                padding: 30px 20px;
+                min-height: 300px;
+            }
+
+            .welcome-content h1 {
+                font-size: 1.5rem;
+            }
+
+            .welcome-logo {
+                font-size: 3rem;
+            }
+
+            .form-section {
+                padding: 30px 20px;
+            }
+
+            .login-container {
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Left Welcome Section -->
+        <div class="welcome-section">
+            <a href="/" class="back-home" title="Back to Home">
+                <i class="fas fa-home"></i>
+            </a>
+
+            <div class="welcome-content">
+                <div class="welcome-logo">
+                    <i class="fas fa-book-open"></i>
+                </div>
+                <h1>Welcome Back!</h1>
+                <p>Continue your literary journey with thousands of amazing books waiting for you</p>
+
+                <!-- <img src="https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=800&h=600&fit=crop" 
+                     alt="Open Books" 
+                     class="welcome-image"> -->
+
+                <!-- <div class="features">
+                    <div class="feature">
+                        <i class="fas fa-book"></i>
+                        <p>Your Library</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-heart"></i>
+                        <p>Saved Books</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-star"></i>
+                        <p>Recommendations</p>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+
+        <!-- Right Form Section -->
+        <div class="form-section">
+            <div class="login-container">
+                <div class="login-header">
+                    <h2>Sign In</h2>
+                    <p>Enter your credentials to access your account</p>
+                </div>
+
+                <!-- Display error message if exists -->
+                <% if (typeof error !== 'undefined' && error) { %>
+                    <div class="alert alert-error">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span><%= error %></span>
+                    </div>
+                <% } %>
+
+                <!-- Display success message if exists -->
+                <% if (typeof message !== 'undefined' && message) { %>
+                    <div class="alert alert-success">
+                        <i class="fas fa-check-circle"></i>
+                        <span><%= message %></span>
+                    </div>
+                <% } %>
+
+                <form id="loginForm" action="/login" method="POST">
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" 
+                               id="email" 
+                               name="email" 
+                               placeholder="Enter your email address" 
+                               autocomplete="email">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" 
+                               id="password" 
+                               name="password" 
+                               placeholder="Enter your password" 
+                               autocomplete="current-password">
+                    </div>
+
+                    <div class="remember-forgot">
+                        <div class="remember-me">
+                            <input type="checkbox" id="remember" name="remember">
+                            <label for="remember">Remember me</label>
+                        </div>
+                        <a href="/forgot-password" class="forgot-password">Forgot Password?</a>
+                    </div>
+
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Sign In to Leafora
+                    </button>
+                </form>
+
+                <div class="divider">
+                    <span>Or continue with</span>
+                </div>
+
+                <div class="social-login">
+                    <button class="social-btn" onclick="socialLogin('google')">
+                        <i class="fab fa-google"></i>
+                        Continue with Google
+                    </button>
+                </div>
+
+                <div class="signup-link">
+                    Don't have an account? 
+                    <a href="/register">Create one here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const form = e.target;
+            isValidForm();
+
+            async function isValidForm() {
+                const button = form.querySelector('.btn-primary');
+                const container = document.querySelector('.login-container');
+                
+                // Add loading state
+                container.classList.add('loading');
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>Signing In...';
+                
+                // Get values
+                const email = form.email.value.trim();
+                const password = form.password.value.trim();
+
+                // Email validation helper
+                function isValidEmail(email) {
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    return emailRegex.test(email);
+                }
+
+                // Basic validation
+                if (!email || !password) {
+                    container.classList.remove('loading');
+                    button.innerHTML = '<i class="fas fa-sign-in-alt"></i>Sign In to Leafora';
+                    showAlert('Please fill in all fields', 'error');
+                    return;
+                }
+
+                if (!isValidEmail(email)) {
+                    container.classList.remove('loading');
+                    button.innerHTML = '<i class="fas fa-sign-in-alt"></i>Sign In to Leafora';
+                    showAlert('Please enter a valid email address', 'error');
+                    return;
+                }
+
+                try {
+                    const res = await fetch("/login", {
+                        method: "POST",
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify({ email, password })
+                    });
+                    const data = await res.json();
+
+                    if (data.success) {
+                        showAlert("Login successful! Redirecting...", "success");
+                        window.location.href = "/";
+                    } else {
+                        container.classList.remove('loading');
+                        button.innerHTML = '<i class="fas fa-sign-in-alt"></i>Sign In to Leafora';
+                        showAlert(data.message || "Invalid email or password", "error");
+                    }
+                } catch (err) {
+                    container.classList.remove('loading');
+                    button.innerHTML = '<i class="fas fa-sign-in-alt"></i>Sign In to Leafora';
+                    showAlert("Server error. Please try again later.", "error");
+                }
+            }
+        });
+
+        // Show alert function
+        function showAlert(message, type) {
+            const container = document.querySelector('.login-container');
+            const oldAlert = document.querySelector('.alert');
+            if (oldAlert) oldAlert.remove();
+
+            const div = document.createElement('div');
+            div.className = `alert ${type === 'error' ? 'alert-error' : 'alert-success'}`;
+            div.innerHTML = `<i class="fas ${type === 'error' ? 'fa-exclamation-triangle' : 'fa-check-circle'}"></i> <span>${message}</span>`;
+            
+            const header = container.querySelector('.login-header');
+            header.parentNode.insertBefore(div, header.nextSibling);
+        }
+
+        function socialLogin(provider) {
+            if(provider === 'google') {
+                window.location.href = '/auth/google';
+            }
+        }
+    </script>
+</body>
+</html>

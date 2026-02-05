@@ -1,0 +1,371 @@
+  <!-- Navigation Header - Save as views/partials/nav.ejs -->
+    <style>
+        .admin-navbar {
+            background: linear-gradient(135deg, #3d4c5c 0%, #2c3e50 100%);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .navbar-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 25px;
+        }
+        
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            font-size: 20px;
+            font-weight: 700;
+            padding: 18px 0;
+            letter-spacing: 0.5px;
+        }
+        
+        .brand-icon {
+            width: 36px;
+            height: 36px;
+            margin-right: 12px;
+            background: rgba(139, 125, 216, 0.2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            border: 2px solid rgba(139, 125, 216, 0.3);
+        }
+        
+        .navbar-menu {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .navbar-item {
+            position: relative;
+        }
+        
+        .navbar-link {
+            display: flex;
+            align-items: center;
+            padding: 10px 16px;
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            text-transform: capitalize;
+            transition: all 0.3s ease;
+            border-radius: 6px;
+        }
+        
+        .navbar-link:hover {
+            color: white;
+            background: rgba(139, 125, 216, 0.15);
+            transform: translateY(-1px);
+        }
+        
+        .navbar-link.active {
+            color: white;
+            background: rgba(139, 125, 216, 0.25);
+            box-shadow: 0 2px 6px rgba(139, 125, 216, 0.2);
+        }
+        
+        .link-icon {
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+            opacity: 0.9;
+        }
+
+        /* Logout Button */
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            padding: 10px 18px;
+            background: rgba(139, 125, 216, 0.2);
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(139, 125, 216, 0.3);
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .logout-btn:hover {
+            background: #8b7dd8;
+            border-color: #8b7dd8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(139, 125, 216, 0.3);
+        }
+
+        .logout-icon {
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+        }
+        
+        /* Mobile Menu Toggle */
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .mobile-toggle {
+                display: block;
+            }
+            
+            .navbar-menu {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 280px;
+                height: calc(100vh - 70px);
+                background: linear-gradient(135deg, #3d4c5c 0%, #2c3e50 100%);
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 20px;
+                transition: left 0.3s ease;
+                overflow-y: auto;
+                box-shadow: 4px 0 10px rgba(0, 0, 0, 0.2);
+                gap: 0;
+            }
+            
+            .navbar-menu.active {
+                left: 0;
+            }
+            
+            .navbar-item {
+                width: 100%;
+                margin-bottom: 8px;
+            }
+            
+            .navbar-link {
+                width: 100%;
+                padding: 14px 16px;
+                border-radius: 8px;
+                font-size: 15px;
+            }
+            
+            .navbar-container {
+                padding: 0 15px;
+            }
+
+            .logout-btn {
+                margin-left: 0;
+                margin-top: 10px;
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar-brand {
+                font-size: 18px;
+            }
+
+            .brand-icon {
+                width: 32px;
+                height: 32px;
+                font-size: 16px;
+            }
+        }
+        
+        /* Icon styles using CSS */
+        .icon-dashboard::before { content: "📊"; }
+        .icon-customers::before { content: "👥"; }
+        .icon-add-product::before { content: "➕"; } 
+        .icon-products::before { content: "📚"; }
+        .icon-brands::before { content: "🏷️"; }
+        .icon-coupons::before { content: "🎫"; }
+        .icon-settings::before { content: "⚙️"; }
+        .icon-logout::before { content: "🚪"; }
+    </style>
+    <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    </head>
+    <nav class="admin-navbar">
+        <div class="navbar-container">
+            <!-- Brand/Logo -->
+            <a href="/admin/dashboard" class="navbar-brand">
+                <div class="brand-icon"><i class="fas fa-book-open"></i></div>
+                Leafora Admin
+            </a>
+            
+            <!-- Right Side (Menu + Logout) -->
+            <div class="navbar-right">
+                <!-- Mobile Toggle Button -->
+                <button class="mobile-toggle" onclick="toggleMobileMenu()">
+                    ☰
+                </button>
+                
+                <!-- Navigation Menu -->
+                <ul class="navbar-menu" id="navbar-menu">
+                    <li class="navbar-item">
+                        <a href="/admin/dashboard" 
+                        class="navbar-link <%= currentPage === 'dashboard' ? 'active' : '' %>">
+                            <span class="link-icon icon-dashboard"></span>
+                            Dashboard
+                        </a>
+                    </li>
+                    
+                    <li class="navbar-item">
+                        <a href="/admin/customers" 
+                        class="navbar-link <%= currentPage === 'customers' ? 'active' : '' %>">
+                            <span class="link-icon icon-customers"></span>
+                            Customers
+                        </a>
+                    </li>
+
+                    <li class="navbar-item">
+                        <a href="/admin/categories" 
+                        class="navbar-link <%= currentPage === 'brands' ? 'active' : '' %>">
+                            <span class="link-icon icon-brands"></span>
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="navbar-item">
+                        <a href="/admin/addProduct" class="navbar-link">
+                            <span class="link-icon icon-add-product"></span>
+                            Add Products
+                        </a>
+                    </li>
+
+                    <li class="navbar-item">
+                        <a href="/admin/product" 
+                        class="navbar-link <%= currentPage === 'settings' ? 'active' : '' %>">
+                            <span class="link-icon icon-products"></span>
+                            Products
+                        </a>
+                    </li>
+
+                    <li class="navbar-item">
+                        <a href="/admin/adminOrder" 
+                        class="navbar-link <%= currentPage === 'coupons' ? 'active' : '' %>">
+                            <span class="link-icon icon-coupons"></span>
+                            Order
+                        </a>
+                    </li>
+            
+                    <li class="navbar-item">
+                        <a href="/admin/coupons" 
+                        class="navbar-link <%= currentPage === 'coupons' ? 'active' : '' %>">
+                            <span class="link-icon icon-coupons"></span>
+                            Coupons
+                        </a>
+                    </li>
+
+                    <!-- Logout Button (Mobile) -->
+                    <li class="navbar-item" style="display: none;" id="mobile-logout">
+                        <a href="/admin/logout" class="logout-btn">
+                            <span class="logout-icon icon-logout"></span>
+                            Logout
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Logout Button (Desktop) -->
+                 <a href="javascript:void(0)" onclick="confirmLogout()"  class="logout-btn" id="desktop-logout">
+                    <span class="logout-icon icon-logout"></span>
+                    Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('navbar-menu');
+            const mobileLogout = document.getElementById('mobile-logout');
+            const isActive = menu.classList.toggle('active');
+            
+            // Show/hide mobile logout button
+            if (isActive) {
+                mobileLogout.style.display = 'block';
+            } else {
+                mobileLogout.style.display = 'none';
+            }
+        }
+        
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('navbar-menu');
+            const toggle = document.querySelector('.mobile-toggle');
+            const mobileLogout = document.getElementById('mobile-logout');
+            
+            if (!menu.contains(event.target) && !toggle.contains(event.target)) {
+                menu.classList.remove('active');
+                mobileLogout.style.display = 'none';
+            }
+        });
+        
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.navbar-link').forEach(link => {
+            link.addEventListener('click', function() {
+                const menu = document.getElementById('navbar-menu');
+                const mobileLogout = document.getElementById('mobile-logout');
+                menu.classList.remove('active');
+                mobileLogout.style.display = 'none';
+            });
+        });
+
+        // Handle responsive logout button visibility
+        function handleResponsive() {
+            const desktopLogout = document.getElementById('desktop-logout');
+            const mobileLogout = document.getElementById('mobile-logout');
+            
+            if (window.innerWidth <= 992) {
+                desktopLogout.style.display = 'none';
+            } else {
+                desktopLogout.style.display = 'flex';
+                mobileLogout.style.display = 'none';
+            }
+        }
+
+    function confirmLogout() {
+  Swal.fire({
+    title: 'Do you want to logout?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, Logout'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      fetch('/admin/logout', {
+        method: 'POST'
+      }).then(() => {
+        window.location.href = '/admin/login';
+      });
+    }
+  });
+}
+
+
+        // Run on load and resize
+        handleResponsive();
+        window.addEventListener('resize', handleResponsive);
+    </script>
