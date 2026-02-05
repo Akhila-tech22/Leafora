@@ -29,7 +29,8 @@ const getOrder = async (req,res) => {
             orders,
         })
     }catch(error) {
-
+           console.log(error);
+   res.status(500).json({ message: "Server error" });
     }
 }
 
@@ -597,7 +598,8 @@ const returnReq = async (req,res) => {
     res.json({success : true , message : "Update successfully"})
 
   }catch(error) {
-
+       console.log(error);
+   res.status(500).json({ message: "Server error" });
   }
 }
 
@@ -670,6 +672,8 @@ const cancelOrder = async (req,res) => {
    
 
   }catch(error) {
+           console.log(error);
+   res.status(500).json({ message: "Server error" });   
 
   }
 }

@@ -214,7 +214,8 @@ const updateOrderStatus = async (req,res) => {
     res.json({ success: true, message: 'Status updated successfully' });
 
   }catch(error) {
-
+       console.log(error);
+   res.status(500).json({ message: "Server error" });
   }
 }
 
@@ -350,7 +351,8 @@ const logout = async (req,res) => {
     })
 
   }catch(error) {
-    console.log(error);
+       console.log(error);
+   res.status(500).json({ message: "Server error" });
   }
 }
 
@@ -359,7 +361,8 @@ const getForgotPass = async (req,res) => {
     req.session.role = 'admin';
     res.render('admin/adminForgotPass')
   }catch(error) {
-
+       console.log(error);
+   res.status(500).json({ message: "Server error" });
   }
 }
 

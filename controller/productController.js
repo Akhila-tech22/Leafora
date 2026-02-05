@@ -34,7 +34,8 @@ const findSalesPrice = (product) => {
                         categories,
                     })
             }catch(error) {
-
+                   console.log(error);
+   res.status(500).json({ message: "Server error" });
             }
         }
 
@@ -169,7 +170,8 @@ const productBlock = async (req,res) => {
         return res.json({success : true, message : "Successfully"})
 
     }catch(error) {
-
+           console.log(error);
+   res.status(500).json({ message: "Server error" });
     }
 }
 
@@ -193,7 +195,8 @@ const deleteProduct= async (req,res) => {
          await Product.findByIdAndDelete(productId)
          return res.json({success : true, message : "Delete Successfully"})
     }catch(error) {
-
+           console.log(error);
+   res.status(500).json({ message: "Server error" });
     }
 }
 
@@ -356,7 +359,8 @@ const getCoupon = async (req,res) => {
         })
 
     }catch(error) {
-
+           console.log(error);
+   res.status(500).json({ message: "Server error" });
     }
 }
 
@@ -390,7 +394,8 @@ const addCoupon = async (req,res) => {
              return res.json({ success: true, message: "Coupon add successfully" });
 
     }catch(error) {
-
+           console.log(error);
+   res.status(500).json({ message: "Server error" });
     }
 }
 

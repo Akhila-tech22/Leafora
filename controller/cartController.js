@@ -10,7 +10,7 @@ const addToCart = async (req, res) => {
     try {
         const { productId } = req.body;
         
-        console.log('🔹 Add to cart request for product:', productId); 
+        console.log(' Add to cart request for product:', productId); 
         
         if (!productId) {
             return res.json({ success: false, message: "Product ID missing" });

@@ -54,14 +54,16 @@ const GetLogin = async (req,res) => {
 try {
     res.render("user/userLogin");
 }catch(error) {
-
+     console.log(error);
+   res.status(500).json({ message: "Server error" });
 }
 }
 const GetSin = async (req,res) => {
 try {
     res.render("user/register");
 }catch(error) {
-
+     console.log(error);
+   res.status(500).json({ message: "Server error" });
 }
 }
 const postSin = async (req, res) => {
@@ -187,7 +189,8 @@ const logout = async(req,res) => {
             return res.redirect("/login")
         })
     }catch(error) {
-
+         console.log(error);
+   res.status(500).json({ message: "Server error" });
     }
 }
 
@@ -196,7 +199,8 @@ const forgotPass = async (req,res) => {
       req.session.role = 'user';
         res.render('user/forgotPass');
     }catch(error) {
-
+         console.log(error);
+   res.status(500).json({ message: "Server error" });
     }
 }
 
@@ -248,7 +252,8 @@ const forgotOtp = async (req,res) => {
             email  : req.session.email
         })
     }catch(error) {
-
+         console.log(error);
+   res.status(500).json({ message: "Server error" });
     }
 }
 
@@ -294,7 +299,8 @@ const passwordChange = async (req,res) => {
 
         res.render('user/confirmPass')
     }catch(error) {
-
+         console.log(error);
+   res.status(500).json({ message: "Server error" });
     }
 }
 
@@ -360,7 +366,8 @@ const resendPassOtp = async (req,res) => {
         res.redirect('/forgot-otp')
 
     }catch(error) {
-
+         console.log(error);
+   res.status(500).json({ message: "Server error" });
     }
 }
 

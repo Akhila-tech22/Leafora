@@ -26,7 +26,8 @@ const getProfile = async (req, res) => {
         });
 
     } catch (error) {
-        console.log(error);
+           console.log(error);
+   res.status(500).json({ message: "Server error" });
     }
 };
 
@@ -111,7 +112,8 @@ const getEmailOtp =  async (req,res) => {
             
         })
     }catch(error) {
-
+           console.log(error);
+   res.status(500).json({ message: "Server error" });
     }
 }
 
@@ -148,7 +150,8 @@ const verifyOtp = async (req,res) => {
 
 
     }catch(error) {
-
+           console.log(error);
+   res.status(500).json({ message: "Server error" });
     }
 }
 
@@ -170,7 +173,8 @@ const changePass = async (req,res) => {
 
 
     }catch(error) {
-
+           console.log(error);
+   res.status(500).json({ message: "Server error" });
     }
 }
 const resendOtp = async (req,res) => {
@@ -190,7 +194,8 @@ const resendOtp = async (req,res) => {
         
 
     }catch(error) {
-
+           console.log(error);
+   res.status(500).json({ message: "Server error" });
     }
 }
 
@@ -209,7 +214,8 @@ const getCoupon = async(req,res) => {
         })
 
     }catch(error) {
-
+           console.log(error);
+   res.status(500).json({ message: "Server error" });
     } 
 }
 
@@ -221,7 +227,8 @@ const checkUpdates = async (req,res) => {
         res.json({success : true, count : coupons.length})
 
     }catch(error) {
-
+           console.log(error);
+   res.status(500).json({ message: "Server error" });
     }
 }
 
@@ -322,7 +329,8 @@ const removeWhislist = async (req,res) => {
         await wishlist.save();
          return res.json({ success: true, message: "Item removed successfully" });
     }catch(error) {
-
+           console.log(error);
+   res.status(500).json({ message: "Server error" });
     }
 }
 
