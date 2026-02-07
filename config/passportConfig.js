@@ -14,18 +14,44 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
+     
         let user = await User.findOne({ googleId: profile.id });
-        if (user) return done(null, user);
+        
+        if (user) {
+        
+          if (user.isBlocked) {
+            return done(null, false, { message: 'User is blocked' });
+          }
+          return done(null, user);
+        }
 
-        user = new User({
+        const emailExists = await User.findOne({ email: profile.emails[0].value });
+        if (emailExists) {
+        
+          emailExists.googleId = profile.id;
+          await emailExists.save();
+          
+          if (emailExists.isBlocked) {
+            return done(null, false, { message: 'User is blocked' });
+          }
+          return done(null, emailExists);
+        }
+
+    
+        const newUser = new User({
           name: profile.displayName,
           email: profile.emails[0].value,
           googleId: profile.id
         });
 
-        await user.save();
-        return done(null, user);
+        const referalCode = 'BOOK' + newUser._id.toString().slice(-6).toUpperCase();
+        newUser.referalCode = referalCode;
+
+        await newUser.save();
+        return done(null, newUser);
+        
       } catch (err) {
+        console.error('Google OAuth Error:', err);
         return done(err, null);
       }
     }
@@ -33,10 +59,15 @@ passport.use(
 );
 
 passport.serializeUser((user, done) => done(null, user.id));
-passport.deserializeUser((id, done) => {
-  User.findById(id)
-    .then((user) => done(null, user))
-    .catch((err) => done(err, null));
+
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await User.findById(id);
+    done(null, user);
+  } catch (err) {
+    console.error('Deserialize Error:', err);
+    done(err, null);
+  }
 });
 
 module.exports = passport;
