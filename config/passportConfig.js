@@ -3,8 +3,7 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const User = require('../schema/userSchema');
 require('dotenv').config();
 
-
-const callbackURL = 'https://leaforaa.store/auth/google/callback';
+const callbackURL = process.env.GOOGLE_CALLBACK_URL || 'https://leaforaa.store/auth/google/callback';
 
 passport.use(
   new GoogleStrategy(
