@@ -12,25 +12,20 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: 'Inter', sans-serif;
             line-height: 1.6;
             color: #2E2E2E;
             background: #FFFFFF;
         }
-
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
         }
-
         .main-content {
             margin-top: 80px;
         }
-
-        /* Page Header */
         .page-header {
             background: linear-gradient(135deg, #8B6F47 0%, #705836 100%);
             padding: 100px 0 80px;
@@ -38,7 +33,6 @@
             position: relative;
             overflow: hidden;
         }
-
         .page-header::before {
             content: '';
             position: absolute;
@@ -49,25 +43,21 @@
             background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
             animation: rotate 20s linear infinite;
         }
-
         @keyframes rotate {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
-
         .page-header-content {
             position: relative;
             z-index: 2;
             text-align: center;
         }
-
         .page-header h1 {
             font-size: 3rem;
             font-weight: 700;
             margin-bottom: 1rem;
             animation: fadeInUp 0.8s ease;
         }
-
         .page-header p {
             font-size: 1.2rem;
             opacity: 0.95;
@@ -75,7 +65,6 @@
             margin: 0 auto;
             animation: fadeInUp 0.8s ease 0.2s backwards;
         }
-
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -86,7 +75,6 @@
                 transform: translateY(0);
             }
         }
-
         .breadcrumb {
             display: flex;
             gap: 8px;
@@ -96,50 +84,41 @@
             margin-top: 20px;
             animation: fadeInUp 0.8s ease 0.4s backwards;
         }
-
         .breadcrumb a {
             color: white;
             text-decoration: none;
             opacity: 0.9;
             transition: opacity 0.3s ease;
         }
-
         .breadcrumb a:hover {
             opacity: 1;
         }
-
         .breadcrumb i {
             font-size: 0.7rem;
             opacity: 0.7;
         }
-
-        /* Story Section */
         .story-section {
             padding: 80px 0;
             background: #F5F1EB;
         }
-
         .story-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 60px;
             align-items: center;
         }
-
         .story-text h2 {
             font-size: 2.5rem;
             color: #2E2E2E;
             margin-bottom: 1.5rem;
             font-weight: 700;
         }
-
         .story-text p {
             font-size: 1.05rem;
             color: #6B6B6B;
             margin-bottom: 1.5rem;
             line-height: 1.8;
         }
-
         .story-image {
             position: relative;
             border-radius: 20px;
@@ -147,26 +126,21 @@
             height: 500px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
         }
-
         .story-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-
-        /* Mission & Vision */
         .mission-vision {
             padding: 80px 0;
             background: white;
         }
-
         .mission-vision-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 40px;
             margin-top: 50px;
         }
-
         .mv-card {
             background: #F5F1EB;
             border-radius: 16px;
@@ -175,7 +149,6 @@
             position: relative;
             overflow: hidden;
         }
-
         .mv-card::before {
             content: '';
             position: absolute;
@@ -185,12 +158,10 @@
             height: 4px;
             background: linear-gradient(90deg, #8B6F47 0%, #705836 100%);
         }
-
         .mv-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
         }
-
         .mv-card-icon {
             width: 70px;
             height: 70px;
@@ -201,56 +172,46 @@
             justify-content: center;
             margin-bottom: 25px;
         }
-
         .mv-card-icon i {
             font-size: 2rem;
             color: white;
         }
-
         .mv-card h3 {
             font-size: 1.8rem;
             color: #2E2E2E;
             margin-bottom: 15px;
             font-weight: 700;
         }
-
         .mv-card p {
             font-size: 1rem;
             color: #6B6B6B;
             line-height: 1.8;
         }
-
-        /* Values Section */
         .values-section {
             padding: 80px 0;
             background: #F5F1EB;
         }
-
         .section-header {
             text-align: center;
             margin-bottom: 60px;
         }
-
         .section-header h2 {
             font-size: 2.5rem;
             color: #2E2E2E;
             margin-bottom: 1rem;
             font-weight: 700;
         }
-
         .section-header p {
             font-size: 1.1rem;
             color: #6B6B6B;
             max-width: 700px;
             margin: 0 auto;
         }
-
         .values-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 30px;
         }
-
         .value-card {
             background: white;
             border-radius: 12px;
@@ -259,13 +220,11 @@
             transition: all 0.3s ease;
             border: 2px solid transparent;
         }
-
         .value-card:hover {
             border-color: #8B6F47;
             transform: translateY(-5px);
             box-shadow: 0 10px 30px rgba(139, 111, 71, 0.15);
         }
-
         .value-icon {
             width: 80px;
             height: 80px;
@@ -277,87 +236,70 @@
             margin: 0 auto 20px;
             transition: all 0.3s ease;
         }
-
         .value-card:hover .value-icon {
             background: linear-gradient(135deg, #8B6F47 0%, #705836 100%);
         }
-
         .value-icon i {
             font-size: 2rem;
             color: #8B6F47;
             transition: all 0.3s ease;
         }
-
         .value-card:hover .value-icon i {
             color: white;
         }
-
         .value-card h3 {
             font-size: 1.3rem;
             color: #2E2E2E;
             margin-bottom: 12px;
             font-weight: 600;
         }
-
         .value-card p {
             font-size: 0.95rem;
             color: #6B6B6B;
             line-height: 1.6;
         }
-
-        /* Stats Section */
         .stats-section {
             padding: 80px 0;
             background: linear-gradient(135deg, #8B6F47 0%, #705836 100%);
             color: white;
         }
-
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 40px;
             text-align: center;
         }
-
         .stat-item {
             padding: 20px;
         }
-
         .stat-number {
             font-size: 3rem;
             font-weight: 700;
             margin-bottom: 10px;
             display: block;
         }
-
         .stat-label {
             font-size: 1.1rem;
             opacity: 0.95;
             font-weight: 500;
         }
-
-        /* Team Section */
         .team-section {
             padding: 80px 0;
             background: white;
         }
-
         .team-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 30px;
             margin-top: 50px;
         }
-
         .team-card {
             text-align: center;
             transition: all 0.3s ease;
         }
-
         .team-card:hover {
             transform: translateY(-5px);
         }
-
         .team-image {
             width: 100%;
             height: 280px;
@@ -370,64 +312,53 @@
             justify-content: center;
             position: relative;
         }
-
         .team-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-
         .team-image i {
             font-size: 4rem;
             color: rgba(255, 255, 255, 0.8);
         }
-
         .team-name {
             font-size: 1.2rem;
             font-weight: 600;
             color: #2E2E2E;
             margin-bottom: 5px;
         }
-
         .team-role {
             font-size: 0.95rem;
             color: #8B6F47;
             font-weight: 500;
         }
-
-        /* CTA Section */
         .cta-section {
             padding: 80px 0;
             background: #F5F1EB;
             text-align: center;
         }
-
         .cta-content {
             max-width: 700px;
             margin: 0 auto;
         }
-
         .cta-content h2 {
             font-size: 2.5rem;
             color: #2E2E2E;
             margin-bottom: 1.5rem;
             font-weight: 700;
         }
-
         .cta-content p {
             font-size: 1.1rem;
             color: #6B6B6B;
             margin-bottom: 2.5rem;
             line-height: 1.8;
         }
-
         .cta-buttons {
             display: flex;
             gap: 15px;
             justify-content: center;
             flex-wrap: wrap;
         }
-
         .btn {
             padding: 14px 32px;
             border-radius: 10px;
@@ -439,30 +370,24 @@
             gap: 10px;
             font-size: 1rem;
         }
-
         .btn-primary {
             background: #8B6F47;
             color: white;
         }
-
         .btn-primary:hover {
             background: #705836;
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(139, 111, 71, 0.3);
         }
-
         .btn-secondary {
             background: white;
             color: #8B6F47;
             border: 2px solid #8B6F47;
         }
-
         .btn-secondary:hover {
             background: #8B6F47;
             color: white;
         }
-
-        /* Mobile Responsive */
         @media (max-width: 1024px) {
             .story-content {
                 grid-template-columns: 1fr;
@@ -485,7 +410,6 @@
                 grid-template-columns: repeat(2, 1fr);
             }
         }
-
         @media (max-width: 768px) {
             .main-content {
                 margin-top: 70px;
@@ -535,7 +459,6 @@
     <%- include('../admin/partials/user/header') %>
 
     <div class="main-content">
-        <!-- Page Header -->
         <section class="page-header">
             <div class="container">
                 <div class="page-header-content">
@@ -549,8 +472,6 @@
                 </div>
             </div>
         </section>
-
-        <!-- Our Story -->
         <section class="story-section">
             <div class="container">
                 <div class="story-content">
@@ -568,7 +489,7 @@
             </div>
         </section>
 
-        <!-- Mission & Vision -->
+
         <section class="mission-vision">
             <div class="container">
                 <div class="section-header">
@@ -594,7 +515,6 @@
             </div>
         </section>
 
-        <!-- Core Values -->
         <section class="values-section">
             <div class="container">
                 <div class="section-header">
@@ -648,7 +568,6 @@
             </div>
         </section>
 
-        <!-- Stats -->
         <section class="stats-section">
             <div class="container">
                 <div class="stats-grid">
@@ -672,7 +591,6 @@
             </div>
         </section>
 
-        <!-- Team -->
         <section class="team-section">
             <div class="container">
                 <div class="section-header">
@@ -712,7 +630,6 @@
             </div>
         </section>
 
-        <!-- CTA -->
         <section class="cta-section">
             <div class="container">
                 <div class="cta-content">
@@ -736,7 +653,6 @@
     <%- include('../admin/partials/user/footer') %>
 
     <script>
-        // Smooth scroll effect for navbar
         window.addEventListener('scroll', function() {
             const navbar = document.getElementById('navbar');
             if (navbar && window.scrollY > 50) {
@@ -746,7 +662,6 @@
             }
         });
 
-        // Counter animation for stats
         function animateCounter(element, target, duration = 2000) {
             let start = 0;
             const increment = target / (duration / 16);
@@ -767,8 +682,6 @@
             }
             return num + '+';
         }
-
-        // Intersection Observer for counter animation
         const observerOptions = {
             threshold: 0.5,
             rootMargin: '0px'

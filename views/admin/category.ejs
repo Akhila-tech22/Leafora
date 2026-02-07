@@ -12,26 +12,14 @@
         line-height: 1.6;
     }
 
-    /* ✅ Centered container */
     .container {
         max-width: 1200px;
         margin: 0 auto;
         padding: 30px 20px;
     }
 
-    /* Main Content */
     .main-content {
         margin-left: 0;
-    }
-
-    /* Page Header */
-    .page-header {
-        background: linear-gradient(135deg, #3d4c5c 0%, #2c3e50 100%);
-        padding: 30px;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        margin-bottom: 30px;
-        color: white;
     }
 
     .page-title {
@@ -47,7 +35,6 @@
         font-weight: 400;
     }
 
-    /* Action Section */
     .action-section {
         background: white;
         padding: 20px;
@@ -128,7 +115,6 @@
         transform: translateY(-2px);
     }
 
-    /* Categories Table */
     .categories-table {
         background: white;
         border-radius: 12px;
@@ -173,7 +159,6 @@
         background: #f8f9fb;
     }
 
-    /* Action Buttons - Icon Based */
     .action-buttons {
         display: flex;
         gap: 8px;
@@ -199,7 +184,6 @@
         box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
 
-    /* Edit Button */
     .btn-edit {
         background: #fef3c7;
         color: #f59e0b;
@@ -210,7 +194,6 @@
         color: white;
     }
 
-    /* Delete Button */
     .btn-delete {
         background: #fee;
         color: #ef4444;
@@ -221,7 +204,6 @@
         color: white;
     }
 
-    /* Offer Button */
     .btn-offer {
         background: #e0d4f7;
         color: #8b7dd8;
@@ -232,7 +214,6 @@
         color: white;
     }
 
-    /* Remove Offer Button */
     .btn-remove-offer {
         background: #fed7aa;
         color: #ea580c;
@@ -243,7 +224,6 @@
         color: white;
     }
 
-    /* Tooltip */
     .icon-btn::before {
         content: attr(data-tooltip);
         position: absolute;
@@ -267,7 +247,6 @@
         opacity: 1;
     }
 
-    /* Category Info */
     .category-name {
         font-weight: 600;
         margin-bottom: 4px;
@@ -306,7 +285,6 @@
         font-size: 13px;
     }
 
-    /* Modal Styles */
     .modal {
         display: none;
         position: fixed;
@@ -439,7 +417,6 @@
         box-shadow: 0 6px 16px rgba(139, 125, 216, 0.3);
     }
 
-    /* No Categories */
     .no-categories {
         text-align: center;
         padding: 60px 20px;
@@ -456,7 +433,6 @@
         font-size: 14px;
     }
 
-    /* Pagination */
     .pagination {
         display: flex;
         justify-content: center;
@@ -498,7 +474,6 @@
         box-shadow: 0 4px 12px rgba(139, 125, 216, 0.3);
     }
 
-    /* Responsive */
     @media (max-width: 768px) {
         .container {
             padding: 20px 15px;
@@ -568,18 +543,15 @@
 </style>
 
 <body>
-    <!-- Include Navigation -->
     <%- include('partials/admin/header') %>
 
     <div class="container">
         <div class="main-content">
-            <!-- Page Header -->
             <div class="">
                 <h1 class="page-title">Category Management</h1>
                 <p class="page-subtitle">Manage book categories and offers</p>
             </div>
 
-            <!-- Action Section -->
             <div class="action-section">
                 <form action="/admin/categories" method="get" class="search-form">
                     <input type="text" class="search-input" placeholder="Search categories..." 
@@ -594,7 +566,6 @@
                 </button>
             </div>
 
-            <!-- Categories Table -->
             <div class="categories-table">
                 <div class="table-header">
                     Category List (<%= categories.length %> categories)
@@ -635,14 +606,13 @@
 
                                     <td>
                                         <div class="action-buttons">
-                                            <!-- Edit Button -->
+                                          
                                             <button class="icon-btn btn-edit" 
                                                     data-tooltip="Edit"
                                                     onclick="openEditModal('<%= category._id %>', '<%= category.name %>', '<%= category.description || '' %>')">
                                                 ✏️
                                             </button>
 
-                                            <!-- Offer Button -->
                                             <% if (category.offer && category.offer > 0) { %>
                                                 <button class="icon-btn btn-offer" 
                                                         data-tooltip="Edit Offer"
@@ -662,7 +632,6 @@
                                                 </button>
                                             <% } %>
 
-                                            <!-- Delete Button -->
                                             <button class="icon-btn btn-delete" 
                                                     data-tooltip="Delete"
                                                     onclick="confirmDelete('<%= category._id %>', '<%= category.name %>')">
@@ -682,7 +651,7 @@
                 <% } %>
             </div>
 
-            <!-- Pagination -->
+        
             <nav aria-label="Page navigation">
                 <ul class="pagination">
                     <% for(let i=1; i <= totalPages; i++) { %>
@@ -695,7 +664,6 @@
         </div>
     </div>
 
-    <!-- Add Category Modal -->
     <div id="addModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -719,7 +687,6 @@
         </div>
     </div>
 
-    <!-- Edit Category Modal -->
     <div id="editModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -744,7 +711,6 @@
         </div>
     </div>
 
-    <!-- Add/Edit Offer Modal -->
     <div id="offerModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -771,7 +737,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        // Modal Functions
+    
         function openAddModal() {
             document.getElementById('addModal').style.display = "block"
         }
@@ -804,7 +770,6 @@
             document.getElementById('addOfferForm').reset();
         }
 
-        // Close modal when clicking outside
         window.onclick = function(event) {
             const modals = document.querySelectorAll('.modal');
             modals.forEach(modal => {
@@ -946,7 +911,6 @@
             }
         });
 
-        // Confirmation Functions
         async function confirmDelete(categoryId, categoryName) {
             const result = await Swal.fire({
                 title: `Delete "${categoryName}"?`,

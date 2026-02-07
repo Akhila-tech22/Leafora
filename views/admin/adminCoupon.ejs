@@ -29,16 +29,6 @@
             z-index: 99999 !important;
         }
 
-        /* Page Header */
-        .page-header {
-            background: linear-gradient(135deg, #3d4c5c 0%, #2c3e50 100%);
-            color: white;
-            padding: 30px;
-            border-radius: 12px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
         .page-header-content {
             display: flex;
             justify-content: space-between;
@@ -84,16 +74,12 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 16px rgba(255,255,255,0.3);
         }
-
-        /* Coupons Grid */
         .coupons-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 24px;
             margin-bottom: 40px;
         }
-
-        /* Coupon Card - Simple Design */
         .coupon-card {
             background: white;
             border-radius: 12px;
@@ -108,8 +94,6 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
             border-color: #8b7dd8;
         }
-
-        /* Coupon Header - Minimal */
         .coupon-header {
             background: #f8f9fb;
             padding: 20px;
@@ -138,8 +122,6 @@
             font-size: 15px;
             font-weight: 700;
         }
-
-        /* Status Badge */
         .coupon-status {
             display: inline-block;
             padding: 5px 12px;
@@ -159,8 +141,6 @@
             background: #ffb5c5;
             color: #c0392b;
         }
-
-        /* Coupon Body */
         .coupon-body {
             padding: 20px;
         }
@@ -188,8 +168,6 @@
             color: #2c3e50;
             font-weight: 600;
         }
-
-        /* Actions - Simple Buttons */
         .coupon-actions {
             display: flex;
             gap: 10px;
@@ -233,8 +211,6 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(244,114,182,0.4);
         }
-
-        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -328,8 +304,6 @@
             background: white;
             box-shadow: 0 0 0 3px rgba(139,125,216,0.1);
         }
-
-        /* Error messages */
         small.error-name,
         small.error-dis,
         small.error-purchase,
@@ -388,8 +362,6 @@
             background: #d1d5db;
             transform: translateY(-2px);
         }
-
-        /* Empty State */
         .empty-state {
             text-align: center;
             padding: 80px 20px;
@@ -417,14 +389,9 @@
             font-size: 15px;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .container {
                 padding: 20px 15px;
-            }
-
-            .page-header {
-                padding: 25px 20px;
             }
 
             .page-header-content {
@@ -453,10 +420,7 @@
 </head>
 <body>
     <%- include('partials/admin/header') %>
-
-    <!-- Main Content -->
     <main class="container">
-        <!-- Page Header -->
         <div class="">
             <div class="page-header-content">
                 <div class="page-title-section">
@@ -472,8 +436,6 @@
                 </button>
             </div>
         </div>
-
-        <!-- Coupons Grid -->
         <% if (coupons && coupons.length > 0) { %>
             <div class="coupons-grid">
                 <% coupons.forEach(coupon => { %>
@@ -529,15 +491,10 @@
                 <i class="fas fa-ticket-alt"></i>
                 <h3>No Coupons Found</h3>
                 <p>Start by creating your first discount coupon</p>
-                <button class="add-coupon-btn" onclick="openAddModal()">
-                    <i class="fas fa-plus-circle"></i>
-                    Create First Coupon
-                </button>
             </div>
         <% } %>
     </main>
 
-    <!-- Add/Edit Coupon Modal -->
     <div class="modal" id="couponModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -596,7 +553,6 @@
         const today = new Date().toISOString().split('T')[0];
         document.getElementById('expireOn').setAttribute('min', today);
 
-        // Open Add Modal
         function openAddModal() {
             document.getElementById('modalTitle').innerHTML = '<i class="fas fa-plus-circle"></i> Add New Coupon';
             document.getElementById('couponForm').reset();
@@ -610,8 +566,6 @@
                 }
             })
         }
-
-        // Open Edit Modal
         function openEditModal(coupon) {
             document.getElementById('modalTitle').innerHTML = '<i class="fas fa-edit"></i> Edit Coupon';
             document.getElementById('couponId').value = coupon._id;
@@ -625,7 +579,6 @@
             document.getElementById('couponModal').classList.add('active');
         }
 
-        // Close Modal
         function closeModal() {
             document.getElementById('couponModal').classList.remove('active');
         }
@@ -649,25 +602,20 @@
                 purchaseError: "Purchase amount is required",
                 dateError: "Expiry date is required"
             };
-
-            // Hide all previous errors
             Object.keys(errors).forEach(id => {
                 const el = document.getElementById(id);
                 if(el) el.textContent = '';
             });
 
-            // Validate
             if (!formData.name) { showError('nameError', errors.nameError); }
             if (!formData.offerPrice) { showError('disError', errors.disError); }
             if (!formData.minimumPrice) { showError('purchaseError', errors.purchaseError); }
             if (!formData.expireOn) { showError('dateError', errors.dateError); }
 
-            // Discount must be less than minimum price
             if (formData.offerPrice >= formData.minimumPrice) {
                 showError('disError','Discount must be less than minimum purchase amount');
             }
 
-            // Expiry date must be in future
             if (formData.expireOn && new Date(formData.expireOn) <= new Date()) {
                 showError('dateError','Expiry date must be in the future');
             }
@@ -717,8 +665,6 @@
                 });
             }
         });
-
-        // Delete Coupon
         async function deleteCoupon(couponId) {
             const result = await Swal.fire({
                 title: 'Are you sure?',
@@ -767,7 +713,6 @@
             }
         }
 
-        // Close modal on outside click
         document.getElementById('couponModal').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeModal();

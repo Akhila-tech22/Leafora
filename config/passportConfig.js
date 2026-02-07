@@ -12,7 +12,6 @@ passport.use(new GoogleStrategy({
         let user = await User.findOne({ googleId: profile.id });
         if (user) return done(null, user);
 
-        // If user doesn't exist, create one
         user = new User({
             name: profile.displayName,
             email: profile.emails[0].value,

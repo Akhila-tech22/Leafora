@@ -13,26 +13,14 @@ body {
     line-height: 1.6;
 }
 
-/* ✅ Centered container */
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 30px 20px;
 }
 
-/* Main Content */
 .main-content {
     margin-left: 0;
-}
-
-/* Page Header */
-.page-header {
-    background: linear-gradient(135deg, #3d4c5c 0%, #2c3e50 100%);
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    margin-bottom: 30px;
-    color: white;
 }
 
 .page-title {
@@ -48,7 +36,6 @@ body {
     font-weight: 400;
 }
 
-/* Search Section */
 .search-section {
     background: white;
     padding: 20px;
@@ -125,7 +112,6 @@ body {
     transform: translateY(-2px);
 }
 
-/* Customers Table */
 .customers-table {
     background: white;
     border-radius: 12px;
@@ -171,7 +157,6 @@ tbody tr:hover {
     transform: scale(1.002);
 }
 
-/* Status Badges */
 .status-btn {
     padding: 8px 16px;
     border: none;
@@ -209,7 +194,6 @@ tbody tr:hover {
     box-shadow: 0 4px 10px rgba(74, 222, 128, 0.3);
 }
 
-/* Action Button Styling */
 td .status-btn {
     padding: 8px 18px;
     font-weight: 600;
@@ -233,7 +217,6 @@ td .btn-unblock:hover {
     background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
 }
 
-/* No Customers */
 .no-customers {
     text-align: center;
     padding: 60px 20px;
@@ -246,7 +229,6 @@ td .btn-unblock:hover {
     font-weight: 500;
 }
 
-/* Customer Info */
 .customer-email {
     color: #9ca3af;
     font-size: 13px;
@@ -259,7 +241,6 @@ td .btn-unblock:hover {
     font-size: 15px;
 }
 
-/* Pagination */
 .pagination {
     display: flex;
     justify-content: center;
@@ -301,7 +282,6 @@ td .btn-unblock:hover {
     box-shadow: 0 4px 12px rgba(139, 125, 216, 0.3);
 }
 
-/* Responsive */
 @media (max-width: 768px) {
     .container {
         padding: 20px 15px;
@@ -365,18 +345,17 @@ td .btn-unblock:hover {
 </style>
 
 <body>
-    <!-- Include Navigation -->
+  
     <%- include('partials/admin/header') %>
 
     <div class="container">
         <div class="main-content">
-            <!-- Page Header -->
+    
             <div class="">
                 <h1 class="page-title">Customer Management</h1>
                 <p class="page-subtitle">Manage and monitor your customers</p>
             </div>
 
-            <!-- Search Section -->
             <div class="search-section">
                  <form action="/admin/customers/" method="get" class="search-form">
         <div class="input-group">
@@ -390,7 +369,7 @@ td .btn-unblock:hover {
       </form>
             </div>
 
-            <!-- Customers Table -->
+       
             <div class="customers-table">
                 <div class="table-header">
                     Customer List (<%= customers.length %> customers)
@@ -467,7 +446,7 @@ async function confirmBlock(event, customerId, action) {
 
     if (result.isConfirmed) {
         try {
-            const res = await fetch("/admin/confirmBlock", {  // ✅ Use correct path
+            const res = await fetch("/admin/confirmBlock", {  
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

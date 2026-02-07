@@ -32,7 +32,6 @@
             max-width: 420px;
         }
 
-        /* Header Section */
         .login-header {
             background: linear-gradient(135deg, #3d4c5c 0%, #2c3e50 100%);
             padding: 40px 30px;
@@ -69,12 +68,10 @@
             font-weight: 400;
         }
 
-        /* Form Section */
         .login-form {
             padding: 35px 30px;
         }
 
-        /* Alerts */
         .alert {
             padding: 12px 16px;
             border-radius: 8px;
@@ -97,7 +94,6 @@
             border: 1px solid #cfc;
         }
 
-        /* Form Groups */
         .form-group {
             margin-bottom: 20px;
         }
@@ -151,7 +147,6 @@
             display: block;
         }
 
-        /* Remember & Forgot */
         .remember-forgot {
             display: flex;
             justify-content: space-between;
@@ -190,8 +185,6 @@
             color: #7c6fd6;
             text-decoration: underline;
         }
-
-        /* Login Button */
         .login-btn {
             width: 100%;
             background: linear-gradient(135deg, #8b7dd8 0%, #7c6fd6 100%);
@@ -226,7 +219,6 @@
             transform: none;
         }
 
-        /* Security Badge */
         .security-badge {
             display: flex;
             align-items: center;
@@ -243,7 +235,6 @@
             color: #8b7dd8;
         }
 
-        /* Responsive */
         @media (max-width: 480px) {
             .login-container {
                 max-width: 100%;
@@ -271,7 +262,6 @@
 </head>
 <body>
     <div class="login-container">
-        <!-- Header -->
         <div class="login-header">
             <div class="brand-logo">
                 <i class="fas fa-book-open"></i>
@@ -280,9 +270,7 @@
             <p>Sign in to your account</p>
         </div>
 
-        <!-- Form -->
         <div class="login-form">
-            <!-- Error Message -->
             <% if (typeof error !== 'undefined' && error) { %>
                 <div class="alert alert-error">
                     <i class="fas fa-exclamation-circle"></i>
@@ -290,7 +278,6 @@
                 </div>
             <% } %>
 
-            <!-- Success Message -->
             <% if (typeof message !== 'undefined' && message) { %>
                 <div class="alert alert-success">
                     <i class="fas fa-check-circle"></i>
@@ -299,7 +286,6 @@
             <% } %>
 
             <form id="loginForm">
-                <!-- Email Field -->
                 <div class="form-group">
                     <label for="email">Email</label>
                     <div class="input-wrapper">
@@ -314,7 +300,6 @@
                     <span id="email-error" class="error-text"></span>
                 </div>
 
-                <!-- Password Field -->
                 <div class="form-group">
                     <label for="password">Password</label>
                     <div class="input-wrapper">
@@ -329,7 +314,6 @@
                     <span id="pass-error" class="error-text"></span>
                 </div>
 
-                <!-- Remember & Forgot -->
                 <div class="remember-forgot">
                     <div class="remember-me">
                         <input type="checkbox" id="remember" name="remember">
@@ -338,13 +322,11 @@
                     <a href="/admin/forgot-password" class="forgot-password">Forgot Password?</a>
                 </div>
 
-                <!-- Submit Button -->
                 <button type="submit" class="login-btn" id="loginBtn">
                     <i class="fas fa-sign-in-alt"></i>
                     <span>Sign In</span>
                 </button>
 
-                <!-- Security Badge -->
                 <div class="security-badge">
                     <i class="fas fa-shield-alt"></i>
                     <span>Secured with SSL encryption</span>
@@ -357,14 +339,12 @@
         document.getElementById('loginForm').addEventListener("submit", async(e) => {
             e.preventDefault();
             
-            // Clear previous errors
             document.getElementById('email-error').textContent = "";
             document.getElementById('pass-error').textContent = "";
             
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value.trim();
             
-            // Disable button during submission
             const loginBtn = document.getElementById('loginBtn');
             loginBtn.disabled = true;
             loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Signing In...</span>';
@@ -388,7 +368,6 @@
                         document.getElementById('pass-error').textContent = data.errors.password;
                     }
                     
-                    // Re-enable button
                     loginBtn.disabled = false;
                     loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i><span>Sign In</span>';
                 }
@@ -399,7 +378,6 @@
             }
         });
 
-        // Clear errors on input
         document.getElementById('email').addEventListener('input', function() {
             document.getElementById('email-error').textContent = '';
         });

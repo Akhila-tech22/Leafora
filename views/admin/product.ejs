@@ -10,21 +10,10 @@
         body { font-family:'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#f5f6f8; color:#2c3e50; line-height:1.6; }
         .container { max-width:1300px; margin:0 auto; padding:30px 20px; }
         .main-content { margin-left:0; }
-        
-        /* Page Header */
-        .page-header { 
-            background:linear-gradient(135deg, #3d4c5c 0%, #2c3e50 100%); 
-            padding:30px; 
-            border-radius:12px; 
-            box-shadow:0 4px 12px rgba(0,0,0,0.1); 
-            margin-bottom:30px; 
-            color:white; 
-        }
         .page-title { font-size:28px; font-weight:700; margin-bottom:8px; letter-spacing:0.5px; display:flex; align-items:center; }
         .title-icon { margin-right:12px; font-size:28px; }
         .page-subtitle { color:rgba(255,255,255,0.85); font-size:15px; font-weight:400; }
-        
-        /* Search Section */
+
         .search-section { background:white; padding:20px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.08); margin-bottom:25px; }
         .search-form { display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
         .search-input { flex:1; min-width:280px; padding:12px 16px; border:2px solid #e9ecef; border-radius:8px; font-size:14px; transition:all 0.3s ease; background:#f5f6f8; font-family:'Inter', sans-serif; }
@@ -34,7 +23,6 @@
         .clear-btn { background:#e9ecef; color:#3d4c5c; border:none; padding:12px 20px; border-radius:8px; cursor:pointer; text-decoration:none; font-weight:600; display:inline-block; font-size:13px; }
         .clear-btn:hover { background:#d1d5db; transform:translateY(-2px); }
         
-        /* Products Table */
         .products-table { background:white; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.08); overflow:hidden; margin-bottom:20px; }
         .table-header { background:linear-gradient(135deg, #3d4c5c, #2c3e50); color:white; padding:18px 24px; font-size:16px; font-weight:600; display:flex; justify-content:space-between; align-items:center; letter-spacing:0.5px; }
         .products-count { font-size:14px; opacity:0.9; }
@@ -45,7 +33,6 @@
         tbody tr { transition:all 0.2s ease; }
         tbody tr:hover { background:#f8f9fb; transform:scale(1.002); }
         
-        /* Product Images Gallery */
         .product-images-gallery { display:flex; gap:6px; flex-wrap:wrap; max-width:200px; }
         .product-image { width:60px; height:60px; border-radius:8px; object-fit:cover; border:2px solid #e9ecef; cursor:pointer; transition:all 0.3s ease; }
         .product-image:hover { transform:scale(1.08); border-color:#8b7dd8; box-shadow:0 4px 12px rgba(139,125,216,0.3); }
@@ -61,12 +48,10 @@
         .qty-medium { color:#fbbf24; }
         .qty-good { color:#4ade80; }
         
-        /* Status Badge */
         .status-badge { padding:6px 14px; border-radius:16px; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; display:inline-block; }
         .status-active { background:#b8f4d6; color:#16a34a; }
         .status-blocked { background:#ffb5c5; color:#c0392b; }
         
-        /* Actions */
         .actions-cell { text-align:center; }
         .action-buttons { display:flex; gap:6px; justify-content:center; align-items:center; flex-wrap:wrap; }
         .action-btn { width:36px; height:36px; border:none; border-radius:8px; cursor:pointer; font-size:16px; display:flex; align-items:center; justify-content:center; transition:all 0.3s ease; text-decoration:none; }
@@ -83,7 +68,6 @@
         .btn-delete { background:linear-gradient(135deg, #f472b6, #ec4899); color:white; }
         .btn-delete:hover { background:linear-gradient(135deg, #ec4899, #db2777); transform:translateY(-2px); box-shadow:0 4px 12px rgba(244,114,182,0.4); }
         
-        /* Modal */
         .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:10000; }
         .modal.active { display:flex; align-items:center; justify-content:center; }
         .modal-content { background:white; border-radius:12px; padding:30px; max-width:700px; width:90vw; max-height:90vh; overflow-y:auto; box-shadow:0 20px 60px rgba(0,0,0,0.3); }
@@ -91,40 +75,33 @@
         .modal-title { font-size:24px; font-weight:700; color:#3d4c5c; margin-bottom:8px; }
         .modal-subtitle { color:#6b7280; font-size:14px; }
         
-        /* Form Elements */
         .form-group { margin-bottom:18px; }
         .form-label { display:block; font-weight:600; margin-bottom:8px; color:#3d4c5c; font-size:13px; text-transform:uppercase; letter-spacing:0.5px; }
         .form-input, .form-textarea, .form-select { width:100%; padding:12px 14px; border:2px solid #e9ecef; border-radius:8px; font-size:14px; transition:all 0.3s ease; background:#f5f6f8; font-family:'Inter', sans-serif; color:#2c3e50; }
         .form-input:focus, .form-textarea:focus, .form-select:focus { outline:none; border-color:#8b7dd8; background:white; box-shadow:0 0 0 3px rgba(139,125,216,0.1); }
         .form-textarea { resize:vertical; min-height:100px; }
         .modal-actions { display:flex; justify-content:flex-end; gap:12px; margin-top:25px; border-top:2px solid #f0f1f3; padding-top:25px; }
-        
-        /* Buttons */
+ 
         .btn { padding:12px 24px; border:none; border-radius:8px; cursor:pointer; font-size:14px; font-weight:600; transition:all 0.3s ease; text-transform:uppercase; letter-spacing:0.5px; }
         .btn-primary { background:linear-gradient(135deg, #8b7dd8, #7c6fd6); color:white; }
         .btn-primary:hover { transform:translateY(-2px); box-shadow:0 6px 16px rgba(139,125,216,0.3); }
         .btn-secondary { background:#e9ecef; color:#3d4c5c; }
         .btn-secondary:hover { background:#d1d5db; transform:translateY(-2px); }
 
-        /* ✨ NEW: Improved Edit Images Section */
         .edit-images-section { margin-bottom:25px; }
         .images-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:15px; margin-top:12px; }
         
-        /* Image Card with Hover Actions */
         .image-card { position:relative; border:2px solid #e9ecef; border-radius:12px; overflow:hidden; aspect-ratio:1; background:#f5f6f8; transition:all 0.3s ease; }
         .image-card:hover { border-color:#8b7dd8; box-shadow:0 4px 12px rgba(139,125,216,0.2); }
-        
-        /* Existing Image */
+    
         .image-card.has-image .card-image { width:100%; height:100%; object-fit:cover; display:block; }
-        
-        /* Empty Upload Card */
+
         .image-card.empty { cursor:pointer; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:160px; }
         .image-card.empty:hover { background:#f8f9fb; }
         .empty-placeholder { text-align:center; color:#9ca3af; }
         .empty-icon { font-size:36px; margin-bottom:8px; opacity:0.6; }
         .empty-text { font-size:13px; font-weight:600; color:#6b7280; }
         
-        /* Hover Overlay with Actions */
         .image-overlay { position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); display:flex; align-items:center; justify-content:center; gap:10px; opacity:0; transition:opacity 0.3s ease; }
         .image-card:hover .image-overlay { opacity:1; }
         
@@ -136,7 +113,6 @@
         
         .hidden-file-input { display:none; }
 
-        /* Crop Modal */
         .crop-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.92); z-index:10001; align-items:center; justify-content:center; }
         .crop-modal.active { display:flex; }
         .crop-container { background:white; border-radius:12px; padding:30px; max-width:80vw; max-height:80vh; display:flex; flex-direction:column; box-shadow:0 20px 60px rgba(0,0,0,0.4); }
@@ -148,7 +124,6 @@
         
         .form-error { color:#f472b6; font-size:12px; margin-top:6px; font-weight:500; }
         
-        /* No Products */
         .no-products { text-align:center; padding:80px 20px; color:#9ca3af; }
         .no-products-icon { font-size:72px; margin-bottom:20px; opacity:0.6; }
         .no-products-text { font-size:20px; margin-bottom:8px; font-weight:600; color:#6b7280; }
@@ -307,7 +282,6 @@
         </div>
     </div>
 
-    <!-- Offer Modal -->
     <div class="modal" id="offerModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -333,7 +307,6 @@
         </div>
     </div>
 
-    <!-- Edit Product Modal -->
     <div class="modal" id="editModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -342,12 +315,9 @@
             </div>
             <form id="editForm">
                 <input type="hidden" id="editProductId">
-                
-                <!-- ✨ NEW: Improved Images Section -->
                 <div class="edit-images-section">
                     <label class="form-label">Product Images (Max 3)</label>
                     <div class="images-grid" id="imagesGrid">
-                        <!-- Will be populated dynamically -->
                     </div>
                 </div>
 
@@ -399,7 +369,6 @@
         </div>
     </div>
 
-    <!-- Crop Modal -->
     <div class="crop-modal" id="cropModal">
         <div class="crop-container">
             <div class="crop-header">
@@ -420,13 +389,11 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-/* ================= GLOBAL STATE ================= */
 let cropper = null;
-let currentEditImages = [];     // existing DB images
-let newUploadedImages = [];     // cropped blobs
+let currentEditImages = [];    
+let newUploadedImages = [];    
 let currentCropIndex = null;
 
-/* ================= VIEW IMAGE ================= */
 function viewImage(src) {
   Swal.fire({
     imageUrl: src,
@@ -436,8 +403,6 @@ function viewImage(src) {
     backdrop: 'rgba(0,0,0,0.9)'
   });
 }
-
-/* ================= OPEN EDIT MODAL ================= */
 function openEditModal(product) {
   editProductId.value = product.id;
   editProductName.value = product.name;
@@ -454,8 +419,6 @@ function openEditModal(product) {
   renderImagesGrid();
   editModal.classList.add('active');
 }
-
-/* ================= RENDER IMAGES GRID ================= */
 function renderImagesGrid() {
   const grid = document.getElementById('imagesGrid');
   grid.innerHTML = '';
@@ -464,7 +427,6 @@ function renderImagesGrid() {
   const existingCount = currentEditImages.length;
   const newCount = newUploadedImages.filter(Boolean).length;
   
-  // Render existing images
   currentEditImages.forEach((img, index) => {
     const card = document.createElement('div');
     card.className = 'image-card has-image';
@@ -481,14 +443,12 @@ function renderImagesGrid() {
       <input type="file" accept="image/*" class="hidden-file-input" data-type="existing" data-index="${index}">
     `;
     
-    // Setup file input handler
     const fileInput = card.querySelector('input[type="file"]');
     fileInput.onchange = (e) => openCropper(e, index, 'replace');
     
     grid.appendChild(card);
   });
-  
-  // Render new uploaded images
+
   newUploadedImages.forEach((blob, index) => {
     if (blob) {
       const card = document.createElement('div');
@@ -512,8 +472,6 @@ function renderImagesGrid() {
       grid.appendChild(card);
     }
   });
-  
-  // Render empty slots
   const usedSlots = existingCount + newCount;
   const emptySlots = totalSlots - usedSlots;
   
@@ -536,8 +494,6 @@ function renderImagesGrid() {
     grid.appendChild(card);
   }
 }
-
-/* ================= IMAGE ACTIONS ================= */
 function editExistingImage(index) {
   const card = document.querySelectorAll('.image-card.has-image')[index];
   const fileInput = card.querySelector('input[type="file"]');
@@ -563,8 +519,6 @@ function removeNewImage(index) {
   newUploadedImages[index] = null;
   renderImagesGrid();
 }
-
-/* ================= CROPPER ================= */
 function openCropper(e, index, type) {
   const file = e.target.files[0];
   if (!file) return;
@@ -607,7 +561,6 @@ function closeCropModal() {
   }
 }
 
-/* ================= APPLY CROP ================= */
 function applyCrop() {
   if (!cropper) return;
 
@@ -627,11 +580,9 @@ function applyCrop() {
   cropper.getCroppedCanvas({ width: 800, height: 800 })
     .toBlob(blob => {
       if (currentCropType === 'replace') {
-        // Replace existing image - remove old, add new
         currentEditImages.splice(currentCropIndex, 1);
         newUploadedImages.push(blob);
       } else {
-        // Add new image
         if (!newUploadedImages[currentCropIndex]) {
           newUploadedImages[currentCropIndex] = blob;
         } else {
@@ -643,8 +594,6 @@ function applyCrop() {
       closeCropModal();
     }, 'image/jpeg', 0.85);
 }
-
-/* ================= SUBMIT EDIT ================= */
 editForm.addEventListener('submit', async e => {
   e.preventDefault();
 
@@ -659,12 +608,9 @@ editForm.addEventListener('submit', async e => {
   formData.append('category', editCategory.value);
   formData.append('author', editAuthor.value);
 
-  // remaining existing images
   currentEditImages.forEach(img => {
     formData.append('existingImages', img);
   });
-
-  // new cropped images
   newUploadedImages.forEach((blob, index) => {
     if (blob) formData.append('productImage', blob, `image${index}.jpg`);
   });
@@ -692,8 +638,6 @@ editForm.addEventListener('submit', async e => {
     });
   }
 });
-
-/* ================= OFFER MODAL ================= */
 function openOfferModal(productId, productName, offer = '') {
   document.getElementById('offerProductId').value = productId;
   document.getElementById('offerProductName').value = productName;
@@ -738,7 +682,6 @@ document.getElementById('offerForm').addEventListener('submit', async function(e
     }
 });
 
-/* ================= BLOCK / UNBLOCK ================= */
 async function confirmBlock(event, productId, action) {
     event.preventDefault();
     const result = await Swal.fire({
@@ -785,8 +728,6 @@ async function confirmBlock(event, productId, action) {
         }
     }
 }
-
-/* ================= REMOVE OFFER ================= */
 async function removeOffer(productId) {
     const result = await Swal.fire({
         title: 'Remove Offer?',
@@ -833,7 +774,6 @@ async function removeOffer(productId) {
     }
 }
 
-/* ================= DELETE PRODUCT ================= */
 async function confirmDelete(productId) {
     const result = await Swal.fire({
         title: 'Delete Product?',
@@ -881,7 +821,6 @@ async function confirmDelete(productId) {
     }
 }
 
-/* ================= CLOSE MODAL ================= */
 function closeModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
@@ -889,7 +828,6 @@ function closeModal(modalId) {
     }
 }
 
-// Close modal on outside click
 document.querySelectorAll('.modal').forEach(modal => {
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {

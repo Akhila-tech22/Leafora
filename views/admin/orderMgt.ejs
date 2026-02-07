@@ -17,16 +17,7 @@
             margin: 0 auto; 
             padding: 30px 20px; 
         }
-        
-        /* Page Header */
-        .page-header { 
-            background: linear-gradient(135deg, #3d4c5c 0%, #2c3e50 100%);
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-            color: white;
-        }
+
         .page-title { 
             font-size: 28px;
             font-weight: 700;
@@ -45,7 +36,6 @@
             font-weight: 400;
         }
 
-        /* Search Section */
         .search-section { 
             background: white;
             padding: 20px;
@@ -126,14 +116,12 @@
             transform: translateY(-2px);
         }
 
-        /* Orders Container */
         .orders-container {
             display: flex;
             flex-direction: column;
             gap: 20px;
         }
 
-        /* Order Card */
         .order-card {
             background: white;
             border-radius: 12px;
@@ -142,7 +130,6 @@
             border: 1px solid #f0f1f3;
         }
 
-        /* Order Header */
         .order-header {
             background: #f8f9fb;
             padding: 18px 24px;
@@ -178,7 +165,6 @@
             font-weight: 500;
         }
 
-        /* Order Summary in Header */
         .order-summary-inline {
             display: flex;
             gap: 24px;
@@ -206,13 +192,10 @@
             color: #8b7dd8;
             font-size: 15px;
         }
-
-        /* Products List */
         .products-list {
             padding: 0;
         }
         
-        /* Product Item */
         .product-item {
             display: flex;
             gap: 20px;
@@ -227,7 +210,6 @@
             border-bottom: none;
         }
 
-        /* Left: Image */
         .product-image-section {
             flex-shrink: 0;
         }
@@ -239,7 +221,6 @@
             border: 2px solid #e9ecef;
         }
 
-        /* Center: Product Details */
         .product-details {
             flex: 1;
             display: flex;
@@ -288,7 +269,6 @@
             color: #1e40af;
         }
 
-        /* Right: Actions */
         .product-actions {
             display: flex;
             flex-direction: column;
@@ -343,7 +323,6 @@
             color: #c0392b;
         }
 
-        /* Action Buttons */
         .action-btn {
             padding: 8px 16px;
             border: none;
@@ -372,8 +351,6 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(251,191,36,0.4);
         }
-
-        /* Cancel Reason */
         .cancel-reason {
             font-size: 12px;
             color: #c0392b;
@@ -383,8 +360,6 @@
             margin-top: 6px;
             font-weight: 500;
         }
-
-        /* Return Reason */
         .return-reason {
             font-size: 12px;
             color: #92400e;
@@ -394,8 +369,6 @@
             margin-top: 6px;
             font-weight: 500;
         }
-
-        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -519,8 +492,6 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 16px rgba(74,222,128,0.3);
         }
-
-        /* Empty State */
         .no-orders {
             text-align: center;
             padding: 80px 20px;
@@ -534,8 +505,6 @@
             margin-bottom: 20px;
             opacity: 0.6;
         }
-
-        /* Pagination */
         .pagination {
             display: flex;
             justify-content: center;
@@ -569,8 +538,6 @@
             border-color: #8b7dd8;
             box-shadow: 0 4px 12px rgba(139,125,216,0.3);
         }
-
-        /* Responsive */
         @media (max-width: 768px) {
             .container { padding: 20px 15px; }
             .page-header { padding: 25px 20px; }
@@ -612,7 +579,6 @@
             <p class="page-subtitle">Manage and track all customer orders</p>
         </div>
 
-        <!-- Search & Filter Section -->
         <div class="search-section">
             <form method="GET" action="/admin/adminOrder" class="search-form">
                 <input type="text" name="search" class="search-input" 
@@ -643,7 +609,6 @@
             </form>
         </div>
 
-        <!-- Orders List -->
         <div class="orders-container">
             <% if (orders && orders.length > 0) { %>
                 <% orders.forEach(order => { 
@@ -670,7 +635,6 @@
                     const finalAmount = subtotal - couponDiscount + deliveryCharge;
                 %>
                     <div class="order-card">
-                        <!-- Order Header with User Info -->
                         <div class="order-header">
                             <div class="order-header-top">
                                 <div class="user-info">
@@ -693,7 +657,6 @@
                                 </div>
                             </div>
 
-                            <!-- Order Summary Inline -->
                             <% if (activeItems.length > 0) { %>
                                 <div class="order-summary-inline">
                                     <div class="summary-item">
@@ -718,18 +681,14 @@
                             <% } %>
                         </div>
 
-                        <!-- Products List -->
                         <div class="products-list">
                             <% order.orderedItems.forEach(item => { %>
                                 <div class="product-item">
-                                    <!-- Left: Image -->
                                     <div class="product-image-section">
                                         <img src="/images/<%= item.productImage %>" 
                                              alt="<%= item.productName %>" 
                                              class="product-image">
                                     </div>
-
-                                    <!-- Center: Details -->
                                     <div class="product-details">
                                         <div class="product-name"><%= item.productName %></div>
                                         
@@ -759,8 +718,6 @@
                                             </div>
                                         <% } %>
                                     </div>
-
-                                    <!-- Right: Actions -->
                                     <div class="product-actions">
                                         <span class="status-badge status-<%= item.status.replace(/ /g, '_') %>">
                                             <%= item.status.toUpperCase().replace(/_/g, ' ') %>
@@ -800,7 +757,6 @@
             <% } %>
         </div>
 
-        <!-- Pagination -->
         <% if (orders && orders.length > 0) { %>
             <div class="pagination">
                 <% for(let i = 1; i <= totalPages; i++) { %>
@@ -813,7 +769,6 @@
         <% } %>
     </div>
 
-    <!-- Update Status Modal -->
     <div class="modal" id="updateStatusModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -842,7 +797,6 @@
         </div>
     </div>
 
-    <!-- Return Modal -->
     <div class="modal" id="returnModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -872,7 +826,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        // Open Update Status Modal
+   
         function openUpdateStatusModal(orderId, itemId, currentStatus, productName) {
             document.getElementById('updateOrderId').value = orderId;
             document.getElementById('updateItemId').value = itemId;
@@ -901,7 +855,6 @@
             document.getElementById('updateStatusModal').classList.add('active');
         }
 
-        // Update Status Form Submit
         document.getElementById('updateStatusForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -948,7 +901,6 @@
             }
         });
 
-        // Open Return Modal
         function openReturnModal(orderId, itemId, productName) {
             document.getElementById('returnOrderId').value = orderId;
             document.getElementById('returnItemId').value = itemId;
@@ -957,7 +909,6 @@
             document.getElementById('returnModal').classList.add('active');
         }
 
-        // Return Form Submit
         document.getElementById('returnForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -1008,12 +959,10 @@
             }
         });
 
-        // Close Modal
         function closeModal(modalId) {
             document.getElementById(modalId).classList.remove('active');
         }
 
-        // Close modal on outside click
         document.querySelectorAll('.modal').forEach(modal => {
             modal.addEventListener('click', function(e) {
                 if (e.target === this) {
