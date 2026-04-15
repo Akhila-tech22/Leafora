@@ -834,7 +834,8 @@
                 <% similarProducts.slice(0, 4).forEach(function(product) { %>
                     <div class="product-card" style="min-width: 200px; max-width: 200px; flex-shrink: 0;">
                         <a href="/productDetails/<%= product._id %>">
-                            <img src="/images/<%= Array.isArray(product.productImage) ? product.productImage[0] : product.productImage %>" 
+                            <% const simImg = Array.isArray(product.productImage) ? product.productImage[0] : product.productImage; %>
+                            <img src="<%= simImg && simImg.startsWith('http') ? simImg : '/images/' + simImg %>"
                                  alt="<%= product.productName %>" 
                                  class="card-image">
                         </a>
