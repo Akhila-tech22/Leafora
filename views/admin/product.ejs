@@ -442,11 +442,12 @@ function renderImagesGrid() {
   const existingCount = currentEditImages.length;
   const newCount = newUploadedImages.filter(Boolean).length;
   
-  currentEditImages.forEach((img, index) => {
+ currentEditImages.forEach((img, index) => {
+    const imgSrc = img.startsWith('http') ? img : `/images/${img}`; 
     const card = document.createElement('div');
     card.className = 'image-card has-image';
     card.innerHTML = `
-      <img src="/images/${img}" class="card-image" alt="Product image">
+      <img src="${imgSrc}" class="card-image" alt="Product image">  
       <div class="image-overlay">
         <button type="button" class="overlay-btn overlay-btn-edit" onclick="editExistingImage(${index})" title="Replace image">
           ✏️
@@ -462,7 +463,7 @@ function renderImagesGrid() {
     fileInput.onchange = (e) => openCropper(e, index, 'replace');
     
     grid.appendChild(card);
-  });
+});
 
   newUploadedImages.forEach((blob, index) => {
     if (blob) {
@@ -624,7 +625,6 @@ editForm.addEventListener('submit', async e => {
   formData.append('author', editAuthor.value);
 
   currentEditImages.forEach(img => {
-    // formData.append('existingImages', img);
     formData.append('existingImages', JSON.stringify(currentEditImages));
   });
   newUploadedImages.forEach((blob, index) => {
