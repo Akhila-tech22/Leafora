@@ -6,7 +6,7 @@ const Product = require('../schema/productSchema');
 const { search } = require('../routes/adminRouter');
 const { adminAuth } = require('../middleware/auth');
 const Coupon = require('../schema/couponSchema')
-
+const cloudinary = require('cloudinary').v2;
 
 const findSalesPrice = (product) => {
     const categoryOffer = product.category ? product.category.offer || 0 : 0;
@@ -175,57 +175,110 @@ const productBlock = async (req,res) => {
     }
 }
 
-const deleteProduct= async (req,res) => {
-    try{
-        const {productId} = req.body;
+const deleteProduct = async (req, res) => {
+    try {
+        const { productId } = req.body;
 
-         const adminId = req.session.admin;
-      const admin = await User.findOne({_id : adminId, isAdmin : true})
-      if(!admin) {
-        return res.redirect('/admin/login')
-      }
-      
-        if(!productId) {
-            return res.json({success : false, message : "Something Wrong!"})
+        const adminId = req.session.admin;
+        const admin = await User.findOne({ _id: adminId, isAdmin: true });
+        if (!admin) return res.redirect('/admin/login');
+
+        if (!productId) {
+            return res.json({ success: false, message: "Something Wrong!" });
         }
+
         const product = await Product.findById(productId);
-        if(!product) {
-            return res.json({success : false, message : "Internal Issuess"})
+        if (!product) {
+            return res.json({ success: false, message: "Product not found" });
         }
-         await Product.findByIdAndDelete(productId)
-         return res.json({success : true, message : "Delete Successfully"})
-    }catch(error) {
-           console.log(error);
-   res.status(500).json({ message: "Server error" });
+
+     
+        if (product.productImage && product.productImage.length > 0) {
+            for (const imgUrl of product.productImage) {
+                try {
+                 
+                    const parts = imgUrl.split('/');
+                    const uploadIndex = parts.indexOf('upload');
+                    if (uploadIndex !== -1) {
+                       
+                        const afterUpload = parts.slice(uploadIndex + 1);
+                        if (afterUpload[0].startsWith('v')) afterUpload.shift(); // v1234 skip
+                        const publicId = afterUpload.join('/').replace(/\.[^/.]+$/, ''); // extension remove
+                        await cloudinary.uploader.destroy(publicId);
+                        console.log('Deleted from Cloudinary:', publicId);
+                    }
+                } catch (err) {
+                    console.error('Cloudinary delete error:', err);
+                    
+                }
+            }
+        }
+
+        await Product.findByIdAndDelete(productId);
+        return res.json({ success: true, message: "Deleted successfully" });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Server error" });
     }
-}
+};
 
 
 const editProduct = async (req, res) => {
     try {
         const { productId, productName, description, regularPrice, sellingPrice, quantity, category, author, existingImages } = req.body;
 
-         const adminId = req.session.admin;
-              const admin = await User.findOne({_id : adminId, isAdmin : true})
-              if(!admin) {
-                return res.redirect('/admin/login')
-              }
-              
+        const adminId = req.session.admin;
+        const admin = await User.findOne({ _id: adminId, isAdmin: true });
+        if (!admin) return res.redirect('/admin/login');
 
         if (!productId || !productName || !description || !regularPrice || !sellingPrice || !quantity || !category || !author) {
             return res.json({ success: false, message: "Missing required fields!" });
         }
 
-      if (Number(sellingPrice) > Number(regularPrice)) {
-    return res.json({
-        success: false,
-        message: 'Selling price cannot be greater than regular price!'
-    });
-}
+        if (Number(sellingPrice) > Number(regularPrice)) {
+            return res.json({ success: false, message: 'Selling price cannot be greater than regular price!' });
+        }
 
+       
+        const existingProduct = await Product.findById(productId);
+        if (!existingProduct) {
+            return res.json({ success: false, message: "Product not found" });
+        }
+
+        let keptImages = [];
+        try {
+            keptImages = existingImages ? JSON.parse(existingImages) : [];
+        } catch (err) {
+            keptImages = [];
+        }
+
+      
+        const removedImages = existingProduct.productImage.filter(img => !keptImages.includes(img));
+        for (const imgUrl of removedImages) {
+            try {
+                const parts = imgUrl.split('/');
+                const uploadIndex = parts.indexOf('upload');
+                if (uploadIndex !== -1) {
+                    const afterUpload = parts.slice(uploadIndex + 1);
+                    if (afterUpload[0].startsWith('v')) afterUpload.shift();
+                    const publicId = afterUpload.join('/').replace(/\.[^/.]+$/, '');
+                    await cloudinary.uploader.destroy(publicId);
+                    console.log('Removed old image from Cloudinary:', publicId);
+                }
+            } catch (err) {
+                console.error('Cloudinary remove error:', err);
+            }
+        }
 
      
-        let updateData = {
+        let finalImages = [...keptImages];
+        if (req.files?.length) {
+            finalImages.push(...req.files.map(f => f.path));
+        }
+        finalImages = finalImages.slice(0, 3);
+
+        const updateData = {
             productName,
             description,
             regularPrice,
@@ -233,35 +286,10 @@ const editProduct = async (req, res) => {
             quantity,
             category,
             author,
+            ...(finalImages.length > 0 && { productImage: finalImages })
         };
 
-        let finalImages = [];
-
-if (existingImages) {
-    try {
-        finalImages = JSON.parse(existingImages);
-    } catch (err) {
-        finalImages = [];
-    }
-}
-
-if (req.files?.length) {
-//   finalImages.push(...req.files.map(f => f.filename));
-finalImages.push(...req.files.map(f => f.path));
-}
-
-finalImages = finalImages.slice(0, 3);
-
-
-        if (finalImages.length > 0) {
-            updateData.productImage = finalImages;
-        }
-
         const updatedProduct = await Product.findByIdAndUpdate(productId, updateData, { new: true });
-
-        if (!updatedProduct) {
-            return res.json({ success: false, message: "Product not found" });
-        }
 
         return res.json({ success: true, message: "Product updated successfully", product: updatedProduct });
 
