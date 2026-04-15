@@ -300,23 +300,26 @@ const placeOrder = async (req, res) => {
             return res.json({ success: false, message: "Invalid address" });
         }
 
-        const orderedItems = cart.items.map(item => ({
-            product: item.productId._id,
-            productName: item.productId.productName,
-            productImage: (() => {
+       const orderedItems = cart.items.map(item => {
   const img = item.productId.productImage;
-  if (!img) return null;
+  let productImage = null;
+
   if (Array.isArray(img) && img.length > 0) {
-    return typeof img[0] === 'string' ? img[0] : img[0]?.url || img[0]?.path || null;
+    productImage = typeof img[0] === 'string' ? img[0] : (img[0]?.url || img[0]?.path || null);
+  } else if (typeof img === 'string') {
+    productImage = img;
   }
-  if (typeof img === 'string') return img;
-  return null;
-})(),
-            quantity: item.quantity,
-            price: item.price,
-            regularPrice: item.productId.regularPrice,
-            status: "ordered"
-        }));
+
+  return {
+    product: item.productId._id,
+    productName: item.productId.productName,
+    productImage,
+    quantity: item.quantity,
+    price: item.price,
+    regularPrice: item.productId.regularPrice,
+    status: "ordered"
+  };
+});
 
         const totalPrice = orderedItems.reduce(
             (sum, i) => sum + i.price * i.quantity,
