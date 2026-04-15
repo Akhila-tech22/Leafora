@@ -303,7 +303,15 @@ const placeOrder = async (req, res) => {
         const orderedItems = cart.items.map(item => ({
             product: item.productId._id,
             productName: item.productId.productName,
-            productImage: item.productId.productImage[0],
+            productImage: (() => {
+  const img = item.productId.productImage;
+  if (!img) return null;
+  if (Array.isArray(img) && img.length > 0) {
+    return typeof img[0] === 'string' ? img[0] : img[0]?.url || img[0]?.path || null;
+  }
+  if (typeof img === 'string') return img;
+  return null;
+})(),
             quantity: item.quantity,
             price: item.price,
             regularPrice: item.productId.regularPrice,
