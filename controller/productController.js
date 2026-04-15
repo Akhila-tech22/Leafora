@@ -238,8 +238,11 @@ const editProduct = async (req, res) => {
         let finalImages = [];
 
 if (existingImages) {
-  const imgs = Array.isArray(existingImages) ? existingImages : [existingImages];
-  finalImages = imgs;
+    try {
+        finalImages = JSON.parse(existingImages);
+    } catch (err) {
+        finalImages = [];
+    }
 }
 
 if (req.files?.length) {

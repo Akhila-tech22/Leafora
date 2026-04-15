@@ -194,15 +194,30 @@
                             <% products.forEach(product => { %>
                                 <tr>
                                     <td>
-                                        <div class="product-images-gallery">
-                                            <% if (product.productImage && product.productImage.length > 0) { %>
-                                                <% product.productImage.forEach((img, index) => { %>
-                                                    <img src="/images/<%= img %>" alt="<%= product.productName %>" class="product-image" onclick="viewImage('/images/<%= img %>')">
-                                                <% }) %>
-                                            <% } else { %>
-                                                <div class="no-image">📖</div>
-                                            <% } %>
-                                        </div>
+                                   <div class="product-images-gallery">
+  <% if (product.productImage && product.productImage.length > 0) { %>
+
+    <% product.productImage.forEach((img) => { %>
+
+      <% if (img.startsWith('http')) { %>
+        <img src="<%= img %>"
+             class="product-image"
+             onclick="viewImage('<%= img %>')">
+
+      <% } else { %>
+        <img src="/images/<%= img %>"
+             class="product-image"
+             onclick="viewImage('/images/<%= img %>')">
+      <% } %>
+
+    <% }) %>
+
+  <% } else { %>
+    <div class="no-image">📖</div>
+  <% } %>
+</div>
+
+                                        
                                     </td>
                                     <td>
                                         <div class="product-name" title="<%= product.productName %>"><%= product.productName %></div>
@@ -609,7 +624,8 @@ editForm.addEventListener('submit', async e => {
   formData.append('author', editAuthor.value);
 
   currentEditImages.forEach(img => {
-    formData.append('existingImages', img);
+    // formData.append('existingImages', img);
+    formData.append('existingImages', JSON.stringify(currentEditImages));
   });
   newUploadedImages.forEach((blob, index) => {
     if (blob) {
