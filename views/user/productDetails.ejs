@@ -692,7 +692,7 @@
         <div class="thumbnail-column">
             <% images.forEach((img, index) => { %>
                 <div class="thumbnail <%= index === 0 ? 'active' : '' %>" onclick="changeImage('<%= img %>', <%= index %>)">
-                    <img src="/images/<%= img %>" alt="<%= product.productName %> view <%= index + 1 %>">
+                    <img src="<%= img.startsWith('http') ? img : '/images/' + img %>" alt="<%= product.productName %> view <%= index + 1 %>">
                 </div>
             <% }); %>
         </div>
@@ -701,7 +701,7 @@
     <!-- Main Image -->
     <div class="main-image-container" style="<%= images.length === 1 ? 'width: 100%;' : '' %>">
         <div class="image-zoom-wrapper" id="imageZoomWrapper">
-            <img src="/images/<%= images[0] %>" 
+            <img src="<%= images[0] ? (images[0].startsWith('http') ? images[0] : '/images/' + images[0]) : 'https://via.placeholder.com/450x450?text=No+Image' %>"
                  alt="<%= product.productName %>" 
                  class="product-image" 
                  id="mainImage">

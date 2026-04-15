@@ -71,8 +71,8 @@ const postProduct = async (req, res) => {
         }
 
      
-        const imageFilenames = req.files.map(file => file.filename);
-
+        // const imageFilenames = req.files.map(file => file.filename);
+        const imageFilenames = req.files.map(file => file.path);
  
         const newProduct = new Product({
             productName: name,
@@ -243,7 +243,8 @@ if (existingImages) {
 }
 
 if (req.files?.length) {
-  finalImages.push(...req.files.map(f => f.filename));
+//   finalImages.push(...req.files.map(f => f.filename));
+finalImages.push(...req.files.map(f => f.path));
 }
 
 finalImages = finalImages.slice(0, 3);

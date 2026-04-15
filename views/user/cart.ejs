@@ -385,10 +385,15 @@
                         
                         <% cart.items.forEach((item, index) => { %>
                             <div class="cart-item" data-item-id="<%= item.productId._id %>">
-                                <img src="/images/<%= item.productId.productImage[0] %>" 
+                                <!-- <img src="/images/<%= item.productId.productImage[0] %>" 
                                      alt="<%= item.productId.name %>"
                                      class="item-image"
-                                     onerror="this.src='/images/default-book.jpg'">
+                                     onerror="this.src='/images/default-book.jpg'"> -->
+                                     <img src="<%= item.productId.productImage?.[0] || '/images/default-book.jpg' %>" 
+     alt="<%= item.productId.name %>"
+     class="item-image"
+     onerror="this.src='/images/default-book.jpg'">
+     
                                 
                                 <div class="item-details">
                                     <h3 class="item-title">

@@ -709,9 +709,17 @@
                     
                     <% order.orderedItems.forEach(function(item) { %>
                         <div class="order-item">
-                            <img src="/images/<%= item.productImage %>" 
+                            <!-- <img src="/images/<%= item.productImage %>" 
                                  alt="<%= item.productName %>" 
                                  class="item-image">
+
+                         -->
+                                 <% const image = Array.isArray(item.productImage) ? item.productImage[0] : item.productImage; %>
+
+<img 
+    src="<%= image || 'https://via.placeholder.com/100x130?text=No+Image' %>" 
+    alt="<%= item.productName %>" 
+    class="item-image">
                             
                             <div class="item-details">
                                 <h3 class="item-name"><%= item.productName %></h3>

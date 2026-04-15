@@ -2,7 +2,7 @@
 const express = require('express')
 const session = require('express-session');
 const app = express();
-const PORT= process.env.PORT
+const PORT= process.env.PORT || 3000;
 const userRoutes = require('./routes/userRouter')
 const adminRoutes = require('./routes/adminRouter')
 const db = require('./config/db')
@@ -12,6 +12,7 @@ const morgan = require('morgan');
 
 db();
 app.use(morgan('dev'));
+
 
 app.use(session({
     secret: process.env.SESSION_SECRET, 

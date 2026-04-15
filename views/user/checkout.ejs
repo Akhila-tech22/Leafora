@@ -711,10 +711,15 @@
                         <% if (cart && cart.items && cart.items.length > 0) { %>
                             <% cart.items.forEach(item => { %>
                                 <div class="summary-product">
-                                    <img src="/images/<%= item.productId.productImage[0] %>" 
+                                    <!-- <img src="/images/<%= item.productId.productImage[0] %>" 
                                          alt="<%= item.productId.productName %>" 
                                          class="summary-product-img"
-                                         onerror="this.src='/images/default-book.jpg'">
+                                         onerror="this.src='/images/default-book.jpg'"> -->
+
+                                    <img src="<%= item.productId.productImage?.[0] || '/images/default-book.jpg' %>" 
+                                        alt="<%= item.productId.productName %>" 
+                                        class="summary-product-img"
+                                        onerror="this.src='/images/default-book.jpg'">
                                     <div class="summary-product-details">
                                         <div class="summary-product-name">
                                             <a href="/productDetails/<%= item.productId._id %>" class="product-link">

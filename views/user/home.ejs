@@ -670,11 +670,23 @@
                             <% } %>
                             
                             <a href="/productDetails/<%= book._id %>">
-                                <% if(book.productImage && book.productImage.length > 0){ %>
+                                <!-- <% if(book.productImage && book.productImage.length > 0){ %>
                                     <img src="/images/<%= book.productImage[0] %>" alt="<%= book.productName %>">
                                 <% } else { %>
                                     <i class="fas fa-book"></i>
-                                <% } %>
+                                <% } %> -->
+
+<% let img = book.productImage; %>
+
+<% if (Array.isArray(img) && img.length > 0) { %>
+    <img src="<%= img[0] %>" alt="<%= book.productName %>">
+<% } else if (typeof img === 'string') { %>
+    <img src="<%= img %>" alt="<%= book.productName %>">
+<% } else if (img && img.path) { %>
+    <img src="<%= img.path %>" alt="<%= book.productName %>">
+<% } else { %>
+    <i class="fas fa-book"></i>
+<% } %>
                             </a>
                         </div>
                         <div class="book-info">
@@ -692,10 +704,10 @@
                                     <span class="original-price">₹<%= book.regularPrice.toFixed(2) %></span>
                                 <% } %>
                             </div>
-                            
+<!--                             
                             <button class="add-to-cart" onclick="addToCart('<%= book._id %>')">
                                 <i class="fas fa-cart-plus"></i> Add to Cart
-                            </button>
+                            </button> -->
                         </div>
                     </div>
                 <% }) %>
@@ -746,10 +758,11 @@
         let cartCount = 0;
         const cartCountElement = document.querySelector('.cart-count');
 
-       async function addToCart(productId) {
+
+    async function addToCart(event, productId) {
     const btn = event.target.closest('.add-to-cart');
     
-    // Disable button
+
     btn.disabled = true;
     const originalHTML = btn.innerHTML;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';

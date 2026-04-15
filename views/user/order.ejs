@@ -370,11 +370,32 @@
                                 <div class="order-body">
                                     <% order.orderedItems.forEach(item => { %>
                                         <div class="product-item">
-                                            <img 
-                                                src="/images/<%= item.productImage %>"  
-                                                alt="<%= item.productName %>" 
-                                                class="product-image">
-                                            
+                                          
+                                                <!-- <% const image = item.productImage; %>
+
+<% if (image) { %>
+    <img 
+        src="<%= image %>" 
+        alt="<%= item.productName %>" 
+        class="product-image">
+<% } else { %>
+    <img 
+        src="https://via.placeholder.com/80x100?text=No+Image" 
+        class="product-image">
+<% } %> -->
+
+<% let img = item.productImage; %>
+
+<% if (Array.isArray(img) && img.length > 0) { %>
+    <img src="<%= img[0] %>" alt="<%= item.productName %>" class="product-image">
+<% } else if (typeof img === 'string') { %>
+    <img src="<%= img %>" alt="<%= item.productName %>" class="product-image">
+<% } else if (img && img.path) { %>
+    <img src="<%= img.path %>" alt="<%= item.productName %>" class="product-image">
+<% } else { %>
+    <img src="https://via.placeholder.com/80x100?text=No+Image" class="product-image">
+<% } %>
+
                                             <div class="product-details">
                                                 <div class="product-name"><%= item.productName %></div>
                                                 <div class="product-meta">

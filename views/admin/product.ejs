@@ -612,7 +612,13 @@ editForm.addEventListener('submit', async e => {
     formData.append('existingImages', img);
   });
   newUploadedImages.forEach((blob, index) => {
-    if (blob) formData.append('productImage', blob, `image${index}.jpg`);
+    if (blob) {
+        const file = new File([blob], `image${index}.jpg`, {
+  type: 'image/jpeg'
+});
+
+formData.append('productImage', file);
+    }
   });
 
   const res = await fetch('/admin/editProduct', {
