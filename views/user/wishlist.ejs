@@ -317,84 +317,79 @@
                     <% } %>
                 </div>
 
-                <!-- Wishlist Items -->
-                <% if (wishlist && wishlist.products && wishlist.products.length > 0) { %>
-                    <div class="wishlist-list">
-                        <% wishlist.products.forEach(item => { 
-                            const product = item.productId;
-                            const hasOffer = product.effectiveOffer > 0;
-                            const isAvailable = product.status === 'available' && !product.isBlocked;
-                        %>
-                            <div class="wishlist-item" id="wishlist-<%= product._id %>">
+              <!-- Wishlist Items -->
+<% const validProducts = wishlist && wishlist.products ? wishlist.products.filter(item => item.productId != null) : []; %>
+<% if (validProducts.length > 0) { %>
+    <div class="wishlist-list">
+        <% validProducts.forEach(item => { 
+            const product = item.productId;
+            const hasOffer = product.effectiveOffer > 0;
+            const isAvailable = product.status === 'available' && !product.isBlocked;
+        %>
+            <div class="wishlist-item" id="wishlist-<%= product._id %>">
+                <a href="/productDetails/<%= product._id %>">
+                    <img src="<%= Array.isArray(product.productImage) ? product.productImage[0] : product.productImage %>"
+                         alt="<%= product.productName %>"
+                         class="item-image">
+                </a>
 
-                                <a href="/productDetails/<%= product._id %>">
-                                    <!-- <img src="/images/<%= product.productImage[0] %>" 
-                                         alt="<%= product.productName %>"  -->
-                                         <img src="<%= Array.isArray(product.productImage) ? product.productImage[0] : product.productImage %>"
-     alt="<%= product.productName %>"
-                                         class="item-image">
-                                </a>
-
-                                <div class="item-info">
-                                    <div class="item-top">
-                                        <div class="item-details">
-                                            <a href="/productDetails/<%= product._id %>" class="item-title">
-                                                <%= product.productName %>
-                                            </a>
-                                            
-                                            <div class="item-meta">
-                                                <span><i class="fas fa-user-edit"></i> <%= product.author %></span>
-                                                <span>Size: <%= item.size %></span>
-                                            </div>
-
-                                            <div class="item-price">
-                                                <span class="current-price">₹<%= product.salePrice.toFixed(2) %></span>
-                                                <% if (hasOffer) { %>
-                                                    <span class="original-price">₹<%= product.regularPrice.toFixed(2) %></span>
-                                                    <span class="offer-tag"><%= product.effectiveOffer %>% OFF</span>
-                                                <% } %>
-                                            </div>
-                                        </div>
-
-                                        <div class="item-actions">
-                                            <button class="btn-cart" 
-                                                    <%= !isAvailable ? 'disabled' : '' %>
-                                                    onclick="moveToCart('<%= product._id %>', '<%= item.size %>')">
-                                                <i class="fas fa-shopping-cart"></i>
-                                                <%= isAvailable ? 'Add to Cart' : 'Out of Stock' %>
-                                            </button>
-                                            
-                                            <button type="button" class="btn-remove"
-                                                    onclick="removeFromWishlist('<%= product._id %>')">
-                                                <i class="fas fa-trash-alt"></i> Remove
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <div style="margin-top: 8px;">
-                                        <span class="status-badge <%= isAvailable ? 'status-available' : 'status-out' %>">
-                                            <%= isAvailable ? '✓ In Stock' : '✗ Out of Stock' %>
-                                        </span>
-                                    </div>
-                                </div>
+                <div class="item-info">
+                    <div class="item-top">
+                        <div class="item-details">
+                            <a href="/productDetails/<%= product._id %>" class="item-title">
+                                <%= product.productName %>
+                            </a>
+                            <div class="item-meta">
+                                <span><i class="fas fa-user-edit"></i> <%= product.author %></span>
+                                <span>Size: <%= item.size %></span>
                             </div>
-                        <% }); %>
-                    </div>
-                    
-                <% } else { %>
-                    <!-- Empty Wishlist -->
-                    <div class="empty-wishlist">
-                        <div class="empty-icon">
-                            <i class="far fa-heart"></i>
+                            <div class="item-price">
+                                <span class="current-price">₹<%= product.salePrice.toFixed(2) %></span>
+                                <% if (hasOffer) { %>
+                                    <span class="original-price">₹<%= product.regularPrice.toFixed(2) %></span>
+                                    <span class="offer-tag"><%= product.effectiveOffer %>% OFF</span>
+                                <% } %>
+                            </div>
                         </div>
-                        <h2>Your wishlist is empty</h2>
-                        <p>Save your favorite books here!</p>
-                        <a href="/shop" class="btn-shop">
-                            <i class="fas fa-book"></i>
-                            Start Shopping
-                        </a>
+
+                        <div class="item-actions">
+                            <button class="btn-cart" 
+                                    <%= !isAvailable ? 'disabled' : '' %>
+                                    onclick="moveToCart('<%= product._id %>', '<%= item.size %>')">
+                                <i class="fas fa-shopping-cart"></i>
+                                <%= isAvailable ? 'Add to Cart' : 'Out of Stock' %>
+                            </button>
+                            <button type="button" class="btn-remove"
+                                    onclick="removeFromWishlist('<%= product._id %>')">
+                                <i class="fas fa-trash-alt"></i> Remove
+                            </button>
+                        </div>
                     </div>
-                <% } %>
+
+                    <div style="margin-top: 8px;">
+                        <span class="status-badge <%= isAvailable ? 'status-available' : 'status-out' %>">
+                            <%= isAvailable ? '✓ In Stock' : '✗ Out of Stock' %>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+
+<% } else { %>
+    <!-- Empty Wishlist -->
+    <div class="empty-wishlist">
+        <div class="empty-icon">
+            <i class="far fa-heart"></i>
+        </div>
+        <h2>Your wishlist is empty</h2>
+        <p>Save your favorite books here!</p>
+        <a href="/shop" class="btn-shop">
+            <i class="fas fa-book"></i>
+            Start Shopping
+        </a>
+    </div>
+<% } %>
             </div>
         </div>
     </div>
